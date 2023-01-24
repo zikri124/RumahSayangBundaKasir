@@ -18,16 +18,16 @@ html
             input.input.input-bordered.w-full.max-w-md(value=customerData.name type='text'  disabled)
             label.label
               span.label-text No. Hp
-            input.input.input-bordered.w-full.max-w-md(value=visitData.data().numWa type='text'  disabled)
+            input.input.input-bordered.w-full.max-w-md(value=visitData.data.numWa type='text'  disabled)
             label.label
               span.label-text Waktu
-            input.input.input-bordered.w-full.max-w-md(value=visitData.data().time type='text'  disabled)
+            input.input.input-bordered.w-full.max-w-md(value=visitData.data.time type='text'  disabled)
             label.label
               span.label-text Waktu Selesai
-            input.input.input-bordered.w-full.max-w-md(value=visitData.data().timeFinish type='text'  disabled)
+            input.input.input-bordered.w-full.max-w-md(value=visitData.data.timeFinish type='text'  disabled)
             label.label
               span.label-text Tanggal Kunjungan
-            input.input.input-bordered.w-full.max-w-md(value=visitData.data().date type='text'  disabled)
+            input.input.input-bordered.w-full.max-w-md(value=visitData.data.date type='text'  disabled)
       div.flex.flex-col.justify-start.items-start.w-full.pt-12
         label.font-bold.text-2xl.font-pp Total harga pemeriksaan
         .overflow-x-auto.font-pp.mt-8.border.rounded-t-lg 
@@ -41,9 +41,9 @@ html
             tbody
               tr
                 td 1
-                td= serviceData.data().name
-                td= serviceData.data().room
-                td= serviceData.data().price
+                td= serviceData.data.name
+                td= serviceData.data.room
+                td= serviceData.data.price
         form(action="/visit/finish/"+visitData.id method="post")
           div(class="input_fields_wrap")
           div(class="done_fields mb-8")

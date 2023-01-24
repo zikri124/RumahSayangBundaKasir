@@ -1,4 +1,5 @@
 const firebase = require("../firebase");
+const fetch = require("node-fetch");
 const db = firebase.firestore;
 const {
   collection,
@@ -13,6 +14,8 @@ const {
   deleteDoc,
   QuerySnapshot
 } = require("firebase/firestore");
+
+const apiUrl = process.env.apiURL
 
 module.exports = {
   viewServices: (req, res) => {
@@ -31,48 +34,78 @@ module.exports = {
       description: req.body.description
     };
 
-    await addDoc(collection(db, "services"), serviceData)
-      .then(async () => {
-        return res.status(200).redirect("/admin/service");
+    await fetch(apiUrl + "/api/service/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + req.token
+        },
+        body: JSON.stringify(serviceData)
       })
-      .catch((error) => {
-        console.log(error);
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.success == true) {
+          return res.status(200).redirect("/service");
+        } else {
+          return console.log(body.error)
+        }
+      })
+      .catch((err) => {
+        return console.log(err);
       });
   },
-
-  // viewUpdateService: async (req, res) => {
-  //   // pake modal  ---------------------------------
-  //   const serviceData = req.serviceData;
-
-  //   return res.render("", {
-  //     serviceData: serviceData
-  //   });
-  // },
 
   updateService: async (req, res) => {
     const serviceId = req.params.serviceId;
 
-    const serviceData = doc(db, "services", serviceId);
-
-    await updateDoc(serviceData, {
+    const serviceData = {
       name: req.body.name,
       price: req.body.price,
       room: req.body.room,
       description: req.body.description
-    })
-      .then(() => {
-        return res.cookie("data", "").status(200).redirect("/admin/service");
+    }
+
+    await fetch(apiUrl + "/api/service/edit/" + serviceId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + req.token
+        },
+        body: JSON.stringify(serviceData)
       })
-      .catch((error) => {
-        return console.log(error);
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.success == true) {
+          return res.status(200).redirect("/service");
+        } else {
+          return console.log(body.error)
+        }
+      })
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
   deleteService: async (req, res) => {
     const serviceId = req.params.serviceId;
 
-    await deleteDoc(doc(db, "services", serviceId));
-
-    return res.status(200).redirect("/admin/service");
+    await fetch(apiUrl + "/api/service/delete/" + serviceId, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + req.token
+        }
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.success == true) {
+          return res.status(200).redirect("/service");
+        } else {
+          return console.log(body.error)
+        }
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
   }
 };

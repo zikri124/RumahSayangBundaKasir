@@ -1,4 +1,5 @@
 const firebase = require("../firebase");
+const fetch = require("node-fetch")
 const db = firebase.firestore;
 const {
   collection,
@@ -11,7 +12,39 @@ const {
   getDoc
 } = require("firebase/firestore");
 
+const apiUrl = process.env.apiURL
+
 module.exports = {
+  putAppointmentData: async (appointmentId, body, token) => {
+    console.log({
+      appointmentId: appointmentId,
+      body: body,
+      token: token
+    })
+    
+    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + token
+        },
+        body: body
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.success == true) {
+          return true
+        } else {
+          console.log(body.error)
+          return false
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return err
+      });
+  },
+  
   getACustomerData: async (customerId) => {
     const customerRef = doc(db, "customers", customerId);
     const customerSnap = await getDoc(customerRef);
@@ -23,15 +56,20 @@ module.exports = {
     return customerSnap.data();
   },
 
-  getAServiceData: async (serviceId) => {
-    const serviceRef = doc(db, "services", serviceId);
-    const serviceSnap = await getDoc(serviceRef);
-
-    if (!serviceSnap.exists()) {
-      return "No Document Found";
+  getCurrentDate: () => {
+    const dateClass = new Date();
+    let month = dateClass.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let date = dateClass.getDate();
+    if (date < 10) {
+      date = "0" + date;
     }
 
-    return serviceSnap;
+    const dateNow = dateClass.getFullYear() + "-" + month + "-" + date;
+
+    return dateNow
   },
 
   getAge: (customerDOB) => {

@@ -10,45 +10,15 @@ const {
   getDoc
 } = require("firebase/firestore");
 
+const commonFunction = require("../middleware/commonFunctions")
+
 module.exports = {
   viewAdminDashboard: async (req, res) => {
-    const appointmentData = [];
+    const appointmentData = req.appointmentsData;
     const onGoingVisitData = [];
 
     const servicesData = req.servicesData;
     const customersData = req.customersData;
-
-    const dateClass = new Date();
-    let month = dateClass.getMonth() + 1;
-    if (month < 10) {
-      month = "0" + month;
-    }
-    let date = dateClass.getDate();
-    if (date < 10) {
-      date = "0" + date;
-    }
-
-    const dateNow = dateClass.getFullYear() + "-" + month + "-" + date;
-
-    const appointmentQuery = query(
-      collection(db, "appointments"),
-      where("date", "==", dateNow),
-      where("status", "==", false)
-    );
-
-    await getDocs(appointmentQuery)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const appointment = {
-            data: doc.data(),
-            id: doc.id
-          };
-          appointmentData.push(appointment);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
     const onGoingVisitQuery = query(
       collection(db, "visits"),
@@ -77,8 +47,14 @@ module.exports = {
     });
   },
 
-  viewPrivacyPolicyPage: (req, res) => {
-    return res.render("client/privacyPolicy");
+  viewStatisticPage: (req, res) => {
+    const visitsData = req.visitsData
+    const customersData = req.customersData
+    const servicesData = req.servicesData
+
+    const currentDate = commonFunction.getCurrentDate()
+    
+    
   },
 
   test: async (res) => {

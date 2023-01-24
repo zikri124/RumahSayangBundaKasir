@@ -58,20 +58,20 @@ html
             each data in appointmentsData
               tr
                 th= i++
-                td= data.data().name
+                td= data.data.name
                 each dataServices in servicesData
-                  if data.data().serviceId===dataServices.id
-                    td= dataServices.data().name
+                  if data.data.serviceId===dataServices.id
+                    td= dataServices.data.name
                     - break
-                if data.data().status===true
+                if data.data.status===true
                   td Selesai
-                else if data.data().status===false
+                else if data.data.status===false
                   td Belum berjalan
                 else 
                   td Dibatalkan
-                td= data.data().date
-                td= data.data().time
-                td= data.data().dateOfBirth
+                td= data.data.date
+                td= data.data.time
+                td= data.data.dateOfBirth
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js")  
      

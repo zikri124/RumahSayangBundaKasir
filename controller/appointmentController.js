@@ -1,7 +1,9 @@
 const firebase = require("../firebase");
-
+const fetch = require("node-fetch");
 const jwt = require("jsonwebtoken");
-const { google } = require("googleapis"); //s
+const {
+  google
+} = require("googleapis"); //s
 const db = firebase.firestore;
 const {
   collection,
@@ -17,6 +19,9 @@ const {
 } = require("firebase/firestore");
 
 const commonFunc = require("../middleware/commonFunctions");
+const commonFunctions = require("../middleware/commonFunctions");
+
+const apiUrl = process.env.apiURL
 
 module.exports = {
   viewAppointments: async (req, res) => {
@@ -39,35 +44,17 @@ module.exports = {
     });
   },
 
-  viewProcessAppointment: async (req, res) => {
-    const appointmentData = req.appointmentData;
-
-    const customersData = req.customersData;
-
-    const serviceData = req.servicesData;
-
-    const customerQuery2 = query(collection(db, "services"));
-
-    await getDocs(customerQuery2)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          serviceData.push(doc.data());
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    return res.render("admin/formProcessReservasi", {
-      appointmentData: appointmentData,
-      customersdata: customersData,
-      serviceData: serviceData
-    });
-  },
-
   viewEditAppointment: async (req, res) => {
-    const appointmentData = req.appointmentData;
+    const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
+    var appointmentData
+    
+    appointmentsData.forEach(appointment => {
+      if (appointment.id == req.params.appId) {
+        appointmentData = appointment
+      }
+    });
+
     if (req.sessionsData == null) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
@@ -76,7 +63,7 @@ module.exports = {
     } else {
       const date = req.query.date;
       const serviceId = req.query.serviceId;
-      const serviceData = await commonFunc.getAServiceData(serviceId);
+      const serviceData = req.serviceData
 
       const sessionsData = req.sessionsData;
 
@@ -93,36 +80,38 @@ module.exports = {
 
   editAppointment: async (req, res) => {
     const appointmentId = req.params.appId;
-    const serviceId = req.body.serviceId;
-    const time = req.body.time;
-    const date = req.body.date;
 
-    const appointmentData = doc(db, "appointments", appointmentId);
+    const data = {
+      serviceId: req.body.serviceId,
+      time: req.body.time,
+      date: req.body.date
+    }
 
-    await updateDoc(appointmentData, {
-      time: time,
-      date: date,
-      serviceId: serviceId
-    })
-      .then(() => {
-        return res.status(200).redirect("/appointment");
+    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + req.token
+        },
+        body: JSON.stringify(data)
       })
-      .catch((error) => {
-        return console.log(error);
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.success == true) {
+          return res.status(200).redirect("/appointment");
+        } else {
+          return console.log(body.error)
+        }
+      })
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
-  processAppointmentToVisit: async (req, res) => {
-    const appId = req.params.appId;
+  processAppointmentToVisit: async (req, res, next) => {
+    const appointmentId = req.params.appId;
     const dateClass = new Date();
     const appointmentData = req.appointmentData;
-
-    const appointmentDoc = doc(db, "appointments", appId);
-
-    await updateDoc(appointmentDoc, {
-      status: true
-    });
-
     const customerId = req.body.customerId;
 
     const customerData = await commonFunc.getACustomerData(customerId);
@@ -141,37 +130,65 @@ module.exports = {
     const visitData = {
       customerId: customerId,
       customerAge: customerAge,
-      serviceId: appointmentData.data().serviceId,
-      date: appointmentData.data().date,
+      serviceId: appointmentData.data.serviceId,
+      date: appointmentData.data.date,
       time: time,
       timeFinish: "",
       status: "Sedang Jalan",
       staffId: req.user.uid,
-      numWa: appointmentData.data().numWa
+      numWa: appointmentData.data.numWa
     };
+
+    const body = JSON.stringify({
+      status: true
+    })
 
     await addDoc(collection(db, "visits"), visitData)
       .then(async () => {
-        return res.status(200).redirect("/");
+        await commonFunctions.putAppointmentData(appointmentId, body, req.token)
+          .then(() => {
+            next()
+          })
+          .catch((error) => {
+            const err = new Error(error)
+            console.log(error)
+            return err
+          })
       })
       .catch((error) => {
-        return console.log(error);
+        const err = new Error(error)
+        console.log(error)
+        return err
       });
+  },
+
+  redirectToHome: (req, res) => {
+    return res.redirect("/");
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
     const appointmentId = req.params.appId;
 
-    const appointmentData = doc(db, "appointments", appointmentId);
-
-    await updateDoc(appointmentData, {
-      status: "cancelled"
-    })
-      .then(() => {
-        return res.status(200).redirect("/");
+    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + req.token
+        },
+        body: JSON.stringify({
+          status: "cancelled"
+        })
       })
-      .catch((error) => {
-        return console.log(error);
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.success == true) {
+          return res.status(200).redirect("/");
+        } else {
+          return console.log(body.error)
+        }
+      })
+      .catch((err) => {
+        return console.log(err);
       });
   }
 };

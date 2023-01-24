@@ -30,7 +30,7 @@ module.exports = {
 
     await addDoc(collection(db, "users"), userData)
       .then(async () => {
-        return res.status(200).redirect("/admin/user");
+        return res.status(200).redirect("/user");
       })
       .catch((error) => {
         console.log(error);
@@ -42,6 +42,6 @@ module.exports = {
 
     await deleteDoc(doc(db, "users", userId));
 
-    return res.status(200).redirect("/admin/user");
+    return res.status(200).redirect("/user");
   }
 };

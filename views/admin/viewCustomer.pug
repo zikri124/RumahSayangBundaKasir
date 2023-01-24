@@ -37,7 +37,7 @@ html
       .modal.modal-bottom(class='sm:modal-middle')
         .modal-box
           h3.font-bold.text-lg Tambah Data 
-          form(action="/admin/customer/new" method="post")
+          form(action="/customer/new" method="post")
             .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
               .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                 label.label
@@ -74,10 +74,10 @@ html
             each data in customersdata
               tr
                 th= i++
-                td= data.data().name
-                td= data.data().numWa
-                td= data.data().sex
-                td= data.data().dateOfBirth
+                td= data.data.name
+                td= data.data.numWa
+                td= data.data.sex
+                td= data.data.dateOfBirth
                 td
                   a(href="/customer/" + data.id) 
                     button(class="btn btn-info btn-xs mx-2") detail
@@ -93,19 +93,19 @@ html
                           .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                             label.label
                               span.label-text Nama
-                          input.input.input-bordered.w-full.max-w-xs(name="name" id="name" value=data.data().name type='text',  class="lg:max-w-lg")
+                          input.input.input-bordered.w-full.max-w-xs(name="name" id="name" value=data.data.name type='text',  class="lg:max-w-lg")
                           .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                             label.label
                               span.label-text No. Hp
-                          input.input.input-bordered.w-full.max-w-xs(name="wa" id="wa" value=data.data().numWa type='text',  class="lg:max-w-lg")
+                          input.input.input-bordered.w-full.max-w-xs(name="wa" id="wa" value=data.data.numWa type='text',  class="lg:max-w-lg")
                           .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                             label.label
                               span.label-text Jenis Kelamin
-                          input.input.input-bordered.w-full.max-w-xs(name="sex" id="sex" value=data.data().sex type='text',  class="lg:max-w-lg")
+                          input.input.input-bordered.w-full.max-w-xs(name="sex" id="sex" value=data.data.sex type='text',  class="lg:max-w-lg")
                           .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                             label.label
                               span.label-text Tanggal Lahir
-                          input.input.input-bordered.w-full.max-w-xs(name="dateOfBirth" id="dateOfBirth" value=data.data().dateOfBirth type='date',  class="lg:max-w-lg")
+                          input.input.input-bordered.w-full.max-w-xs(name="dateOfBirth" id="dateOfBirth" value=data.data.dateOfBirth type='date',  class="lg:max-w-lg")
                           .flex.flex-row.justify-center.items-center.gap-4
                             button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                             .modal-action

@@ -23,26 +23,10 @@ module.exports = {
     });
   },
 
-  viewAnCustomer: async (req, res) => {
+  viewAnCustomer: (req, res) => {
     const customerData = req.customerData;
-    const customerId = req.params.customerId;
     const servicesData = req.servicesData;
-    const visitsData = [];
-
-    const visitQuery = query(
-      collection(db, "visits"),
-      where("customerId", "==", customerId)
-    );
-
-    await getDocs(visitQuery)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          visitsData.push(doc);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const visitsData = req.visitsData;
 
     return res.render("admin/viewACustomer", {
       customerData: customerData,

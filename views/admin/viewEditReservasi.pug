@@ -15,7 +15,7 @@ html
           .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
             label.label
               span.label-text Nama
-          input.input.input-bordered.w-full.max-w-xs.text-black(name='input_name' readonly type='text' value=appointmentData.data().name placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          input.input.input-bordered.w-full.max-w-xs.text-black(name='input_name' readonly type='text' value=appointmentData.data.name placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
           .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
             label.label
               span.label-text ID Reservasi
@@ -30,7 +30,7 @@ html
           select.select.select-bordered.w-full.max-w-xs(name="serviceId" class="lg:max-w-lg md:max-w-md")
             option(value="" selected="" disabled="") Pilih layanan
             each data in servicesData
-              option(value=data.id)= data.data().name
+              option(value=data.id)= data.data.name
           .flex.flex-col.justify-start.w-full.items-center(class="md:justify-center lg:max-w-lg md:max-w-md")
             button.btn(class="bg-pink-500 border-none hover:bg-pink-900 w-full max-w-xs mt-4", type="submit") Cari data
       - let sessions = ["08:00", "09:30", "11:00", "13:00", "14:30", "16:00"]
@@ -52,7 +52,7 @@ html
                   .card-body.items-center.text-center
                     each data in servicesData 
                       if(data.id === serviceId ) 
-                        h2.card-title= `Sesi ${i++} ${data.data().name}`
+                        h2.card-title= `Sesi ${i++} ${data.data.name}`
                         - break     
                     p=date
                     p=session1 + " WIB"
@@ -66,7 +66,7 @@ html
                 .card-body.items-center.text-center
                   each data in servicesData 
                     if(data.id === serviceId ) 
-                      h2.card-title= `Sesi ${i++} ${data.data().name}`
+                      h2.card-title= `Sesi ${i++} ${data.data.name}`
                       - break 
                   p=date
                   p=session1 + " WIB " + telahReservasi

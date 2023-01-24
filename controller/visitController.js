@@ -1,4 +1,5 @@
 const firebase = require("../firebase");
+const fetch = require("node-fetch");
 const db = firebase.firestore;
 const {
   collection,
@@ -13,14 +14,15 @@ const {
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions");
+const apiUrl = process.env.apiURL
 
 module.exports = {
-  viewVisits: async (req, res) => {
+  viewVisits: (req, res) => {
     const visitData = req.visitsData;
     const servicesData = req.servicesData;
-    const customersData = req.customersData; //s
+    const customersData = req.customersData;
 
-    return res.render("/viewHistory", {
+    return res.render("admin/viewHistory", {
       visitData: visitData,
       servicesData: servicesData,
       customersData: customersData
@@ -41,17 +43,29 @@ module.exports = {
 
   viewFinishVisit: async (req, res) => {
     const visitData = req.visitData;
-    const serviceId = visitData.data().serviceId;
-    const customerId = visitData.data().customerId;
+    const serviceId = visitData.data.serviceId;
+    const customerId = visitData.data.customerId;
 
-    const serviceData = await commonFunction.getAServiceData(serviceId);
     const customerData = await commonFunction.getACustomerData(customerId);
 
-    return res.render("/viewPrice", {
-      visitData: visitData,
-      serviceData: serviceData,
-      customerId: customerId,
-      customerData: customerData
+    await fetch(apiUrl + "/api/service/" + serviceId, {
+      method: "GET",
+      headers: {
+        Authorization: "bearer " + req.token
+      }
+    })
+    .then((response) => response.json())
+    .then((body) => {
+      const serviceData = body.serviceData
+      return res.render("admin/viewPrice", {
+        visitData: visitData,
+        serviceData: serviceData,
+        customerId: customerId,
+        customerData: customerData
+      });
+    })
+    .catch((err) => {
+      return console.log(err);
     });
   },
 

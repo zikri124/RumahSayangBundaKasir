@@ -14,38 +14,19 @@ const {
   orderBy
 } = require("firebase/firestore");
 
+const commonFunctions = require("./commonFunctions")
+
+const apiUrl = process.env.apiURL
+
 module.exports = {
   getAnUserData: async (req, res, next) => {
-    const userId = req.params.userId;
-
-    const userRef = doc(db, "users", userId);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      req.userData = [];
-      console.log("No Document Found");
-      next();
-    }
-
-    req.userData = userSnap;
+    req.userData = []
     next();
   },
 
   getUsersData: async (req, res, next) => {
-    const usersData = [];
-
-    const userQuery = query(collection(db, "users"));
-    await getDocs(userQuery)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          usersData.push(doc);
-        });
-        req.usersData = usersData;
-        next();
-      })
-      .catch((error) => {
-        return console.log(error);
-      });
+    req.usersData = []
+    next()
   },
 
   getCustomersData: async (req, res, next) => {
@@ -56,7 +37,11 @@ module.exports = {
     await getDocs(customerQuery)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          customersData.push(doc);
+          const customer = {
+            id: doc.id,
+            data: doc.data()
+          }
+          customersData.push(customer);
         });
         req.customersData = customersData;
         next();
@@ -78,25 +63,27 @@ module.exports = {
       next();
     }
 
-    req.customerData = customerSnap;
+    const customer = {
+      id: customerSnap.id,
+      data: customerSnap.data()
+    }
+
+    req.customerData = customer;
     next();
   },
 
   getServicesAndAppointmentsData: async (req, res, next) => {
-    const appointmentsData = "";
-    const servicesData = "";
-
-    fetch("https://s8mii5.sse.codesandbox.io/api/alldata", {
-      method: "GET",
-      headers: {
-        // Authorization: "Bearer " + req.token
-        Authorization:
-          "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJzZkpzdDI4SHh2Z3hZQzA1Q1hyV1RXZGtqcDQyIiwibmFtZSI6ImFkbWluMSIsImlhdCI6MTY3Mzk1MDUwMX0.1qUMvtF40HfQKd7EzwGIwb1Vqd6ZPeYQmCWR8U5AiTw"
-      }
-    })
-      .then((response) => response.text())
+    await fetch(apiUrl + "/api/alldata", {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token
+        }
+      })
+      .then((response) => response.json())
       .then((body) => {
-        return res.json({ body });
+        req.appointmentsData = body.appointmentsData
+        req.servicesData = body.servicesData
+        next()
       })
       .catch((err) => {
         return console.log(err);
@@ -104,18 +91,16 @@ module.exports = {
   },
 
   getAppointmentsData: async (req, res, next) => {
-    // const appointmentsData = "";
-    console.log(req.token);
-
-    fetch("https://s8mii5.sse.codesandbox.io/api/appointment", {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token
-      }
-    })
-      .then((response) => response.text())
+    await fetch(apiUrl + "/api/appointment", {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token
+        }
+      })
+      .then((response) => response.json())
       .then((body) => {
-        return res.json(body);
+        req.appointmentsData = body.appointmentsData
+        next()
       })
       .catch((err) => {
         return console.log(err);
@@ -123,93 +108,82 @@ module.exports = {
   },
 
   getAppointmentsDataByTime: async (req, res, next) => {
-    const appointmentsData = [];
-    const timeCode = req.params.timeCode;
-
-    const dateClass = new Date();
-    let month = dateClass.getMonth() + 1;
-    if (month < 10) {
-      month = "0" + month;
-    }
-    let date = dateClass.getDate();
-    if (date < 10) {
-      date = "0" + date;
-    }
-
-    const dateNow = dateClass.getFullYear() + "-" + month + "-" + date;
-
-    let code = "";
-
-    if (timeCode == "past") {
-      code = "<";
-    } else if (timeCode == "soon") {
-      code = ">=";
-    }
-
-    const appointmentQuery = query(
-      collection(db, "appointments"),
-      where("date", code, dateNow),
-      orderBy("date"),
-      orderBy("time")
-    );
-
-    await getDocs(appointmentQuery)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          appointmentsData.push(doc);
-        });
-        req.appointmentsData = appointmentsData;
-        next();
+    const timeCode = req.params.timeCode
+    await fetch(apiUrl + "/api/appointment/filter/" + timeCode, {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token
+        }
       })
-      .catch((error) => {
-        return console.log(error);
+      .then((response) => response.json())
+      .then((body) => {
+        req.appointmentsData = body.appointmentsData
+        next()
+      })
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
-  getAppointmentsDataByDate: async (req, res, next) => {
-    console.log(req.query);
-    if (req.query.date == null || req.query.serviceId == null) {
-      req.sessionsData = null;
-      next();
+  getAppointmentsDataToday: async (req, res, next) => {
+    const appointmentsData = req.appointmentsData
+    const todayAppointmentsData = []
+
+    const dateNow = commonFunctions.getCurrentDate()
+
+    appointmentsData.forEach(appointmentData => {
+      if (appointmentData.data.date == dateNow && appointmentData.data.status == false) {
+        todayAppointmentsData.push(appointmentData)
+      }
+    });
+
+    req.appointmentsData = todayAppointmentsData
+    next();
+  },
+
+  getSessions: async (req, res, next) => {
+    const appointmentId = req.params.appId
+    const date = req.query.date
+    const serviceId = req.query.serviceId
+
+    if (date == undefined || serviceId == undefined) {
+      req.sessionsData = null
+      next()
     } else {
-      const date = req.query.date;
-      const serviceId = req.query.serviceId;
-
-      const sessionsData = [];
-
-      const appointmentQuery = query(
-        collection(db, "appointments"),
-        where("date", "==", date),
-        where("serviceId", "==", serviceId)
-      );
-
-      await getDocs(appointmentQuery)
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            sessionsData.push(doc.data());
-          });
-          req.sessionsData = sessionsData;
-          next();
+      await fetch(apiUrl + "/api/appointment/session/" + appointmentId + "?date=" + date + "&serviceId=" + serviceId, {
+          method: "GET",
+          headers: {
+            Authorization: "bearer " + req.token
+          }
         })
-        .catch((error) => {
-          console.log(error);
+        .then((response) => response.json())
+        .then((body) => {
+          req.sessionsData = body.sessionsData
+          req.serviceData = body.serviceData
+          next()
+        })
+        .catch((err) => {
+          return console.log(err);
         });
     }
   },
 
   getAnAppointmentData: async (req, res, next) => {
-    const appointmentId = req.params.appId;
-
-    const appointmentRef = doc(db, "appointments", appointmentId);
-    const appointmentSnap = await getDoc(appointmentRef);
-
-    if (!appointmentSnap.exists()) {
-      req.userData = [];
-      console.log("No Document Found");
-      next();
-    }
-
-    req.appointmentData = appointmentSnap;
+    const appId = req.params.appId
+    await fetch(apiUrl + "/api/appointment/" + appId, {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token
+        }
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        req.appointmentData = body.appointmentData
+        next()
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
     next();
   },
 
@@ -220,13 +194,44 @@ module.exports = {
     await getDocs(visitQuery)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          visitsData.push(doc);
+          const visit = {
+            id: doc.id,
+            data: doc.data()
+          }
+
+          visitsData.push(visit);
         });
         req.visitsData = visitsData;
         next();
       })
       .catch((error) => {
         return console.log(error);
+      });
+  },
+
+  getVisitsDataByCustomer: async(req, res, next) => {
+    const customerId = req.params.customerId
+    const visitsData = []
+    
+    const visitQuery = query(
+      collection(db, "visits"),
+      where("customerId", "==", customerId)
+    );
+
+    await getDocs(visitQuery)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const visitData = {
+            id: doc.id,
+            data: doc.data()
+          }
+          visitsData.push(visitData);
+        });
+        req.visitsData = visitsData
+        next()
+      })
+      .catch((error) => {
+        console.log(error);
       });
   },
 
@@ -242,24 +247,29 @@ module.exports = {
       next();
     }
 
-    req.visitData = visitSnap;
+    const visit = {
+      id: visitSnap.id,
+      data: visitSnap.data()
+    }
+
+    req.visitData = visit;
     next();
   },
 
   getServicesData: async (req, res, next) => {
-    const servicesData = [];
-
-    const serviceQuery = query(collection(db, "services"));
-    await getDocs(serviceQuery)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          servicesData.push(doc);
-        });
-        req.servicesData = servicesData;
-        next();
+    await fetch(apiUrl + "/api/service", {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token
+        }
       })
-      .catch((error) => {
-        return console.log(error);
+      .then((response) => response.json())
+      .then((body) => {
+        req.servicesData = body.servicesData
+        next()
+      })
+      .catch((err) => {
+        return console.log(err);
       });
   },
 

@@ -30,11 +30,11 @@ html
               th(scope="row")=a++
               each dataCustomer in customersData
                 if data.data.customerId===dataCustomer.id
-                  td= dataCustomer.data().name
+                  td= dataCustomer.data.name
                   - break
               each dataServices in servicesData
                 if data.data.serviceId===dataServices.id
-                  td= dataServices.data().name
+                  td= dataServices.data.name
                   - break
               td= data.data.numWa
               td= data.data.customerAge
@@ -65,7 +65,7 @@ html
               td= dataAppointment.data.name
               each dataServices in servicesData
                 if dataAppointment.data.serviceId===dataServices.id
-                  td= dataServices.data().name
+                  td= dataServices.data.name
                   - break
               td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
               td= dataAppointment.data.date
@@ -98,7 +98,7 @@ html
                           select.select.select-bordered.w-full.max-w-md(name="customerId" required="")
                             option(disabled='' selected='') Pilih Customer
                             each dataCustomer in customersData
-                              option(value=dataCustomer.id)= dataCustomer.data().name                    
+                              option(value=dataCustomer.id)= dataCustomer.data.name                    
                           .flex.flex-row.justify-center.items-center.gap-4
                             button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                             .modal-action
@@ -111,7 +111,7 @@ html
                   .modal-box
                     h3.font-bold.text-md.text-center= `Apakah anda ingin menggagalkan reservasi ${dataAppointment.data.name}?`
                     - let id = dataAppointment.id
-                    form(action="/admin/appointment/cancel/"+id  method="post") 
+                    form(action="/appointment/cancel/"+id  method="post") 
                       .flex.flex-row.justify-center.items-center.gap-4
                         button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
                         .modal-action

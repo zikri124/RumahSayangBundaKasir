@@ -33,22 +33,22 @@ html
               tr
                 th= i++
                 each customerData in customersData
-                  if data.data().customerId===customerData.id
+                  if data.data.customerId===customerData.id
                     td 
-                      a(href="/customer/" + data.data().customerId class="link link-hover")=customerData.data().name
+                      a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name
                     - break
-                td= data.data().room
+                td= data.data.room
                 each dataServices in servicesData
-                  if data.data().serviceId===dataServices.id
-                    td= dataServices.data().name
+                  if data.data.serviceId===dataServices.id
+                    td= dataServices.data.name
                     - break
                   else 
-                    td= data.data().serviceId
+                    td= data.data.serviceId
                     - break
-                td= data.data().date
-                td= data.data().time
-                td= data.data().status
-                td= data.data().staffId
+                td= data.data.date
+                td= data.data.time
+                td= data.data.status
+                td= data.data.staffId
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js") 
 

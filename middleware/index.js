@@ -42,5 +42,3 @@ module.exports = {
     }
   }
 };
-
-//https://codesandbox.io/s/web-sandi-yang-berhasil-1-dblxn9?file=/views/admin/login.pug:390-394

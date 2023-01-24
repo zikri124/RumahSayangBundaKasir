@@ -33,7 +33,7 @@ html
               select.select.select-bordered.w-full.max-w-md(name="role" required="")
                 option(disabled='' selected='') Pilih role
                 each roleData in usersData
-                  option(value=roleData.data().role)= roleData.data().role==="superadmin"? "Super Admin" : "Admin"
+                  option(value=roleData.data.role)= roleData.data.role==="superadmin"? "Super Admin" : "Admin"
               .flex.flex-row.justify-center.items-center.gap-4
                  button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                  .modal-action
@@ -51,8 +51,8 @@ html
           each data in usersData
             tr
               th=i++
-              td= data.data().name
-              td= data.data().role==="superadmin"? "Super Admin" : "Admin"
+              td= data.data.name
+              td= data.data.role==="superadmin"? "Super Admin" : "Admin"
               td
                 // The button to open modal
                 label.btn.btn-xs.btn-warning.mr-2.updateUser(for='update-user') edit
@@ -73,7 +73,7 @@ html
                         select.select.select-bordered.w-full.max-w-md(name="role" id="role")
                           option(disabled='' selected='') Pilih role
                           each roleData in usersData
-                            option(value=roleData.data().role)= roleData.data().role==="superadmin"? "Super Admin" : "Admin"
+                            option(value=roleData.data.role)= roleData.data.role==="superadmin"? "Super Admin" : "Admin"
                         .flex.flex-row.justify-center.items-center.gap-4
                           button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                           .modal-action
