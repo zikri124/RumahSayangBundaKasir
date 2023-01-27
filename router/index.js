@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { checkAuth } = require("../middleware");
+const {
+  checkAuth
+} = require("../middleware");
 
 const authRouter = require("./authRouter");
 const appointmentRouter = require("./appointmentRouter")
@@ -24,6 +26,8 @@ router.get(
   queryDb.getCustomersData,
   pageController.viewAdminDashboard
 );
+
+router.get("/statistic", checkAuth, pageController.viewStatisticPage)
 
 router.use("/auth", authRouter);
 

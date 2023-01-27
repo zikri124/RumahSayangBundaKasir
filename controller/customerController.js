@@ -69,7 +69,8 @@ module.exports = {
     await updateDoc(customerData, {
       name: req.body.name,
       numWa: req.body.wa,
-      dateOfBirth: req.body.dateOfBirth
+      dateOfBirth: req.body.dateOfBirth,
+      sex: req.body.sex
     })
       .then(() => {
         return res.cookie("data", "").status(200).redirect("/customer");

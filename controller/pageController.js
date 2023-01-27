@@ -28,11 +28,11 @@ module.exports = {
     await getDocs(onGoingVisitQuery)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const appointment = {
+          const visit = {
             data: doc.data(),
             id: doc.id
           };
-          onGoingVisitData.push(appointment);
+          onGoingVisitData.push(visit);
         });
       })
       .catch((error) => {
@@ -47,14 +47,45 @@ module.exports = {
     });
   },
 
-  viewStatisticPage: (req, res) => {
-    const visitsData = req.visitsData
-    const customersData = req.customersData
-    const servicesData = req.servicesData
+  viewStatisticPage: async (req, res) => {
+    const visitsData = []
+    // const customersData = req.customersData
+    // const servicesData = req.servicesData
+    const data = []
 
     const currentDate = commonFunction.getCurrentDate()
-    
-    
+
+    //get visitData from 1 month
+    const visitQuery = query(
+      collection(db, "visits"),
+      where("date", "<=", currentDate.string),
+      where("date", ">", currentDate.year + "-" + currentDate.month + "-" + (currentDate.date - 7))
+    );
+
+    await getDocs(visitQuery)
+      .then((querySnapshot) => {
+        let totalSumTemp = 0
+        let dateTemp = ""
+        querySnapshot.forEach((doc) => {
+          const visit = {
+            data: doc.data(),
+            id: doc.id
+          };
+
+          if (dateTemp != "") {
+             
+          } else {
+            dateTemp = doc.data().date
+          }
+          
+          visitsData.push(visit);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return res.json(visitsData)
   },
 
   test: async (res) => {

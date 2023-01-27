@@ -129,7 +129,7 @@ module.exports = {
     const appointmentsData = req.appointmentsData
     const todayAppointmentsData = []
 
-    const dateNow = commonFunctions.getCurrentDate()
+    const dateNow = commonFunctions.getCurrentDate().string
 
     appointmentsData.forEach(appointmentData => {
       if (appointmentData.data.date == dateNow && appointmentData.data.status == false) {

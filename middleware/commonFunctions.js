@@ -69,7 +69,12 @@ module.exports = {
 
     const dateNow = dateClass.getFullYear() + "-" + month + "-" + date;
 
-    return dateNow
+    return {
+      string: dateNow,
+      year: dateClass.getFullYear(),
+      month: month,
+      date: date
+    }
   },
 
   getAge: (customerDOB) => {
