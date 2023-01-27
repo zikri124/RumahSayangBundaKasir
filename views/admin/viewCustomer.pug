@@ -104,7 +104,16 @@ html
                           .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                             label.label
                               span.label-text Jenis Kelamin
-                          input.input.input-bordered.w-full.max-w-xs(name="sex" id="sex" value=data.data.sex type='text',  class="lg:max-w-lg")
+                          select.select.select-bordered.w-full.max-w-xs(name="sex" id="sex" value=data.data.sex type='text',  class="lg:max-w-lg")
+                            - let sexTemp = data.data.sex
+                            - if(sexTemp==="Laki-Laki")
+                              option(disabled="") Pilih jenis kelamin 
+                              option(value="Laki-Laki" selected="" id='laki2') Laki-Laki
+                              option(value="Perempuan" id='perempuan') Perempuan
+                            - else 
+                              option(disabled="") Pilih jenis kelamin 
+                              option(value="Laki-Laki" id='laki2') Laki-Laki
+                              option(value="Perempuan" selected="" id='perempuan') Perempuan
                           .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                             label.label
                               span.label-text Tanggal Lahir
