@@ -50,7 +50,10 @@ html
               .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                label.label
                   span.label-text Jenis Kelamin
-              input.input.input-bordered.w-full.max-w-xs(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
+              select.select.select-bordered.w-full.max-w-xs(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
+                option(disabled="" selected="") Pilih jenis kelamin
+                option(value="Laki-Laki") Laki-Laki 
+                option(value="Perempuan") Perempuan
               .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
                 label.label
                   span.label-text Tanggal Lahir
