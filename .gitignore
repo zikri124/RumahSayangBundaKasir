@@ -1,5 +1,5 @@
 /node_modules
 /.codesandbox
-.vscode
+/.vscode
 .env
 googleKeyFile.json
