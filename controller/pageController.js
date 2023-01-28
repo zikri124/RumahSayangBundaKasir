@@ -49,8 +49,8 @@ module.exports = {
 
   viewStatisticPage: async (req, res) => {
     const visitsData = []
-    // const customersData = req.customersData
-    // const servicesData = req.servicesData
+    const customersData = req.customersData
+    const servicesData = req.servicesData
     const data = []
 
     const currentDate = commonFunction.getCurrentDate()
@@ -85,7 +85,11 @@ module.exports = {
         console.log(error);
       });
 
-    return res.json(visitsData)
+    return res.render("admin/viewReport", {
+      visitsData: visitsData,
+      customersData: customersData,
+      servicesData: servicesData
+    })
   },
 
   test: async (res) => {
