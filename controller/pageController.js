@@ -51,42 +51,90 @@ module.exports = {
     const visitsData = []
     const customersData = req.customersData
     const servicesData = req.servicesData
-    const data = []
-
+    const queryData = []
     const currentDate = commonFunction.getCurrentDate()
+    const date2 = new Date()
+    date2.setDate(date2.getDate() - 14)
 
-    //get visitData from 1 month
+    let month = date2.getMonth() + 1;
+    if (month < 10) {
+      month = "0" + month;
+    }
+    let date = date2.getDate();
+    if (date < 10) {
+      date = "0" + date;
+    }
+
+    const dateString2 = date2.getFullYear() + "-" + month + "-" + date;
+
     const visitQuery = query(
       collection(db, "visits"),
       where("date", "<=", currentDate.string),
-      where("date", ">", currentDate.year + "-" + currentDate.month + "-" + (currentDate.date - 7))
+      where("date", ">", dateString2)
     );
 
     await getDocs(visitQuery)
       .then((querySnapshot) => {
         let totalSumTemp = 0
         let dateTemp = ""
+        let totalVisit = 0
         querySnapshot.forEach((doc) => {
+          const data = doc.data()
           const visit = {
-            data: doc.data(),
+            data: data,
             id: doc.id
           };
 
           if (dateTemp != "") {
-             
+            if (dateTemp == data.date) {
+              if (data.total != undefined) {
+                totalSumTemp += data.total
+              }
+              totalVisit += 1
+            } else {
+              const visitDateData = {
+                sum: totalSumTemp,
+                totalVisit: totalVisit,
+                date: dateTemp
+              }
+              queryData.push(visitDateData)
+              if (data.total != undefined) {
+                totalSumTemp = data.total
+              } else {
+                totalSumTemp = 0
+              }
+              dateTemp = data.date
+              totalVisit = 1
+            }
           } else {
-            dateTemp = doc.data().date
+            dateTemp = data.date
+            if (data.total != undefined) {
+              totalSumTemp += data.total
+            }
+            totalVisit += 1
           }
-          
+
           visitsData.push(visit);
         });
+
+        const visitDateData = {
+          sum: totalSumTemp,
+          totalVisit: totalVisit,
+          date: dateTemp
+        }
+        queryData.push(visitDateData)
       })
       .catch((error) => {
         console.log(error);
       });
 
+    console.log({
+      queryData: queryData
+    })
+
     return res.render("admin/viewReport", {
       visitsData: visitsData,
+      queryData: queryData,
       customersData: customersData,
       servicesData: servicesData
     })
