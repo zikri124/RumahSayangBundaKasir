@@ -1,8 +1,10 @@
 const firebase = require("../firebase");
 const fetch = require("node-fetch");
-const jwt = require("jsonwebtoken");
 const db = firebase.firestore;
-const { collection, query, where, getDocs, addDoc, doc, limit, getDoc, updateDoc } = require("firebase/firestore");
+const {
+  doc,
+  updateDoc
+} = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions");
 const apiUrl = process.env.apiURL;
@@ -40,11 +42,11 @@ module.exports = {
     const customerData = await commonFunction.getACustomerData(customerId);
 
     await fetch(apiUrl + "/api/service/" + serviceId, {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token,
-      },
-    })
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
       .then((response) => response.json())
       .then((body) => {
         const serviceData = body.serviceData;
@@ -90,8 +92,7 @@ module.exports = {
 
     await updateDoc(visitDoc, jsonCharge);
 
-    // // KIRIM INVOICE-----------------
-
+    // INVOICE-----------------
     let messageText = `ID Kunjungan: ${visitId}`;
     messageText += `\nWaktu: ${data.date}, ${data.time}`;
     messageText += `\nNama: ${data.name}`;
@@ -109,28 +110,9 @@ module.exports = {
     const uri = "https://wa.me/" + data.numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
 
     const uriEncoded = encodeURI(uri);
-
-    const payload = {
-      uri: uriEncoded,
-    };
-
-    const token = await jwt.sign(payload, process.env.JWT_KEY);
-
-    return res.status(200).redirect("/visit/finish/done/" + token);
-  },
-
-  viewDoneVisit: async (req, res) => {
-    const token = req.params.token;
-
-    const payload = await jwt.verify(token, process.env.JWT_KEY);
-    if (payload) {
-      const uri = payload.uri;
-      return res.render("admin/viewPriceSubmit", {
-        uri: uri,
-      });
-    } else {
-      console.log(payload);
-      return res.status(500).redirect("/");
-    }
-  },
+    
+    return res.render("admin/viewPriceSubmit", {
+      uri: uriEncoded
+    })
+  }
 };

@@ -25,6 +25,4 @@ router.post(
     visitController.finishVisit
 );
 
-router.get("/visit/finish/done/:token", visitController.viewDoneVisit)
-
 module.exports = router;
