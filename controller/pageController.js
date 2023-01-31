@@ -4,10 +4,7 @@ const {
   collection,
   query,
   where,
-  getDocs,
-  doc,
-  limit,
-  getDoc
+  getDocs
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions")
@@ -128,21 +125,11 @@ module.exports = {
         console.log(error);
       });
 
-    console.log({
-      queryData: queryData
-    })
-
     return res.render("admin/viewReport", {
       visitsData: visitsData,
       queryData: queryData,
       customersData: customersData,
       servicesData: servicesData
     })
-  },
-
-  test: async (res) => {
-    const output = process.env.google_private_key.replace(/\\n/gm, "\n");
-    console.log(output);
-    return;
   }
 };

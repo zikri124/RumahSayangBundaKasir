@@ -1,21 +1,9 @@
 const firebase = require("../firebase");
 const fetch = require("node-fetch");
-const jwt = require("jsonwebtoken");
-const {
-  google
-} = require("googleapis"); //s
 const db = firebase.firestore;
 const {
   collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  limit,
-  addDoc,
-  getDoc,
-  updateDoc,
-  deleteDoc
+  addDoc
 } = require("firebase/firestore");
 
 const commonFunc = require("../middleware/commonFunctions");
