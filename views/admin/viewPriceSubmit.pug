@@ -8,14 +8,17 @@ html
     link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins&display=swap' rel='stylesheet')
   body
     include navbar.pug
-    img(src="https://i.ibb.co/CKxbWy6/success.png", alt="" class="w-80")
-    div
-      | Icons made by 
-      a(href='https://www.flaticon.com/authors/talha-dogar' title='Talha Dogar')  Talha Dogar 
-      |  from 
-      a(href='https://www.flaticon.com/' title='Flaticon') www.flaticon.com&apos;
+    .flex.flex-col.justify-center.items-center.px-24.font-pp
+      h1.font-bold.text-4xl.mt-28 Reservasi Selesai
+      .flex.flex-col.justify-center.items-center.mt-4
+        img(src="https://i.ibb.co/CKxbWy6/success.png", alt="" class="w-80")
+      a(href=uri class="text-white" target="_blank") 
+        button.btn.bg-pink-500.mt-4.border-none(class="hover:bg-pink-800 submit_button")  Klik disini untuk mengirim invoice 
+      div(class="back_fields_wrap mt-3")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+    script(src="/js/priceSubmit.js")
     
-              
+                
     
 
 

@@ -29,15 +29,6 @@ $(add_button).click(function (e) {
   }
 });
 
-// $(remove_button).click(function (e) {
-//   e.preventDefault();
-//   var total_fields = wrapper[0].childNodes.length;
-//   if (total_fields > 1) {
-//     wrapper[0].childNodes[total_fields - 1].remove();
-//     console.log("hapus");
-//   }
-// });
-
 $(done_button).click(function (e) {
   e.preventDefault();
   var total_fields_done = doneWrapper[0].childNodes.length;
@@ -51,12 +42,11 @@ $(done_button).click(function (e) {
 });
 
 $(document).ready(function () {
-  //===== delete the form fieed row
+  //===== delete the form field row
   $("body").on("click", ".remove_field_button", function () {
     var total_fields = wrapper[0].childNodes.length;
     if (total_fields > 0 && check) {
       wrapper[0].childNodes[total_fields - 1].remove();
-      console.log("success");
     }
   });
 });
@@ -68,21 +58,3 @@ $(document).on("change", ".amount", function () {
   });
   $(".total").val(sum);
 });
-
-// var total_amount = function () {
-//   var sum = 0;
-
-//   $(".amount").each(function () {
-//     var num = $(this).val();
-
-//     if (num != 0) {
-//       sum += parseFloat(num);
-//     }
-//   });
-
-//   $("#total_amount").val(sum.toFixed(2));
-// };
-
-// $(".amount").keyup(function () {
-//   total_amount();
-// });
