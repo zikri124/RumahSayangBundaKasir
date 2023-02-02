@@ -5,6 +5,8 @@ var add_button = $(".add_field_button");
 var done_button = $(".done_button");
 let i = 0;
 let check = true;
+let isDeleted = false;
+let totalHarga = Number($(".hargaService").val());
 
 $(add_button).click(function (e) {
   e.preventDefault();
@@ -32,11 +34,17 @@ $(add_button).click(function (e) {
 $(done_button).click(function (e) {
   e.preventDefault();
   var total_fields_done = doneWrapper[0].childNodes.length;
+  var sum = Number($(".amount").val());
   if (total_fields_done < 1) {
     $(doneWrapper).append(
       `<input value=${i} name="nCharge" type="text" placeholder="Ketik Disini" class="input hidden input-bordered w-full max-w-xs"/>`,
       `<button class="btn btn-md max-w-md btn-wide mt-4 bg-pink-500 border-none hover:bg-pink-900"  type="submit">Submit</button>`
     );
+    if (sum === "undefined" || sum === 0) {
+      $(".amount").val(0);
+    } else if (isDeleted) {
+      $(".total").val(totalHarga);
+    }
     check = false;
   }
 });
@@ -47,6 +55,8 @@ $(document).ready(function () {
     var total_fields = wrapper[0].childNodes.length;
     if (total_fields > 0 && check) {
       wrapper[0].childNodes[total_fields - 1].remove();
+      i--;
+      isDeleted = true;
     }
   });
 });
