@@ -42,6 +42,11 @@ $(done_button).click(function (e) {
     );
     if (sum === "undefined" || sum === 0) {
       $(".amount").val(0);
+    } else if (isDeleted && sum) {
+      $(".amount").each(function () {
+        totalHarga += Number($(this).val());
+      });
+      $(".total").val(totalHarga);
     } else if (isDeleted) {
       $(".total").val(totalHarga);
     }
