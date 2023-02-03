@@ -68,8 +68,12 @@ $(document).ready(function () {
 
 $(document).on("change", ".amount", function () {
   var sum = Number($(".hargaService").val());
+  var amount = Number($(".amount").val());
   $(".amount").each(function () {
     sum += Number($(this).val());
   });
   $(".total").val(sum);
+  if (amount === 0) {
+    $(".amount").val(0);
+  }
 });
