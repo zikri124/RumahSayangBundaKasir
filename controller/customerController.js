@@ -2,12 +2,7 @@ const firebase = require("../firebase");
 const db = firebase.firestore;
 const {
   collection,
-  query,
-  where,
-  getDocs,
   doc,
-  limit,
-  getDoc,
   addDoc,
   updateDoc,
   QuerySnapshot,
@@ -51,15 +46,6 @@ module.exports = {
         console.log(error);
       });
   },
-
-  // viewUpdateCustomer: async (req, res) => {
-  //   //ga jadi, pake modal aja ------------------------------
-  //   const customerData = req.customerData;
-
-  //   return res.render("admin/", {
-  //     customerData: customerData
-  //   });
-  // },
 
   updateCustomer: async (req, res) => {
     const customerId = req.params.customerId;

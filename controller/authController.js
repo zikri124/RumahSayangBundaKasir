@@ -1,9 +1,4 @@
-const firebase = require("../firebase");
 const fetch = require("node-fetch");
-const jwt = require("jsonwebtoken");
-const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
-const { getDoc, doc } = require("firebase/firestore");
-const db = firebase.firestore;
 
 const apiUrl = process.env.apiURL
 

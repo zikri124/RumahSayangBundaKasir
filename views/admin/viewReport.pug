@@ -1,0 +1,61 @@
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(href="/css/App.css" rel="stylesheet")
+    link(rel='preconnect' href='https://fonts.googleapis.com')
+    link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins&display=swap' rel='stylesheet')
+  body
+    .bg-white.min-h-screen.font-pp
+      include navbar.pug
+      h1.font-bold.text-2xl.text-center.my-10(class="underline underline-offset-4") Laporan Harian Keuangan Rumah Sayang Bunda
+      .overflow-x-auto.mx-10.mt-8.border.rounded-t-lg(class="lg:mx-24")
+        table.table.table-normal.w-full
+          thead
+            tr
+              th
+              th Tanggal
+              th Total Pengunjung
+              th Total Pendapatan
+          tbody
+          - let i = 1
+          - let hariIni = new Date()
+          - hariIni.setDate(hariIni.getDate() - 14)
+          - for(let j=0; j < 14 ; j++)
+            - hariIni.setDate(hariIni.getDate() + 1)
+            - let month = hariIni.getMonth() + 1;
+            - if (month < 10) 
+              - month = "0" + month;
+            - let date = hariIni.getDate();
+            - if (date < 10) 
+              - date = "0" + date;
+            - const dateString2 = hariIni.getFullYear() + "-" + month + "-" + date;
+            - let isFill = false
+            each data in queryData
+              - if(dateString2 === data.date)
+                tr
+                  td=i++
+                  td(name=`date${i}` value=data.date)= data.date
+                  td(name=`totalVisit${i}` value=data.totalVisit)= data.totalVisit
+                  td= `Rp ${data.sum},00`
+                  - isFill = true
+                  - break
+            if(isFill === false)
+              tr 
+                td=i++
+                td(name=`date${i}` value=dateString2)= dateString2
+                td(name=`totalVisit${i}` value="0")= 0 
+                td(name=`totalPemasukan${i}`)= `Rp 0,00`
+      .flex.flex-row.px-24.justify-between.my-8.hidden(class="md:flex")
+        .w-full
+          .rounded-lg.p-4(class="shadow-[0px_5px_20px_1px_rgba(0,0,0,0.3)]")
+            p.text-center.font-bold Grafik Pengunjung Setiap 2 Minggu
+            #chart   
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/apexcharts")
+    script(src="/js/chart.js")
+      
+      
+
+      

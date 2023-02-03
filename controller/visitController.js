@@ -2,19 +2,12 @@ const firebase = require("../firebase");
 const fetch = require("node-fetch");
 const db = firebase.firestore;
 const {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
   doc,
-  limit,
-  getDoc,
   updateDoc
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions");
-const apiUrl = process.env.apiURL
+const apiUrl = process.env.apiURL;
 
 module.exports = {
   viewVisits: (req, res) => {
@@ -25,7 +18,7 @@ module.exports = {
     return res.render("admin/viewHistory", {
       visitData: visitData,
       servicesData: servicesData,
-      customersData: customersData
+      customersData: customersData,
     });
   },
 
@@ -35,7 +28,7 @@ module.exports = {
     const visitData = doc(db, "visits", visitId);
 
     await updateDoc(visitData, {
-      status: "Dibatalkan"
+      status: "Dibatalkan",
     });
 
     return res.status(200).redirect("/");
@@ -49,24 +42,24 @@ module.exports = {
     const customerData = await commonFunction.getACustomerData(customerId);
 
     await fetch(apiUrl + "/api/service/" + serviceId, {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token
-      }
-    })
-    .then((response) => response.json())
-    .then((body) => {
-      const serviceData = body.serviceData
-      return res.render("admin/viewPrice", {
-        visitData: visitData,
-        serviceData: serviceData,
-        customerId: customerId,
-        customerData: customerData
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        const serviceData = body.serviceData;
+        return res.render("admin/viewPrice", {
+          visitData: visitData,
+          serviceData: serviceData,
+          customerId: customerId,
+          customerData: customerData,
+        });
+      })
+      .catch((err) => {
+        return console.log(err);
       });
-    })
-    .catch((err) => {
-      return console.log(err);
-    });
   },
 
   finishVisit: async (req, res) => {
@@ -80,21 +73,17 @@ module.exports = {
 
     let charge = "{";
     let chargeData = "";
+    let messageTextCharge = "";
 
     for (let i = 1; i <= nCharge; i++) {
       let name1 = "chargeDesc" + i;
       let name2 = "addCharge" + i;
 
-      chargeData +=
-        '"' +
-        name1 +
-        '":"' +
-        data[name1] +
-        '","' +
-        name2 +
-        '":' +
-        data[name2] +
-        ",";
+      if (data[name1] != "" || data[name1] != "") {
+        chargeData += '"' + name1 + '":"' + data[name1] + '","' + name2 + '":' + data[name2] + ",";
+
+        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+      }
     }
 
     charge += chargeData + '"status":"Selesai", "total":' + data.total;
@@ -105,53 +94,27 @@ module.exports = {
 
     await updateDoc(visitDoc, jsonCharge);
 
-    // KIRIM INVOICE-----------------
-    let messageText =
-      '{ "nCharge": "' +
-      nCharge +
-      '",' +
-      chargeData +
-      '"target": "' +
-      data.numWa +
-      '", "visitId": "' +
-      req.params.visitId +
-      '", "name": "' +
-      data.name +
-      '", "age": "' +
-      data.customerAge +
-      '", "sex": "' +
-      data.sex +
-      '", "serviceName": "' +
-      data.serviceName +
-      '", "time": "' +
-      data.time +
-      '", "price": "' +
-      data.charge +
-      '", "total": "' +
-      data.total +
-      '"';
+    // INVOICE-----------------
+    let messageText = `ID Kunjungan: ${visitId}`;
+    messageText += `\nWaktu: ${data.date}, ${data.time}`;
+    messageText += `\nNama: ${data.name}`;
+    messageText += `\nUmur: ${data.customerAge}`;
+    messageText += `\nJenis Kelamin: ${data.sex}`;
+    messageText += `\nLayanan: ${data.serviceName}`;
+    messageText += `\n\n*Biaya*`;
+    messageText += `\nLayanan: Rp ${data.charge}`;
+    messageText += messageTextCharge;
+    messageText += `\n*Total: ${data.total}*`;
+    messageText += `\n\nTerima Kasih atas kepercayaan kepada kami`;
+    messageText += `\nSemoga puas dengan pelayanan kami`;
+    messageText += `\n\nSalam Cinta, Rumah Sayang Bunda`;
 
-    messageText += "}";
+    const uri = "https://wa.me/" + data.numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
 
-    const messageData = JSON.parse(messageText);
-    console.log(messageData);
+    const uriEncoded = encodeURI(uri);
 
-    // fetch("http://localhost/" + "/send-invoice", {
-    //   method: "POST",
-    //   body: JSON.stringify(messageData),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // })
-    //   .then((response) => response.text())
-    //   .then((body) => {
-    //     console.log(body);
-    //     return res.status(200).redirect("/");
-    //   })
-    //   .catch((err) => {
-    //     return console.log(err);
-    //   });
-
-    return res.status(200).redirect("/");
+    return res.render("admin/viewPriceSubmit", {
+      uri: uriEncoded
+    })
   }
 };

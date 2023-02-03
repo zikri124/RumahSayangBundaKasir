@@ -1,19 +1,4 @@
-const firebase = require("../firebase");
 const fetch = require("node-fetch");
-const db = firebase.firestore;
-const {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  limit,
-  getDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  QuerySnapshot
-} = require("firebase/firestore");
 
 const apiUrl = process.env.apiURL
 

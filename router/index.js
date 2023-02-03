@@ -27,7 +27,7 @@ router.get(
   pageController.viewAdminDashboard
 );
 
-router.get("/statistic", checkAuth, pageController.viewStatisticPage)
+router.get("/report", checkAuth, pageController.viewStatisticPage)
 
 router.use("/auth", authRouter);
 
