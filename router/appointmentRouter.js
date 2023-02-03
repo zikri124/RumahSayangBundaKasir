@@ -32,7 +32,7 @@ router.get(
     "/process/:appId",
     queryDb.getAnAppointmentData,
     appointmentController.processAppointmentToVisit,
-    appointmentController.redirectToHome
+    appointmentController.updateAppointmentStatusTrue
   );
   
   router.post(

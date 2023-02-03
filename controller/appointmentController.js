@@ -36,7 +36,7 @@ module.exports = {
     const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
     var appointmentData
-    
+
     appointmentsData.forEach(appointment => {
       if (appointment.id == req.params.appId) {
         appointmentData = appointment
@@ -97,7 +97,6 @@ module.exports = {
   },
 
   processAppointmentToVisit: async (req, res, next) => {
-    const appointmentId = req.params.appId;
     const dateClass = new Date();
     const appointmentData = req.appointmentData;
     const customerId = req.body.customerId;
@@ -127,21 +126,9 @@ module.exports = {
       numWa: appointmentData.data.numWa
     };
 
-    const body = JSON.stringify({
-      status: true
-    })
-
     await addDoc(collection(db, "visits"), visitData)
       .then(async () => {
-        await commonFunctions.putAppointmentData(appointmentId, body, req.token)
-          .then(() => {
-            next()
-          })
-          .catch((error) => {
-            const err = new Error(error)
-            console.log(error)
-            return err
-          })
+        next()
       })
       .catch((error) => {
         const err = new Error(error)
@@ -150,8 +137,34 @@ module.exports = {
       });
   },
 
-  redirectToHome: (req, res) => {
-    return res.redirect("/");
+  updateAppointmentStatusTrue: async (req, res) => {
+    const appointmentId = req.params.appId;
+    const body = JSON.stringify({
+      status: true
+    })
+
+    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + req.token
+        },
+        body: body
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        console.log(body)
+        if (body.success == true) {
+          return res.redirect("/");
+        } else {
+          console.log(body.error)
+          return false
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return err
+      });
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {

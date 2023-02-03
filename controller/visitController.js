@@ -79,9 +79,11 @@ module.exports = {
       let name1 = "chargeDesc" + i;
       let name2 = "addCharge" + i;
 
-      chargeData += '"' + name1 + '":"' + data[name1] + '","' + name2 + '":' + data[name2] + ",";
+      if (data[name1] != "" || data[name1] != "") {
+        chargeData += '"' + name1 + '":"' + data[name1] + '","' + name2 + '":' + data[name2] + ",";
 
-      messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+      }
     }
 
     charge += chargeData + '"status":"Selesai", "total":' + data.total;
@@ -110,7 +112,7 @@ module.exports = {
     const uri = "https://wa.me/" + data.numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
 
     const uriEncoded = encodeURI(uri);
-    
+
     return res.render("admin/viewPriceSubmit", {
       uri: uriEncoded
     })

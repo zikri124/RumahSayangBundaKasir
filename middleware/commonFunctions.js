@@ -12,39 +12,9 @@ const {
   getDoc
 } = require("firebase/firestore");
 
-const apiUrl = process.env.apiURL
+// const apiUrl = process.env.apiURL
 
 module.exports = {
-  putAppointmentData: async (appointmentId, body, token) => {
-    console.log({
-      appointmentId: appointmentId,
-      body: body,
-      token: token
-    })
-    
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "bearer " + token
-        },
-        body: body
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.success == true) {
-          return true
-        } else {
-          console.log(body.error)
-          return false
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        return err
-      });
-  },
-  
   getACustomerData: async (customerId) => {
     const customerRef = doc(db, "customers", customerId);
     const customerSnap = await getDoc(customerRef);
