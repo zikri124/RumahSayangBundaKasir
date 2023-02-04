@@ -3,6 +3,8 @@ html
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     link(href="/css/App.css" rel="stylesheet")
+    title Rumah Sayang Bunda - Daftar Customer
+    link(href="https://i.ibb.co/FbgNc2d/icon-RSB.jpg" rel="shortcut icon" type="image/png")
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
     link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins&display=swap' rel='stylesheet')
@@ -63,14 +65,14 @@ html
                  .modal-action
                    label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for='add-customer') Batal
       .overflow-x-auto.mx-10.border.rounded-t-lg(class="lg:mx-24")
-        table.table.table-compact.w-full(id="example")
+        table.table.table-compact.w-full.sortable(id="example")
           thead
             tr
               th
-              th Nama
-              th No. Hp
-              th Jenis Kelamin
-              th Tanggal lahir
+              th(scope="col") Nama
+              th(scope="col") No. Hp
+              th(scope="col") Jenis Kelamin
+              th(scope="col") Tanggal lahir
               th Aksi
           tbody(id="myTable")  
             - let i = 1
@@ -136,6 +138,7 @@ html
                             label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=data.id+"delete") Tidak
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js")       
+    script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
      
 
       

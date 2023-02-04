@@ -2,6 +2,8 @@ html
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Rumah Sayang Bunda - Dashboard
+    link(href="https://i.ibb.co/FbgNc2d/icon-RSB.jpg" rel="shortcut icon" type="image/png")
     link(href="/css/App.css" rel="stylesheet")
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
@@ -12,109 +14,110 @@ html
       h1.font-bold.text-2xl.text-center.my-10(class="underline underline-offset-4") Selamat Datang di Dashboard Admin Rumah Sayang Bunda
       p.text-center.mt-12.font-bold.text-xl.mx-10(class="lg:mx-0") Daftar Pasien yang Sedang Melakukan Pemeriksaan
       .overflow-x-auto.mx-8.mt-8.overflow-y-auto.h-56(class="lg:mx-24")
-        table.table.tableDashboard.table-compact.w-full
+        table.table.tableDashboard.table-compact.w-full.sortable
           thead
             tr
               th
-              th Nama
-              th Layanan
-              th No. Hp
-              th Umur
-              th Waktu
-              th Tanggal Reservasi
+              th(scope="col") Nama
+              th(scope="col") Layanan
+              th(scope="col") No. Hp
+              th(scope="col") Umur
+              th(scope="col") Waktu
+              th(scope="col") Tanggal Reservasi
               th Aksi
           tbody
-          - let a = 1;
-          each data in onGoingVisitData
-            tr
-              th(scope="row")=a++
-              each dataCustomer in customersData
-                if data.data.customerId===dataCustomer.id
-                  td= dataCustomer.data.name
-                  - break
-              each dataServices in servicesData
-                if data.data.serviceId===dataServices.id
-                  td= dataServices.data.name
-                  - break
-              td= data.data.numWa
-              td= data.data.customerAge
-              td= data.data.time
-              td= data.data.date
-              td
-                a(href="/visit/finish/" + data.id)
-                  button(class="btn btn-secondary btn-xs mx-2") selesai
+            - let a = 1;
+            each data in onGoingVisitData
+              tr
+                th(scope="row")=a++
+                each dataCustomer in customersData
+                  if data.data.customerId===dataCustomer.id
+                    td= dataCustomer.data.name
+                    - break
+                each dataServices in servicesData
+                  if data.data.serviceId===dataServices.id
+                    td= dataServices.data.name
+                    - break
+                td= data.data.numWa
+                td= data.data.customerAge
+                td= data.data.time
+                td= data.data.date
+                td
+                  a(href="/visit/finish/" + data.id)
+                    button(class="btn btn-secondary btn-xs mx-2") selesai
       //Tabel Pasien yang Akan Melakukan Pemeriksaan
       p.text-center.mt-8.font-bold.text-xl.mx-10(class="lg:mx-0") Daftar Pasien yang Akan Melakukan Pemeriksaan
       .overflow-x-auto.mx-8.mt-8.overflow-y-auto.h-56(class="lg:mx-24")
-        table.table.table-compact.w-full
+        table.table.table-compact.w-full.sortable
           thead
             tr
               th
-              th Nama
-              th Layanan
-              th Status
-              th Tanggal Reservasi
-              th Waktu
-              th Tanggal Lahir
+              th(scope="col") Nama
+              th(scope="col") Layanan
+              th(scope="col") Status
+              th(scope="col") Tanggal Reservasi
+              th(scope="col") Waktu
+              th(scope="col") Tanggal Lahir
               th Aksi
           tbody
-          - let i = 1;
-          each dataAppointment in appointmentData
-            tr
-              th(scope="row")=i++
-              td= dataAppointment.data.name
-              each dataServices in servicesData
-                if dataAppointment.data.serviceId===dataServices.id
-                  td= dataServices.data.name
-                  - break
-              td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
-              td= dataAppointment.data.date
-              td= dataAppointment.data.time
-              td= dataAppointment.data.dateOfBirth
-              td
-                // The button to open modal
-                label.btn.btn-warning.mr-2.btn-xs.btn-danger.text-white(for=dataAppointment.id+"update") edit
-                // Isi dari modal
-                input.modal-toggle(type='checkbox' id=dataAppointment.id+"update")
-                .modal.modal-bottom(class='sm:modal-middle')
-                  .modal-box
-                    h3(class="text-md text-center font-bold")=`Apakah anda ingin mengedit data ${dataAppointment.data.name}?`
-                    .flex.flex-row.justify-center.items-center.gap-4
-                      a(href="/appointment/update/"+dataAppointment.id)
-                        button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
-                      .modal-action
-                        label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"update") Tidak
-                label.btn.btn-xs.btn-primary.mr-2(for=dataAppointment.id id="mulaiDasboard") mulai
-                // Isi dari modal
-                input.modal-toggle(type='checkbox' id=dataAppointment.id) 
-                .modal.modal-bottom(class='sm:modal-middle')
-                  .modal-box
-                    h3.font-bold.text-md.text-center Mulai reservasi
-                      form(action="/appointment/process/"+dataAppointment.id  method="post") 
-                        .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
-                          .flex.justify-start.w-full(class="lg:max-w-lg md:max-w-md")
-                            label.label
-                              span.label-text Customer
-                          select.select.select-bordered.w-full.max-w-md(name="customerId" required="")
-                            option(disabled='' selected='') Pilih Customer
-                            each dataCustomer in customersData
-                              option(value=dataCustomer.id)= dataCustomer.data.name                    
-                          .flex.flex-row.justify-center.items-center.gap-4
-                            button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
-                            .modal-action
-                              label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
-                // The button to open modal
-                label.btn.btn-xs.btn-error.text-white(for=dataAppointment.id+"cancel") cancel
-                // Isi dari modal
-                input.modal-toggle(type='checkbox' id=dataAppointment.id+"cancel")
-                .modal.modal-bottom(class='sm:modal-middle')
-                  .modal-box
-                    h3.font-bold.text-md.text-center= `Apakah anda ingin menggagalkan reservasi ${dataAppointment.data.name}?`
-                    - let id = dataAppointment.id
-                    form(action="/appointment/cancel/"+id  method="post") 
+            - let i = 1;
+            each dataAppointment in appointmentData
+              tr
+                th(scope="row")=i++
+                td= dataAppointment.data.name
+                each dataServices in servicesData
+                  if dataAppointment.data.serviceId===dataServices.id
+                    td= dataServices.data.name
+                    - break
+                td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
+                td= dataAppointment.data.date
+                td= dataAppointment.data.time
+                td= dataAppointment.data.dateOfBirth
+                td
+                  // The button to open modal
+                  label.btn.btn-warning.mr-2.btn-xs.btn-danger.text-white(for=dataAppointment.id+"update") edit
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=dataAppointment.id+"update")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      h3(class="text-md text-center font-bold")=`Apakah anda ingin mengedit data ${dataAppointment.data.name}?`
                       .flex.flex-row.justify-center.items-center.gap-4
-                        button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
+                        a(href="/appointment/update/"+dataAppointment.id)
+                          button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
                         .modal-action
-                          label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"cancel") Tidak    
-
+                          label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"update") Tidak
+                  label.btn.btn-xs.btn-primary.mr-2(for=dataAppointment.id id="mulaiDasboard") mulai
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=dataAppointment.id) 
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      h3.font-bold.text-md.text-center Mulai reservasi
+                        form(action="/appointment/process/"+dataAppointment.id  method="post") 
+                          .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+                            .flex.justify-start.w-full(class="lg:max-w-lg md:max-w-md")
+                              label.label
+                                span.label-text Customer
+                            select.select.select-bordered.w-full.max-w-md(name="customerId" required="")
+                              option(disabled='' selected='') Pilih Customer
+                              each dataCustomer in customersData
+                                option(value=dataCustomer.id)= dataCustomer.data.name                    
+                            .flex.flex-row.justify-center.items-center.gap-4
+                              button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
+                              .modal-action
+                                label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
+                  // The button to open modal
+                  label.btn.btn-xs.btn-error.text-white(for=dataAppointment.id+"cancel") cancel
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=dataAppointment.id+"cancel")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      h3.font-bold.text-md.text-center= `Apakah anda ingin menggagalkan reservasi ${dataAppointment.data.name}?`
+                      - let id = dataAppointment.id
+                      form(action="/appointment/cancel/"+id  method="post") 
+                        .flex.flex-row.justify-center.items-center.gap-4
+                          button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
+                          .modal-action
+                            label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"cancel") Tidak    
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+    script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
       
