@@ -8,7 +8,6 @@ for (let i = 15; i > 1; i--) {
 
 let dataDay = [];
 let dataDate = [];
-let j = 13;
 for (let i = 15; i > 1; i--) {
   var element = document.getElementsByName("date" + i)[0];
   let value = element.childNodes[0].nodeValue;
