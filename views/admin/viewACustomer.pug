@@ -30,24 +30,26 @@ html
       div.flex.flex-col.items-center.w-full.px-10(class="lg:items-start lg:px-0")
         label.font-bold.text-xl.font-pp.text-center(class="lg:text-start") Daftar layanan yang pernah dilakukan
         .overflow-x-auto.mx-10.my-8.overflow-y-auto.h-32.font-pp.border.rounded-t-lg(class="lg:mx-4")
-          table.table.table-compact.w-full
+          table.table.table-compact.w-full.sortable
             thead
               tr
-                th
-                th Layanan
-                th Waktu
-                th Status
+                th(scope="col") No
+                th(scope="col") Layanan
+                th(scope="col") Waktu
+                th(scope="col") Status
             tbody
-            - let i = 1
-            each dataVisits in visitsData
-              tr
-                th= i++
-                each dataServices in servicesData
-                  if dataVisits.data.serviceId===dataServices.id
-                    td= dataServices.data.name
-                    - break
-                td= dataVisits.data.time
-                td= dataVisits.data.status
+              - let i = 1
+              each dataVisits in visitsData
+                tr  
+                  th= i++
+                  each dataServices in servicesData
+                    if dataVisits.data.serviceId===dataServices.id
+                      td= dataServices.data.name
+                      - break
+                  td= dataVisits.data.time
+                  td= dataVisits.data.status
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+    script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
     
 
 
