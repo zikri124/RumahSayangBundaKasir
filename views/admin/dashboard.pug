@@ -20,6 +20,7 @@ html
               th(scope="col") No
               th(scope="col") Nama
               th(scope="col") Layanan
+              th(scope="col") Tipe Layanan
               th(scope="col") No. Hp
               th(scope="col") Umur
               th(scope="col") Waktu
@@ -38,6 +39,7 @@ html
                   if data.data.serviceId===dataServices.id
                     td= dataServices.data.name
                     - break
+                td= data.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${data.data.address})`
                 td= data.data.numWa
                 td= data.data.customerAge
                 td= data.data.time
@@ -55,6 +57,7 @@ html
               th(scope="col") Nama
               th(scope="col") Layanan
               th(scope="col") Status
+              th(scope="col") Tipe Layanan
               th(scope="col") Tanggal Reservasi
               th(scope="col") Waktu
               th(scope="col") Tanggal Lahir
@@ -70,6 +73,7 @@ html
                     td= dataServices.data.name
                     - break
                 td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
+                td= dataAppointment.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${dataAppointment.data.address})`
                 td= dataAppointment.data.date
                 td= dataAppointment.data.time
                 td= dataAppointment.data.dateOfBirth

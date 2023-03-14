@@ -28,6 +28,10 @@ html
               span.label-text Waktu
             input.input.input-bordered.w-full.max-w-md(value=visitData.data.time type='text'  disabled)
             label.label
+              span.label-text Tipe Layanan
+            - var tipeLayanan = visitData.data.serviceCare === 'klinik' ? `Datang ke klinik` : `Homecare (${visitData.data.address})`
+            input.input.input-bordered.w-full.max-w-md(value=tipeLayanan type='text'  disabled)
+            label.label
               span.label-text Tanggal Kunjungan
             input.input.input-bordered.w-full.max-w-md(value=visitData.data.date type='text'  disabled)
       div.flex.flex-col.w-full.pt-12.px-10(class="justify-start items-center lg:justify-start lg:items-start")
