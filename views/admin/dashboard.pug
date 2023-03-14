@@ -100,15 +100,43 @@ html
                           .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
                             .flex.justify-start.w-full(class="lg:max-w-lg md:max-w-md")
                               label.label
-                                span.label-text Customer
+                                span.label-text.text-start Customer
+                                  .br.text-xs.font-normal pilih customer jika customer sudah terdaftar
                             select.select.select-bordered.w-full.max-w-md(name="customerId" required="")
                               option(disabled='' selected='') Pilih Customer
                               each dataCustomer in customersData
-                                option(value=dataCustomer.id)= dataCustomer.data.name                    
+                                option(value=dataCustomer.id)= dataCustomer.data.name              
                             .flex.flex-row.justify-center.items-center.gap-4
                               button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                               .modal-action
                                 label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
+                        hr.my-8.mx-8
+                        h3.font-bold.text-md.text-center Input Data Pasien
+                        form(action="/customer/new" method="post")
+                          .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                              label.label
+                                span.label-text Nama
+                            input.input.input-bordered.w-full.max-w-xs(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name)
+                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                              label.label
+                                span.label-text No. Hp
+                            input.input.input-bordered.w-full.max-w-xs(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa)
+                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                             label.label
+                                span.label-text Jenis Kelamin
+                            select.select.select-bordered.w-full.max-w-xs(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
+                              option(disabled="" selected="") Pilih jenis kelamin
+                              option(value="Laki-Laki") Laki-Laki 
+                              option(value="Perempuan") Perempuan
+                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                              label.label
+                                span.label-text Tanggal Lahir
+                            input.input.input-bordered.w-full.max-w-xs(name="dateOfBirth" type='date', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.dateOfBirth)
+                            .flex.flex-row.justify-center.items-center.gap-4
+                               button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
+                               .modal-action
+                                 label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal              
                   // The button to open modal
                   label.btn.btn-xs.btn-error.text-white(for=dataAppointment.id+"cancel") cancel
                   // Isi dari modal
