@@ -123,7 +123,9 @@ module.exports = {
       timeFinish: "",
       status: "Sedang Jalan",
       staffId: req.user.uid,
-      numWa: appointmentData.data.numWa
+      numWa: appointmentData.data.numWa,
+      serviceCare: appointmentData.data.serviceCare,
+      address: appointmentData.data.address
     };
 
     await addDoc(collection(db, "visits"), visitData)

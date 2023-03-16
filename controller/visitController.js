@@ -101,6 +101,10 @@ module.exports = {
     messageText += `\nUmur: ${data.customerAge}`;
     messageText += `\nJenis Kelamin: ${data.sex}`;
     messageText += `\nLayanan: ${data.serviceName}`;
+    messageText += `\nJenis Layanan: ${data.serviceCare}`;
+    if (data.serviceCare != "Klinik") {
+      messageText += `Alamat: ${data.address}`
+    }
     messageText += `\n\n*Biaya*`;
     messageText += `\nLayanan: Rp ${data.charge}`;
     messageText += messageTextCharge;
