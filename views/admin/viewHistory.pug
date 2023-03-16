@@ -26,6 +26,7 @@ html
               th(scope="col") Ruangan
               th(scope="col") Layanan
               th(scope="col") Tanggal Reservasi
+              th(scope="col") Tipe Layanan
               th(scope="col") Waktu
               th(scope="col") Status
               th(scope="col") Staff Id
@@ -39,15 +40,13 @@ html
                     td 
                       a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name
                     - break
-                td= data.data.room
+                td= data.data.room === NULL ? "-" : data.data.room
                 each dataServices in servicesData
-                  if data.data.serviceId===dataServices.id
+                  if (data.data.serviceId===dataServices.id)
                     td= dataServices.data.name
                     - break
-                  else 
-                    td= data.data.serviceId
-                    - break
                 td= data.data.date
+                td= data.data.serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare (${data.data.address})`
                 td= data.data.time
                 td= data.data.status
                 td= data.data.staffId
