@@ -5,6 +5,7 @@ html
     title Rumah Sayang Bunda - Dashboard
     link(href="https://i.ibb.co/FbgNc2d/icon-RSB.jpg" rel="shortcut icon" type="image/png")
     link(href="/css/App.css" rel="stylesheet")
+    script(src="https://kit.fontawesome.com/8e8eb5d7ee.js" crossorigin="anonymous")
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
     link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins&display=swap' rel='stylesheet')
@@ -58,7 +59,7 @@ html
               th(scope="col") Layanan
               th(scope="col") Status
               th(scope="col") Tipe Layanan
-              th(scope="col") Tanggal Reservasi
+              th(scope="col") Nomor Telephone
               th(scope="col") Waktu
               th(scope="col") Tanggal Lahir
               th Aksi
@@ -74,7 +75,9 @@ html
                     - break
                 td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
                 td= dataAppointment.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${dataAppointment.data.address})`
-                td= dataAppointment.data.date
+                td= dataAppointment.data.numWa
+                  a(href=`https://api.whatsapp.com/send?phone=${dataAppointment.data.numWa}`  target="_blank")
+                    i(class="fa-brands fa-whatsapp ml-2")
                 td= dataAppointment.data.time
                 td= dataAppointment.data.dateOfBirth
                 td
@@ -105,7 +108,7 @@ html
                             select.select.select-bordered.w-full.max-w-md(name="customerId" required="")
                               option(disabled='' selected='') Pilih Customer
                               each dataCustomer in customersData
-                                option(value=dataCustomer.id)= dataCustomer.data.name              
+                                option(value=dataCustomer.id)= dataCustomer.data.name  
                             .flex.flex-row.justify-center.items-center.gap-4
                               button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                               .modal-action
