@@ -72,7 +72,9 @@ module.exports = {
     const data = {
       serviceId: req.body.serviceId,
       time: req.body.time,
-      date: req.body.date
+      date: req.body.date,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address
     }
 
     try {
