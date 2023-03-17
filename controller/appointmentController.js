@@ -1,10 +1,10 @@
 const firebase = require("../firebase");
-const fetch = require("node-fetch");
 const db = firebase.firestore;
 const {
   collection,
   addDoc
 } = require("firebase/firestore");
+const axios = require('axios').default
 
 const commonFunc = require("../middleware/commonFunctions");
 const commonFunctions = require("../middleware/commonFunctions");
@@ -75,25 +75,19 @@ module.exports = {
       date: req.body.date
     }
 
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
+    try {
+      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "bearer " + req.token
-        },
-        body: JSON.stringify(data)
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.success == true) {
-          return res.status(200).redirect("/appointment");
-        } else {
-          return console.log(body.error)
         }
       })
-      .catch((err) => {
-        return console.log(err);
-      });
+
+      console.log(result.data)
+      return res.redirect("/appointment")
+    } catch (error) {
+      return res.send(error)
+    }
   },
 
   processAppointmentToVisit: async (req, res, next) => {
@@ -141,57 +135,43 @@ module.exports = {
 
   updateAppointmentStatusTrue: async (req, res) => {
     const appointmentId = req.params.appId;
-    const body = JSON.stringify({
+    const data = JSON.stringify({
       status: true
     })
 
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
+    try {
+      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "bearer " + req.token
-        },
-        body: body
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        console.log(body)
-        if (body.success == true) {
-          return res.redirect("/");
-        } else {
-          console.log(body.error)
-          return false
         }
       })
-      .catch((err) => {
-        console.log(err);
-        return err
-      });
+
+      console.log(result.data)
+      return res.redirect("/")
+    } catch (error) {
+      return res.send(error)
+    }
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
     const appointmentId = req.params.appId;
+    const data = JSON.stringify({
+      status: "cancelled"
+    })
 
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
+    try {
+      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "bearer " + req.token
-        },
-        body: JSON.stringify({
-          status: "cancelled"
-        })
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.success == true) {
-          return res.status(200).redirect("/");
-        } else {
-          return console.log(body.error)
         }
       })
-      .catch((err) => {
-        return console.log(err);
-      });
+
+      console.log(result.data)
+      return res.redirect("/")
+    } catch (error) {
+      return res.send(error)
+    }
   }
 };

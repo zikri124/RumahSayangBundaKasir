@@ -68,7 +68,6 @@ module.exports = {
     const nCharge = data.nCharge;
 
     const visitId = req.params.visitId;
-    const visitData = req.visitData;
     const visitDoc = doc(db, "visits", visitId);
 
     let charge = "{";
