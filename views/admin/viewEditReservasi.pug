@@ -25,30 +25,88 @@ html
           .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
             label.label
               span.label-text Tanggal Reservasi
-          input.input.input-bordered.w-full.max-w-xs(id="datefield" name="date" type='date' min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md")
-          .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+          - var tanggalEdit = date 
+          - if(tanggalEdit === NULL)
+            - tanggalEdit = appointmentData.data.date
+          input.input.input-bordered.w-full.max-w-xs(id="datefield" name="date" type='date' required="" min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md" value=tanggalEdit)
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
             label.label
               span.label-text Layanan Reservasi
-          select.select.select-bordered.w-full.max-w-xs(name="serviceId" class="lg:max-w-lg md:max-w-md")
-            option(value="" selected="" disabled="") Pilih layanan
-            each data in servicesData
-              option(value=data.id)= data.data.name
+            select.select.select-bordered.w-full.max-w-xs(name="serviceId" class="lg:max-w-lg md:max-w-md")
+              option(value="" selected="" disabled="") Pilih layanan
+              each data in servicesData
+                option(value=data.id)= data.data.name
+            label.label.text-start
+              - var serviceData = ""
+              each dataService in servicesData 
+                - if(appointmentData.data.serviceId === dataService.id)
+                  - serviceData = dataService.data.name
+                  - break
+              span.label-text-alt=`Saat ini layanan yang dipilih adalah ${serviceData}`
+          .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+            label.label
+              span.label-text Tipe Layanan
+          - var serviceCareEdit = serviceCare
+          - if (serviceCareEdit === NULL)
+            - serviceCareEdit = appointmentData.data.serviceCare
+          select.select.select-bordered.w-full.max-w-xs(name="serviceCare" class="lg:max-w-lg md:max-w-md" id="serviceCare" required)
+            - if(serviceCareEdit === "klinik")
+              option(value="klinik" selected) Datang ke Klinik
+              option(value="homecare") Homecare
+            - else if (serviceCareEdit === "homecare")
+              option(value="homecare" selected) Homecare 
+              option(value="klinik") Datang ke Klinik
+            - else 
+              option(selected disabled) Pilih layanan
+              option(value="homecare") Homecare 
+              option(value="klinik") Datang ke Klinik
+          .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+            label.label
+              span.label-text Alamat Rumah
+                .br.text-xs.text-red-500 (Note : Dimohon untuk mengisi "-" jika pasien akan datang ke klinik)
+          - var addressEdit = address
+          - if(addressEdit === NULL)
+            - addressEdit = appointmentData.data.address
+          input.input.input-bordered.w-full.max-w-xs.text-black(name='address' id="address" required="" type='text' placeholder="Ketik Disini" class="lg:max-w-lg md:max-w-md" value=addressEdit)
           .flex.flex-col.justify-start.w-full.items-center(class="md:justify-center lg:max-w-lg md:max-w-md")
-            button.btn(class="bg-pink-500 border-none hover:bg-pink-900 w-full max-w-xs mt-4", type="submit") Cari data
+            button.btn(class="bg-pink-500 border-none hover:bg-pink-900 w-full max-w-xs mt-4", id="submit-edit" type="submit") Pilih sesi
       - let sessions = ["08:00", "09:30", "11:00", "13:00", "14:30", "16:00"]
       - let telahReservasi = " - Telah Direservasi"
       - let i = 1  
-      .flex.flex-col.my-4.px-10.gap-8.justify-center.items-center(class="lg:flex-row lg:justify-center lg:px-32 lg:flex-wrap")
+      .flex.flex-col.my-4.px-10.gap-8.justify-center.items-center(class="md:flex-row md:justify-center md:px-40 md:flex-wrap")
         each session1 in sessions
           - let pilih = false
-          if(!sessionsData)
+          - if(!sessionsData)
             div
-          else
+          - else
             each datasessionss in sessionsData
-              if datasessionss.time===session1
-              - pilih = true
-              - break
-            if(!pilih)
+              -if (datasessionss.data.time===session1)
+                - pilih = true
+                - break
+            - if (appointmentData.data.time === session1 && appointmentData.data.serviceId === serviceId)
+              .card.w-80.max-w-lg.bg-pink-500.shadow-2xl.text-white
+                form(action="/appointment/update/"+ appointmentData.id method="post")
+                  .card-body.items-center.text-center
+                    each data in servicesData 
+                      if(data.id === appointmentData.data.serviceId ) 
+                        h2.card-title= `Sesi ${i++} ${data.data.name}`
+                        - break     
+                    p=date
+                    - if (session1 === NULL)
+                      - session1 = appointment.data.time
+                    p=serviceCare
+                    p=session1 + " WIB"
+                    input(hidden name="time" type="text" value=session1)
+                    //- - else 
+                    //-   p=session1 + " WIB"
+                    //-   input(hidden name="time" type="text" value=session1)
+                    input(hidden name="serviceId" type="text" value=serviceId)
+                    input(hidden name="date" type="date" value=date)
+                    input(hidden name="serviceCare" type="text" id="serviceCare-edit" value=serviceCare)
+                    input(hidden name="address" type="text" id="address-edit" value=address)
+                    .card-actions.justify-end
+                      button.btn.btn-primary(type="submit" class="bg-pink-200 text-black border-none hover:bg-pink-400") Pilih Sesi
+            - else if(!pilih)
               .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
                 form(action="/appointment/update/"+ appointmentData.id method="post")
                   .card-body.items-center.text-center
@@ -57,13 +115,21 @@ html
                         h2.card-title= `Sesi ${i++} ${data.data.name}`
                         - break     
                     p=date
+                    - if (session1 === NULL)
+                      - session1 = appointment.data.time
+                    p=serviceCare
                     p=session1 + " WIB"
                     input(hidden name="time" type="text" value=session1)
+                    //- - else 
+                    //-   p=session1 + " WIB"
+                    //-   input(hidden name="time" type="text" value=session1)
                     input(hidden name="serviceId" type="text" value=serviceId)
                     input(hidden name="date" type="date" value=date)
+                    input(hidden name="serviceCare" type="text" id="serviceCare-edit" value=serviceCare)
+                    input(hidden name="address" type="text" id="address-edit" value=address)
                     .card-actions.justify-end
                       button.btn.btn-primary(type="submit" class="bg-pink-500 border-none hover:bg-pink-900") Pilih Sesi
-            else 
+            - else 
               .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
                 .card-body.items-center.text-center
                   each data in servicesData 
@@ -73,7 +139,9 @@ html
                   p=date
                   p=session1 + " WIB " + telahReservasi
                   .card-actions.justify-end
-                    button.btn.btn-primary(disabled class="bg-pink-500 border-none hover:bg-pink-900 w-full") Pilih Sesi
+                    button.btn.btn-primary(disabled class="bg-pink-500 border-none hover:bg-pink-900 w-full mt-10") Pilih Sesi
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js")
     script(src="/js/home.js")
     
 

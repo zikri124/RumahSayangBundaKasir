@@ -1,15 +1,12 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const {
-  collection,
-  addDoc
-} = require("firebase/firestore");
-const axios = require('axios').default
+const { collection, addDoc } = require("firebase/firestore");
+const axios = require("axios").default;
 
 const commonFunc = require("../middleware/commonFunctions");
 const commonFunctions = require("../middleware/commonFunctions");
 
-const apiUrl = process.env.apiURL
+const apiUrl = process.env.apiURL;
 
 module.exports = {
   viewAppointments: async (req, res) => {
@@ -18,7 +15,7 @@ module.exports = {
 
     return res.render("admin/viewNextReservasi", {
       appointmentsData: appointmentsData,
-      servicesData: servicesData
+      servicesData: servicesData,
     });
   },
 
@@ -28,30 +25,30 @@ module.exports = {
 
     return res.render("admin/viewNextReservasi", {
       appointmentsData: appointmentsData,
-      servicesData: servicesData
+      servicesData: servicesData,
     });
   },
 
   viewEditAppointment: async (req, res) => {
     const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
-    var appointmentData
+    var appointmentData;
 
-    appointmentsData.forEach(appointment => {
+    appointmentsData.forEach((appointment) => {
       if (appointment.id == req.params.appId) {
-        appointmentData = appointment
+        appointmentData = appointment;
       }
     });
 
     if (req.sessionsData == null) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
-        servicesData: servicesData
+        servicesData: servicesData,
       });
     } else {
       const date = req.query.date;
       const serviceId = req.query.serviceId;
-      const serviceData = req.serviceData
+      const serviceData = req.serviceData;
 
       const sessionsData = req.sessionsData;
 
@@ -61,7 +58,9 @@ module.exports = {
         serviceData: serviceData,
         appointmentData: appointmentData,
         date: date,
-        serviceId: serviceId
+        serviceId: serviceId,
+        address: req.query.address,
+        serviceCare: req.query.serviceCare,
       });
     }
   },
@@ -74,21 +73,22 @@ module.exports = {
       time: req.body.time,
       date: req.body.date,
       serviceCare: req.body.serviceCare,
-      address: req.body.address
-    }
+      address: req.body.address,
+    };
+    console.log(data);
 
     try {
       const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "bearer " + req.token
-        }
-      })
+          Authorization: "bearer " + req.token,
+        },
+      });
 
-      console.log(result.data)
-      return res.redirect("/appointment")
+      console.log(result.data);
+      return res.redirect("/appointment");
     } catch (error) {
-      return res.send(error)
+      return res.send(error);
     }
   },
 
@@ -121,59 +121,59 @@ module.exports = {
       staffId: req.user.uid,
       numWa: appointmentData.data.numWa,
       serviceCare: appointmentData.data.serviceCare,
-      address: appointmentData.data.address
+      address: appointmentData.data.address,
     };
 
     await addDoc(collection(db, "visits"), visitData)
       .then(async () => {
-        next()
+        next();
       })
       .catch((error) => {
-        const err = new Error(error)
-        console.log(error)
-        return err
+        const err = new Error(error);
+        console.log(error);
+        return err;
       });
   },
 
   updateAppointmentStatusTrue: async (req, res) => {
     const appointmentId = req.params.appId;
     const data = JSON.stringify({
-      status: true
-    })
+      status: true,
+    });
 
     try {
       const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "bearer " + req.token
-        }
-      })
+          Authorization: "bearer " + req.token,
+        },
+      });
 
-      console.log(result.data)
-      return res.redirect("/")
+      console.log(result.data);
+      return res.redirect("/");
     } catch (error) {
-      return res.send(error)
+      return res.send(error);
     }
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
     const appointmentId = req.params.appId;
     const data = JSON.stringify({
-      status: "cancelled"
-    })
+      status: "cancelled",
+    });
 
     try {
       const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "bearer " + req.token
-        }
-      })
+          Authorization: "bearer " + req.token,
+        },
+      });
 
-      console.log(result.data)
-      return res.redirect("/")
+      console.log(result.data);
+      return res.redirect("/");
     } catch (error) {
-      return res.send(error)
+      return res.send(error);
     }
-  }
+  },
 };
