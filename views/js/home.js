@@ -13,3 +13,12 @@ function test() {
   today = yyyy + "-" + mm + "-" + dd;
   document.getElementById("datefield").setAttribute("min", today);
 }
+
+$(document).ready(function () {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  var address = urlParams.get("input_address");
+  var serviceCare = urlParams.get("serviceCare");
+  $("#address-edit").attr("value", address);
+  $("#serviceCare-edit").attr("value", serviceCare);
+});

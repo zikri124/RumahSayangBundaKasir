@@ -1,15 +1,12 @@
 const firebase = require("../firebase");
-const fetch = require("node-fetch");
 const db = firebase.firestore;
-const {
-  collection,
-  addDoc
-} = require("firebase/firestore");
+const { collection, addDoc } = require("firebase/firestore");
+const axios = require("axios").default;
 
 const commonFunc = require("../middleware/commonFunctions");
 const commonFunctions = require("../middleware/commonFunctions");
 
-const apiUrl = process.env.apiURL
+const apiUrl = process.env.apiURL;
 
 module.exports = {
   viewAppointments: async (req, res) => {
@@ -18,7 +15,7 @@ module.exports = {
 
     return res.render("admin/viewNextReservasi", {
       appointmentsData: appointmentsData,
-      servicesData: servicesData
+      servicesData: servicesData,
     });
   },
 
@@ -28,30 +25,30 @@ module.exports = {
 
     return res.render("admin/viewNextReservasi", {
       appointmentsData: appointmentsData,
-      servicesData: servicesData
+      servicesData: servicesData,
     });
   },
 
   viewEditAppointment: async (req, res) => {
     const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
-    var appointmentData
+    var appointmentData;
 
-    appointmentsData.forEach(appointment => {
+    appointmentsData.forEach((appointment) => {
       if (appointment.id == req.params.appId) {
-        appointmentData = appointment
+        appointmentData = appointment;
       }
     });
 
     if (req.sessionsData == null) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
-        servicesData: servicesData
+        servicesData: servicesData,
       });
     } else {
       const date = req.query.date;
       const serviceId = req.query.serviceId;
-      const serviceData = req.serviceData
+      const serviceData = req.serviceData;
 
       const sessionsData = req.sessionsData;
 
@@ -61,7 +58,9 @@ module.exports = {
         serviceData: serviceData,
         appointmentData: appointmentData,
         date: date,
-        serviceId: serviceId
+        serviceId: serviceId,
+        address: req.query.address,
+        serviceCare: req.query.serviceCare,
       });
     }
   },
@@ -72,28 +71,25 @@ module.exports = {
     const data = {
       serviceId: req.body.serviceId,
       time: req.body.time,
-      date: req.body.date
-    }
+      date: req.body.date,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address,
+    };
+    console.log(data);
 
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
+    try {
+      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "bearer " + req.token
+          Authorization: "bearer " + req.token,
         },
-        body: JSON.stringify(data)
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.success == true) {
-          return res.status(200).redirect("/appointment");
-        } else {
-          return console.log(body.error)
-        }
-      })
-      .catch((err) => {
-        return console.log(err);
       });
+
+      console.log(result.data);
+      return res.redirect("/appointment");
+    } catch (error) {
+      return res.send(error);
+    }
   },
 
   processAppointmentToVisit: async (req, res, next) => {
@@ -125,73 +121,59 @@ module.exports = {
       staffId: req.user.uid,
       numWa: appointmentData.data.numWa,
       serviceCare: appointmentData.data.serviceCare,
-      address: appointmentData.data.address
+      address: appointmentData.data.address,
     };
 
     await addDoc(collection(db, "visits"), visitData)
       .then(async () => {
-        next()
+        next();
       })
       .catch((error) => {
-        const err = new Error(error)
-        console.log(error)
-        return err
+        const err = new Error(error);
+        console.log(error);
+        return err;
       });
   },
 
   updateAppointmentStatusTrue: async (req, res) => {
     const appointmentId = req.params.appId;
-    const body = JSON.stringify({
-      status: true
-    })
+    const data = JSON.stringify({
+      status: true,
+    });
 
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
+    try {
+      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "bearer " + req.token
+          Authorization: "bearer " + req.token,
         },
-        body: body
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        console.log(body)
-        if (body.success == true) {
-          return res.redirect("/");
-        } else {
-          console.log(body.error)
-          return false
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        return err
       });
+
+      console.log(result.data);
+      return res.redirect("/");
+    } catch (error) {
+      return res.send(error);
+    }
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
     const appointmentId = req.params.appId;
+    const data = JSON.stringify({
+      status: "cancelled",
+    });
 
-    await fetch(apiUrl + "/api/appointment/update/" + appointmentId, {
-        method: "PUT",
+    try {
+      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "bearer " + req.token
+          Authorization: "bearer " + req.token,
         },
-        body: JSON.stringify({
-          status: "cancelled"
-        })
-      })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.success == true) {
-          return res.status(200).redirect("/");
-        } else {
-          return console.log(body.error)
-        }
-      })
-      .catch((err) => {
-        return console.log(err);
       });
-  }
+
+      console.log(result.data);
+      return res.redirect("/");
+    } catch (error) {
+      return res.send(error);
+    }
+  },
 };
