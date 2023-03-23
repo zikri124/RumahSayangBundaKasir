@@ -32,6 +32,8 @@ module.exports = {
   viewEditAppointment: async (req, res) => {
     const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
+    const address= req.query.address;
+    const serviceCare = req.query.serviceCare;
     var appointmentData;
 
     appointmentsData.forEach((appointment) => {
@@ -59,8 +61,8 @@ module.exports = {
         appointmentData: appointmentData,
         date: date,
         serviceId: serviceId,
-        address: req.query.address,
-        serviceCare: req.query.serviceCare,
+        address: address,
+        serviceCare: serviceCare,
       });
     }
   },
