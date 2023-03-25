@@ -2,7 +2,8 @@ const firebase = require("../firebase");
 const db = firebase.firestore;
 const {
   collection,
-  addDoc
+  addDoc,
+  Timestamp
 } = require("firebase/firestore");
 const axios = require("axios").default;
 
@@ -97,10 +98,16 @@ module.exports = {
   },
 
   processAppointmentToVisit: async (req, res, next) => {
-    const dateClass = new Date();
+    const timestamp = Timestamp.now()
+    const dateClass = timestamp.toDate();
     const appointmentData = req.appointmentData;
-    const customerId = req.body.customerId;
+    let customerId
 
+    if (appointmentData.type != null && appointmentData.type == "new customer") {
+      customerId = req.customerId
+    } else {
+      customerId = req.body.customerId;
+    }
     const customerData = await commonFunc.getACustomerData(customerId);
     const customerAge = commonFunc.getAge(customerData.dateOfBirth);
 
@@ -126,6 +133,7 @@ module.exports = {
       numWa: appointmentData.data.numWa,
       serviceCare: appointmentData.data.serviceCare,
       address: appointmentData.data.address,
+      createdAt: timestamp
     };
 
     await addDoc(collection(db, "visits"), visitData)
@@ -138,7 +146,7 @@ module.exports = {
       });
   },
 
-  updateAppointmentStatusTrue: async (req, res, next) => {
+  updateAppointmentStatusTrue: async (req, res) => {
     const appointmentId = req.params.appId;
     const data = JSON.stringify({
       status: true,

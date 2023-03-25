@@ -3,7 +3,8 @@ const fetch = require("node-fetch");
 const db = firebase.firestore;
 const {
   doc,
-  updateDoc
+  updateDoc,
+  Timestamp
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions");
@@ -62,10 +63,52 @@ module.exports = {
       });
   },
 
+  createVisitForm1: async (req, res) => {
+    const date = req.query.date
+    const serviceId = req.query.serviceId
+    const serviceCare = req.query.serviceCare
+    
+    res.render("admin/viewAdminNewVisit", {
+      date: date,
+      serviceId: serviceId,
+      serviceCare: serviceCare
+    })
+  },
+
+  createVisitFromNewUser: async (req, res, next) => {
+    const appointmentData = {
+      type: "new customer"
+    }
+
+    const data = {
+      serviceId: req.body.serviceId,
+      date: req.body.date,
+      numWa: req.body.numWa,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address
+    }
+
+    appointmentData["data"] = data
+
+    req.appointmentData = appointmentData
+    next()
+  },
+
   finishVisit: async (req, res) => {
     const data = req.body;
 
     const nCharge = data.nCharge;
+    const timestamp = Timestamp.now()
+    const dateClass = timestamp.toDate();
+    let hours = dateClass.getHours();
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    let minutes = dateClass.getMinutes();
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    const time = hours + "." + minutes;
 
     const visitId = req.params.visitId;
     const visitDoc = doc(db, "visits", visitId);
@@ -90,6 +133,9 @@ module.exports = {
     charge += "}";
 
     const jsonCharge = JSON.parse(charge);
+
+    jsonCharge["timeFinish"] = time;
+    jsonCharge["updatedAt"] = timestamp;
 
     await updateDoc(visitDoc, jsonCharge);
 
