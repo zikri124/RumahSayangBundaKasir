@@ -17,7 +17,9 @@ router.get(
     customerController.viewAnCustomer
 );
 
-router.post("/new", customerController.addCustomer);
+router.post("/new", customerController.addCustomer, function () {
+    return res.status(200).redirect("/");
+});
 
 router.post("/update/:customerId", customerController.updateCustomer);
 
