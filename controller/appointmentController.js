@@ -130,7 +130,7 @@ module.exports = {
     };
 
     await addDoc(collection(db, "visits"), visitData)
-      .then(async () => {
+      .then(() => {
         next();
       })
       .catch((err) => {
@@ -153,7 +153,8 @@ module.exports = {
       })
       .then((response) => {
         console.log(response.data);
-        return res.redirect("/");
+        // return res.redirect("/");
+        return res.render("admin/successProcessApp")
       })
       .catch((err) => {
         console.log(err);
