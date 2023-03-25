@@ -1,6 +1,9 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const { collection, addDoc } = require("firebase/firestore");
+const {
+  collection,
+  addDoc
+} = require("firebase/firestore");
 const axios = require("axios").default;
 
 const commonFunc = require("../middleware/commonFunctions");
@@ -32,7 +35,7 @@ module.exports = {
   viewEditAppointment: async (req, res) => {
     const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
-    const address= req.query.address;
+    const address = req.query.address;
     const serviceCare = req.query.serviceCare;
     var appointmentData;
 
@@ -136,26 +139,40 @@ module.exports = {
       });
   },
 
-  updateAppointmentStatusTrue: async (req, res,next) => {
+  updateAppointmentStatusTrue: async (req, res, next) => {
     const appointmentId = req.params.appId;
     const data = JSON.stringify({
       status: true,
     });
 
-    try {
-      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
+    await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "bearer " + req.token,
         },
-      });
+      })
+      .then((response) => {
+        console.log(response.data);
+        return res.redirect("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
 
-      console.log(result.data);
-      return res.redirect("/");
-    } catch (err) {
-      console.log(err);
-      next(err)
-    }
+    // try {
+    //   const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "bearer " + req.token,
+    //     },
+    //   });
+
+    //   console.log(result.data);
+    //   return res.redirect("/");
+    // } catch (err) {
+    //   console.log(err);
+    //   next(err)
+    // }
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
