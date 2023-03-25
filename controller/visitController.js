@@ -75,7 +75,26 @@ module.exports = {
     })
   },
 
-  createVisitFromNewUser: async (req, res, next) => {
+  createVisitFromExistCustomer: async (req, res, next) => {
+    const appointmentData = {
+      customerType: "exist"
+    }
+
+    const data = {
+      serviceId: req.body.serviceId,
+      date: req.body.date,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address
+    }
+
+    appointmentData["data"] = data
+
+    req.appointmentData = appointmentData
+    next()
+
+  },
+
+  createVisitFromNewCustomer: async (req, res, next) => {
     const appointmentData = {
       type: "new customer"
     }
@@ -83,7 +102,6 @@ module.exports = {
     const data = {
       serviceId: req.body.serviceId,
       date: req.body.date,
-      numWa: req.body.numWa,
       serviceCare: req.body.serviceCare,
       address: req.body.address
     }

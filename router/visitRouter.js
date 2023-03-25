@@ -25,8 +25,17 @@ router.get("/new/form1", visitController.createVisitForm1)
 
 router.post(
     "/new",
+    visitController.createVisitFromExistCustomer,
+    appointmentController.processAppointmentToVisit,
+    function () {
+        return res.render("admin/successProcessApp")
+    }
+)
+
+router.post(
+    "/new/newcustomer",
     customerController.addCustomer,
-    visitController.createVisitFromNewUser,
+    visitController.createVisitFromNewCustomer,
     appointmentController.processAppointmentToVisit,
     function () {
         return res.render("admin/successProcessApp")
