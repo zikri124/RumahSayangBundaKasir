@@ -7,7 +7,6 @@ const {
 const axios = require("axios").default;
 
 const commonFunc = require("../middleware/commonFunctions");
-const commonFunctions = require("../middleware/commonFunctions");
 
 const apiUrl = process.env.apiURL;
 
@@ -153,27 +152,11 @@ module.exports = {
       })
       .then((response) => {
         console.log(response.data);
-        // return res.redirect("/");
         return res.render("admin/successProcessApp")
       })
       .catch((err) => {
         console.log(err);
       })
-
-    // try {
-    //   const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "bearer " + req.token,
-    //     },
-    //   });
-
-    //   console.log(result.data);
-    //   return res.redirect("/");
-    // } catch (err) {
-    //   console.log(err);
-    //   next(err)
-    // }
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
