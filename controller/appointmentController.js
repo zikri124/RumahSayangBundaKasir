@@ -89,8 +89,8 @@ module.exports = {
 
       console.log(result.data);
       return res.redirect("/appointment");
-    } catch (error) {
-      return res.send(error);
+    } catch (err) {
+      return console.log(err);
     }
   },
 
@@ -130,14 +130,13 @@ module.exports = {
       .then(async () => {
         next();
       })
-      .catch((error) => {
-        const err = new Error(error);
-        console.log(error);
-        return err;
+      .catch((err) => {
+        console.log(err);
+        next(err)
       });
   },
 
-  updateAppointmentStatusTrue: async (req, res) => {
+  updateAppointmentStatusTrue: async (req, res,next) => {
     const appointmentId = req.params.appId;
     const data = JSON.stringify({
       status: true,
@@ -153,8 +152,9 @@ module.exports = {
 
       console.log(result.data);
       return res.redirect("/");
-    } catch (error) {
-      return res.send(error);
+    } catch (err) {
+      console.log(err);
+      next(err)
     }
   },
 
@@ -174,8 +174,8 @@ module.exports = {
 
       console.log(result.data);
       return res.redirect("/");
-    } catch (error) {
-      return res.send(error);
+    } catch (err) {
+      return console.log(err);
     }
   },
 };

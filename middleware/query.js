@@ -46,8 +46,8 @@ module.exports = {
         req.customersData = customersData;
         next();
       })
-      .catch((error) => {
-        return console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
@@ -204,8 +204,8 @@ module.exports = {
         req.visitsData = visitsData;
         next();
       })
-      .catch((error) => {
-        return console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
@@ -230,8 +230,8 @@ module.exports = {
         req.visitsData = visitsData
         next()
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 

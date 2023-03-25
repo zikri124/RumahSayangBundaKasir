@@ -9,7 +9,7 @@ module.exports = {
 
     try {
       cookiesArray = req.headers.cookie.split(";");
-    } catch (error) {
+    } catch (err) {
       return res.status(403).redirect("/auth/signin");
     }
 

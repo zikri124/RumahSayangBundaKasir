@@ -42,8 +42,8 @@ module.exports = {
       .then(async () => {
         return res.status(200).redirect("/");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
@@ -61,8 +61,8 @@ module.exports = {
       .then(() => {
         return res.cookie("data", "").status(200).redirect("/customer");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
