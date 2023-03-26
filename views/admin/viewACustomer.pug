@@ -29,13 +29,14 @@ html
             input.input.input-bordered.w-full.max-w-md(value=customerData.data.dateOfBirth type='text'  disabled)
       div.flex.flex-col.items-center.w-full.px-10(class="lg:items-start lg:px-0")
         label.font-bold.text-xl.font-pp.text-center(class="lg:text-start") Daftar layanan yang pernah dilakukan
-        .overflow-x-auto.mx-10.my-8.overflow-y-auto.h-32.font-pp.border.rounded-t-lg(class="lg:mx-4")
-          table.table.table-compact.w-full.sortable
+        .my-8.overflow-y-auto.h-56.font-pp.border.rounded-t-lg.mx-20(class="lg:mx-4 lg:h-72")
+          table.table.table-compact.sortable
             thead
               tr
                 th(scope="col") No
                 th(scope="col") Layanan
                 th(scope="col") Waktu
+                th(scope="col") Tanggal Reservasi
                 th(scope="col") Status
             tbody
               - let i = 1
@@ -47,6 +48,7 @@ html
                       td= dataServices.data.name
                       - break
                   td= dataVisits.data.time
+                  td= dataVisits.data.date
                   td= dataVisits.data.status
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")

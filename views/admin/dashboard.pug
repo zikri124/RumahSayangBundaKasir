@@ -50,6 +50,34 @@ html
                     button(class="btn btn-secondary btn-xs mx-2") selesai
       //Tabel Pasien yang Akan Melakukan Pemeriksaan
       p.text-center.mt-8.font-bold.text-xl.mx-10(class="lg:mx-0") Daftar Pasien yang Akan Melakukan Pemeriksaan
+      .flex.justify-start.items-start.mx-10(class="lg:mx-24")
+        label.btn.btn-sm.mt-4.normal-case.gap-2(for='add-reservasi' class="bg-pink-500 border-none hover:bg-pink-900") 
+          svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24' stroke-width='1.5' stroke='currentColor')
+            path(stroke-linecap='round' stroke-linejoin='round' d='M12 4.5v15m7.5-7.5h-15')
+          |   Tambah Reservasi
+      // isi dari modal  
+      input#add-reservasi.modal-toggle(type='checkbox')
+      .modal.modal-bottom(class='sm:modal-middle')
+        .modal-box
+          h3.font-bold.text-lg.text-center Tambah Data Reservasi
+          form(action="/service/new" method="get")
+            .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+              .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
+                label.label
+                  span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Tanggal Reservasi
+                input.input.input-bordered.w-full.max-w-xs(id="date-reservasi" name="date" type='date' value=""  class="lg:max-w-lg md:max-w-md" readonly)
+              .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+                label.label
+                  span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih layanan untuk reservasi
+                select.select.select-bordered.w-full.max-w-xs(name="serviceId" class="lg:max-w-lg md:max-w-md" required)
+                  option(value="" selected="" disabled="") Pilih layanan
+                  each data in servicesData
+                    option(value=data.id)= data.data.name
+                input.hidden(name="serviceCare" class="lg:max-w-lg md:max-w-md" value="klinik")
+              .flex.flex-row.justify-center.items-center.gap-4
+                 button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") Submit
+                 .modal-action
+                   label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for='add-reservasi') Batal
       .overflow-x-auto.mx-8.mt-8.overflow-y-auto.h-56(class="lg:mx-24")
         table.table.table-compact.w-full.sortable
           thead
@@ -155,4 +183,5 @@ html
                             label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"cancel") Tidak    
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
+    script(src="/js/dashboard.js")
       

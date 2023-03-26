@@ -22,14 +22,14 @@ html
           thead
             tr
               th(scope="col") No
-              th(scope="col") Customer id
-              th(scope="col") Ruangan
+              th(scope="col") Nama
               th(scope="col") Layanan
-              th(scope="col") Tanggal Reservasi
+              th(scope="col") Tanggal Kunjungan
               th(scope="col") Tipe Layanan
               th(scope="col") Waktu
               th(scope="col") Status
               th(scope="col") Staff Id
+              th(scope="col") Action
           tbody(id="myTable") 
             - let i = 1
             each data in visitData
@@ -40,7 +40,6 @@ html
                     td 
                       a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name
                     - break
-                td= data.data.room === NULL ? "-" : data.data.room
                 each dataServices in servicesData
                   if (data.data.serviceId===dataServices.id)
                     td= dataServices.data.name
@@ -50,6 +49,39 @@ html
                 td= data.data.time
                 td= data.data.status
                 td= data.data.staffId
+                td
+                  label.btn(for=data.id class="btn btn-info btn-xs mx-2") detail
+                  // Put this part before </body> tag                  
+                  input.modal-toggle(type='checkbox' id=data.id)
+                  .modal
+                    .modal-box
+                      label.btn.btn-sm.btn-circle.absolute.right-2.top-2(for=data.id) &#x2715;
+                      h3.text-lg.font-bold Detail Harga
+                      .overflow-x-auto.py-4
+                        table.table.table-zebra.w-full.border.rounded-t-lg
+                          // head
+                          thead
+                            tr
+                              th
+                              th Deskripsi
+                              th Harga
+                          tbody
+                            // row 1
+                            tr
+                              th 1
+                              td Cy Ganderton
+                              td Quality Control Specialist
+                            // row 2
+                            tr
+                              th 2
+                              td Hart Hagerty
+                              td Desktop Support Technician
+
+                            // row 3
+                            tr
+                              th 3
+                              td Brice Swyre
+                              td Tax Accountant
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js") 
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
