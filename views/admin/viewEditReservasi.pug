@@ -96,16 +96,13 @@ html
                     p=date
                     - if (session1 === NULL)
                       - session1 = appointment.data.time
-                    p=serviceCare
+                    p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
                     p=session1 + " WIB"
                     input(hidden name="time" type="text" value=session1)
-                    //- - else 
-                    //-   p=session1 + " WIB"
-                    //-   input(hidden name="time" type="text" value=session1)
                     input(hidden name="serviceId" type="text" value=serviceId)
                     input(hidden name="date" type="date" value=date)
-                    input(hidden name="serviceCare" type="text" id="serviceCare-edit" value=serviceCare)
-                    input(hidden name="address" type="text" id="address-edit" value=address)
+                    input(hidden name="serviceCare" type="text" value=serviceCare)
+                    input(hidden name="address" type="text" value=address)
                     .card-actions.justify-end
                       button.btn.btn-primary(type="submit" class="bg-pink-200 text-black border-none hover:bg-pink-400") Pilih Sesi
             - else if(!pilih)
@@ -119,16 +116,12 @@ html
                     p=date
                     - if (session1 === NULL)
                       - session1 = appointment.data.time
-                    p=serviceCare
+                    p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
                     p=session1 + " WIB"
-                    input(hidden name="time" type="text" value=session1)
-                    //- - else 
-                    //-   p=session1 + " WIB"
-                    //-   input(hidden name="time" type="text" value=session1)
                     input(hidden name="serviceId" type="text" value=serviceId)
                     input(hidden name="date" type="date" value=date)
-                    input(hidden name="serviceCare" type="text" id="serviceCare-edit" value=serviceCare)
-                    input(hidden name="address" type="text" id="address-edit" value=address)
+                    input(hidden name="serviceCare" type="text" value=serviceCare)
+                    input(hidden name="address" type="text" value=address)
                     .card-actions.justify-end
                       button.btn.btn-primary(type="submit" class="bg-pink-500 border-none hover:bg-pink-900") Pilih Sesi
             - else 
