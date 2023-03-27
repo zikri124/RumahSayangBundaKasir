@@ -4198,6 +4198,31 @@ html {
   margin-right: 10rem;
 }
 
+.mx-96 {
+  margin-left: 24rem;
+  margin-right: 24rem;
+}
+
+.mx-\[26rem\] {
+  margin-left: 26rem;
+  margin-right: 26rem;
+}
+
+.mx-\[30rem\] {
+  margin-left: 30rem;
+  margin-right: 30rem;
+}
+
+.mx-\[32rem\] {
+  margin-left: 32rem;
+  margin-right: 32rem;
+}
+
+.mx-\[31rem\] {
+  margin-left: 31rem;
+  margin-right: 31rem;
+}
+
 .mt-12 {
   margin-top: 3rem;
 }
@@ -4226,16 +4251,16 @@ html {
   margin-top: 0.75rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
 }
 
 .mb-8 {
   margin-bottom: 2rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
 }
 
 .mt-2 {
@@ -4671,6 +4696,11 @@ html {
   padding-bottom: 1.5rem;
 }
 
+.px-24 {
+  padding-left: 6rem;
+  padding-right: 6rem;
+}
+
 .px-10 {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
@@ -4679,11 +4709,6 @@ html {
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
-}
-
-.px-24 {
-  padding-left: 6rem;
-  padding-right: 6rem;
 }
 
 .py-4 {
@@ -5035,6 +5060,10 @@ html {
     max-width: 28rem;
   }
 
+  .md\:max-w-lg {
+    max-width: 32rem;
+  }
+
   .md\:flex-row {
     flex-direction: row;
   }
@@ -5078,12 +5107,12 @@ html {
     margin-right: 1rem;
   }
 
-  .lg\:mb-0 {
-    margin-bottom: 0px;
-  }
-
   .lg\:mt-28 {
     margin-top: 7rem;
+  }
+
+  .lg\:mb-0 {
+    margin-bottom: 0px;
   }
 
   .lg\:flex {
@@ -5116,6 +5145,10 @@ html {
 
   .lg\:justify-start {
     justify-content: flex-start;
+  }
+
+  .lg\:justify-center {
+    justify-content: center;
   }
 
   .lg\:px-12 {

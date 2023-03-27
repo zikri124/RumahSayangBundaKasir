@@ -1,0 +1,58 @@
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Rumah Sayang Bunda - Reservasi Baru
+    link(href="https://i.ibb.co/FbgNc2d/icon-RSB.jpg" rel="shortcut icon" type="image/png")
+    link(href="/css/App.css" rel="stylesheet")
+    script(src="https://kit.fontawesome.com/8e8eb5d7ee.js" crossorigin="anonymous")
+    link(rel='preconnect' href='https://fonts.googleapis.com')
+    link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins&display=swap' rel='stylesheet')
+  body
+    include navbar.pug
+    h1.font-bold.text-2xl.text-center.mt-8 Mulai reservasi
+    form(action="/visit/new"  method="post") 
+      .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+        .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+          label.label
+            span.label-text.text-start Customer
+              .br.text-xs.font-normal pilih customer jika customer sudah terdaftar
+          select.select.select-bordered.w-full.max-w-xs(name="customerId" required="" class="lg:max-w-lg")
+            option(disabled='' selected='') Pilih Customer
+            each dataCustomer in customersData
+              option(value=dataCustomer.id)= dataCustomer.data.name  
+        .flex.flex-row.justify-center.items-center.gap-4
+          button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
+          .modal-action
+            a(href="/")
+              label.btn.btn-error.text-white(class="hover:bg-[#9e4949]") Kembali
+    hr.my-8(class="mx-[31rem]")
+    h1.font-bold.text-2xl.text-center Input Data Pasien
+    form(action="/visit/new/newcustomer" method="post")
+      .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+        .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+          label.label
+            span.label-text Nama
+          input.input.input-bordered.w-full.max-w-xs(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" )
+        .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+          label.label
+            span.label-text No. Hp
+          input.input.input-bordered.w-full.max-w-xs(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" )
+        .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+          label.label
+            span.label-text Jenis Kelamin
+          select.select.select-bordered.w-full.max-w-xs(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
+            option(disabled="" selected="") Pilih jenis kelamin
+            option(value="Laki-Laki") Laki-Laki 
+            option(value="Perempuan") Perempuan
+        .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+          label.label
+            span.label-text Tanggal Lahir
+          input.input.input-bordered.w-full.max-w-xs(name="dateOfBirth" type='date', placeholder='Ketik Disini' class="lg:max-w-lg" )
+        .flex.flex-row.justify-center.items-center.gap-4
+          button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
+          .modal-action
+            a(href="/")
+              label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" ) Kembali
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")

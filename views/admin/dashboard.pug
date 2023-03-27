@@ -22,7 +22,6 @@ html
               th(scope="col") Nama
               th(scope="col") Layanan
               th(scope="col") Tipe Layanan
-              th(scope="col") No. Hp
               th(scope="col") Umur
               th(scope="col") Waktu
               th(scope="col") Tanggal Reservasi
@@ -32,16 +31,16 @@ html
             each data in onGoingVisitData
               tr
                 th(scope="row")=a++
-                each dataCustomer in customersData
-                  if data.data.customerId===dataCustomer.id
-                    td= dataCustomer.data.name
+                each customerData in customersData
+                  if data.data.customerId===customerData.id
+                    td 
+                      a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name
                     - break
                 each dataServices in servicesData
                   if data.data.serviceId===dataServices.id
                     td= dataServices.data.name
                     - break
                 td= data.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${data.data.address})`
-                td= data.data.numWa
                 td= data.data.customerAge
                 td= data.data.time
                 td= data.data.date
@@ -60,7 +59,7 @@ html
       .modal.modal-bottom(class='sm:modal-middle')
         .modal-box
           h3.font-bold.text-lg.text-center Tambah Data Reservasi
-          form(action="/service/new" method="get")
+          form(action="/visit/new/form1" method="get")
             .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
               .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
                 label.label
@@ -154,7 +153,7 @@ html
                                 span.label-text No. Hp
                             input.input.input-bordered.w-full.max-w-xs(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa)
                             .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
-                             label.label
+                              label.label
                                 span.label-text Jenis Kelamin
                             select.select.select-bordered.w-full.max-w-xs(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
                               option(disabled="" selected="") Pilih jenis kelamin
