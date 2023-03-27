@@ -21,7 +21,11 @@ router.get(
     visitController.viewFinishVisit
 );
 
-router.get("/new/form1", visitController.createVisitForm1)
+router.get(
+    "/new/form1",
+    queryDb.getCustomersData,
+    visitController.createVisitForm1
+);
 
 router.post(
     "/new",
@@ -30,7 +34,7 @@ router.post(
     function () {
         return res.render("admin/successProcessApp")
     }
-)
+);
 
 router.post(
     "/new/newcustomer",
@@ -40,7 +44,7 @@ router.post(
     function () {
         return res.render("admin/successProcessApp")
     }
-)
+);
 
 router.post(
     "/finish/:visitId",
