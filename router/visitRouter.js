@@ -24,6 +24,7 @@ router.get(
 router.get(
     "/new/form1",
     queryDb.getCustomersData,
+    queryDb.getSessions,
     visitController.createVisitForm1
 );
 
