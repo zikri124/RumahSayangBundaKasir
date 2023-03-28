@@ -6,6 +6,7 @@ const {
   updateDoc,
   Timestamp,
   collection,
+  getDoc,
   getDocs,
   query,
   where
@@ -159,23 +160,31 @@ module.exports = {
     let chargeData = "";
     let messageTextCharge = "";
 
-    for (let i = 1; i <= nCharge; i++) {
-      let name1 = "chargeDesc" + i;
-      let name2 = "addCharge" + i;
-
-      if (data[name1] != "" || data[name1] != "") {
-        chargeData += '"' + name1 + '":"' + data[name1] + '","' + name2 + '":' + data[name2] + ",";
-
-        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
-      }
-    }
-
     charge += chargeData + '"status":"Selesai", "total":' + data.total;
 
     charge += "}";
 
     const jsonCharge = JSON.parse(charge);
 
+    const charge1 = []
+
+    for (let i = 1; i <= nCharge; i++) {
+      let name1 = "chargeDesc" + i;
+      let name2 = "addCharge" + i;
+
+      if (data[name1] != "" || data[name1] != "") {
+        const charge2 = {
+          chargeDesc: data[name1],
+          addCharge: data[name2]
+        }
+
+        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+
+        charge1.push(charge2)
+      }
+    }
+
+    jsonCharge["charge"] = charge1
     jsonCharge["timeFinish"] = time;
     jsonCharge["updatedAt"] = timestamp;
 
