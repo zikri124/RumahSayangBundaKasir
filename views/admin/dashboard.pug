@@ -72,7 +72,7 @@ html
                   option(value="" selected="" disabled="") Pilih layanan
                   each data in servicesData
                     option(value=data.id)= data.data.name
-                input.hidden(name="serviceCare" class="lg:max-w-lg md:max-w-md" value="klinik")
+              input.hidden(name="serviceCare" class="lg:max-w-lg md:max-w-md" value="klinik")
               .flex.flex-row.justify-center.items-center.gap-4
                  button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") Submit
                  .modal-action

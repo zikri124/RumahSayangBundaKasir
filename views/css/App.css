@@ -4173,6 +4173,11 @@ html {
   margin-right: 5rem;
 }
 
+.mx-\[31rem\] {
+  margin-left: 31rem;
+  margin-right: 31rem;
+}
+
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -4201,26 +4206,6 @@ html {
 .mx-96 {
   margin-left: 24rem;
   margin-right: 24rem;
-}
-
-.mx-\[26rem\] {
-  margin-left: 26rem;
-  margin-right: 26rem;
-}
-
-.mx-\[30rem\] {
-  margin-left: 30rem;
-  margin-right: 30rem;
-}
-
-.mx-\[32rem\] {
-  margin-left: 32rem;
-  margin-right: 32rem;
-}
-
-.mx-\[31rem\] {
-  margin-left: 31rem;
-  margin-right: 31rem;
 }
 
 .mt-12 {
@@ -5060,10 +5045,6 @@ html {
     max-width: 28rem;
   }
 
-  .md\:max-w-lg {
-    max-width: 32rem;
-  }
-
   .md\:flex-row {
     flex-direction: row;
   }
@@ -5145,10 +5126,6 @@ html {
 
   .lg\:justify-start {
     justify-content: flex-start;
-  }
-
-  .lg\:justify-center {
-    justify-content: center;
   }
 
   .lg\:px-12 {
