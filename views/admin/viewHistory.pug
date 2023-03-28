@@ -28,7 +28,7 @@ html
               th(scope="col") Tipe Layanan
               th(scope="col") Waktu
               th(scope="col") Status
-              th(scope="col") Staff Id
+              th(scope="col") Total Harga
               th(scope="col") Action
           tbody(id="myTable") 
             - let i = 1
@@ -48,7 +48,7 @@ html
                 td= data.data.serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare (${data.data.address})`
                 td= data.data.time
                 td= data.data.status
-                td= data.data.staffId
+                td= data.data.total === undefined ? "-" : `${data.data.total}`
                 td
                   label.btn(for=data.data.customerId class="btn btn-info btn-xs mx-2") detail
                   // Put this part before </body> tag                  
@@ -68,10 +68,12 @@ html
                           tbody
                             - let j = 1
                             each dataDetail in visitData
-                              tr
-                                th= j++
-                                td= dataDetail.data.total
-                                td Quality Control Specialist
+                              if(dataDetail.data.customerId === data.data.customerId && dataDetail.data.serviceId === data.data.serviceId) 
+                                p= dataDetail.data.total
+                                //- tr
+                                //-   th= j++
+                                //-   td= dataDetail.data.chargeDesc1
+                                //-   td= dataDetail.data.addCharge1
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js") 
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
