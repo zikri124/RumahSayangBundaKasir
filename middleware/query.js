@@ -142,7 +142,6 @@ module.exports = {
   },
 
   getSessions: async (req, res, next) => {
-    const appointmentId = req.params.appId
     const date = req.query.date
     const serviceId = req.query.serviceId
 
@@ -150,7 +149,7 @@ module.exports = {
       req.sessionsData = null
       next()
     } else {
-      await fetch(apiUrl + "/api/appointment/session/" + appointmentId + "?date=" + date + "&serviceId=" + serviceId, {
+      await fetch(apiUrl + "/api/appointment/session?date=" + date + "&serviceId=" + serviceId, {
           method: "GET",
           headers: {
             Authorization: "bearer " + req.token

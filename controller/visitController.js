@@ -68,12 +68,14 @@ module.exports = {
     const serviceId = req.query.serviceId
     const serviceCare = req.query.serviceCare
     const customersData = req.customersData
+    const sessionsData = req.sessionsData
     
     res.render("admin/viewAdminNewVisit", {
       date: date,
       serviceId: serviceId,
       serviceCare: serviceCare,
-      customersData: customersData
+      customersData: customersData,
+      sessionsData: sessionsData
     })
   },
 
