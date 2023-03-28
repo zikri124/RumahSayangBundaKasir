@@ -1,7 +1,16 @@
 const firebase = require("../firebase");
 const fetch = require("node-fetch");
 const db = firebase.firestore;
-const { collection, query, where, getDocs, addDoc, doc, limit, getDoc, updateDoc, orderBy } = require("firebase/firestore");
+const {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  limit,
+  getDoc,
+  orderBy
+} = require("firebase/firestore");
 
 const commonFunctions = require("./commonFunctions");
 
@@ -63,11 +72,11 @@ module.exports = {
 
   getServicesAndAppointmentsData: async (req, res, next) => {
     await fetch(apiUrl + "/api/alldata", {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token,
-      },
-    })
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
       .then((response) => response.json())
       .then((body) => {
         req.appointmentsData = body.appointmentsData;
@@ -81,11 +90,11 @@ module.exports = {
 
   getAppointmentsData: async (req, res, next) => {
     await fetch(apiUrl + "/api/appointment", {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token,
-      },
-    })
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
       .then((response) => response.json())
       .then((body) => {
         req.appointmentsData = body.appointmentsData;
@@ -99,11 +108,11 @@ module.exports = {
   getAppointmentsDataByTime: async (req, res, next) => {
     const timeCode = req.params.timeCode;
     await fetch(apiUrl + "/api/appointment/filter/" + timeCode, {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token,
-      },
-    })
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
       .then((response) => response.json())
       .then((body) => {
         req.appointmentsData = body.appointmentsData;
@@ -131,7 +140,6 @@ module.exports = {
   },
 
   getSessions: async (req, res, next) => {
-    console.log(req.customersData);
     const date = req.query.date;
     const serviceId = req.query.serviceId;
 
@@ -140,16 +148,22 @@ module.exports = {
       next();
     } else {
       await fetch(apiUrl + "/api/appointment/session?date=" + date + "&serviceId=" + serviceId, {
-        method: "GET",
-        headers: {
-          Authorization: "bearer " + req.token,
-        },
-      })
+          method: "GET",
+          headers: {
+            Authorization: "bearer " + req.token,
+          },
+        })
         .then((response) => response.json())
         .then((body) => {
-          req.sessionsData = body.sessionsData;
-          // req.serviceData = body.serviceData;
-          console.log(req.sessionsData);
+          const bodyData = body.sessionsData;
+          const sessionsData = []
+          bodyData.forEach(session => {
+            if (session.data.status != "cancelled") {
+              sessionsData.push(session)
+            }
+          });
+
+          req.sessionsData = sessionsData
           next();
         })
         .catch((err) => {
@@ -161,11 +175,11 @@ module.exports = {
   getAnAppointmentData: async (req, res, next) => {
     const appId = req.params.appId;
     await fetch(apiUrl + "/api/appointment/" + appId, {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token,
-      },
-    })
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
       .then((response) => response.json())
       .then((body) => {
         req.appointmentData = body.appointmentData;
@@ -245,11 +259,11 @@ module.exports = {
 
   getServicesData: async (req, res, next) => {
     await fetch(apiUrl + "/api/service", {
-      method: "GET",
-      headers: {
-        Authorization: "bearer " + req.token,
-      },
-    })
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
       .then((response) => response.json())
       .then((body) => {
         req.servicesData = body.servicesData;

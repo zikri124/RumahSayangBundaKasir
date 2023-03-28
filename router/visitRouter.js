@@ -13,13 +13,24 @@ router.get("/finish/:visitId", queryDb.getAVisitData, visitController.viewFinish
 
 router.get("/new/form1", queryDb.getCustomersData, queryDb.getSessions, visitController.createVisitForm1);
 
-router.post("/new", visitController.createVisitFromExistCustomer, appointmentController.processAppointmentToVisit, function (req, res) {
-  return res.render("admin/successProcessApp");
-});
+router.post(
+    "/new",
+    visitController.createVisitFromExistCustomer,
+    appointmentController.processAppointmentToVisit,
+    function (req, res) {
+        return res.render("admin/successProcessApp")
+    }
+);
 
-router.post("/new/newcustomer", customerController.addCustomer, visitController.createVisitFromNewCustomer, appointmentController.processAppointmentToVisit, function (req, res) {
-  return res.render("admin/successProcessApp");
-});
+router.post(
+    "/new/newcustomer",
+    customerController.addCustomer,
+    visitController.createVisitFromNewCustomer,
+    appointmentController.processAppointmentToVisit,
+    function (req, res) {
+        return res.render("admin/successProcessApp")
+    }
+);
 
 router.post("/finish/:visitId", queryDb.getAVisitData, visitController.finishVisit);
 

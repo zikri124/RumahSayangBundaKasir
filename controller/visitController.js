@@ -4,7 +4,11 @@ const db = firebase.firestore;
 const {
   doc,
   updateDoc,
-  Timestamp
+  Timestamp,
+  collection,
+  getDocs,
+  query,
+  where
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions");
@@ -69,7 +73,24 @@ module.exports = {
     const serviceCare = req.query.serviceCare
     const customersData = req.customersData
     const sessionsData = req.sessionsData
-    
+
+    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId));
+    await getDocs(visitQuery)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const visit = {
+            id: doc.id,
+            data: doc.data(),
+          };
+          sessionsData.push(visit);
+        });
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
+
+    console.log(sessionsData)
+
     res.render("admin/viewAdminNewVisit", {
       date: date,
       serviceId: serviceId,
@@ -95,7 +116,6 @@ module.exports = {
 
     req.appointmentData = appointmentData
     next()
-
   },
 
   createVisitFromNewCustomer: async (req, res, next) => {

@@ -99,7 +99,7 @@ module.exports = {
 
   processAppointmentToVisit: async (req, res, next) => {
     const timestamp = Timestamp.now()
-    const dateClass = timestamp.toDate();
+    // const dateClass = timestamp.toDate();
     const appointmentData = req.appointmentData;
     let customerId
 
@@ -111,22 +111,22 @@ module.exports = {
     const customerData = await commonFunc.getACustomerData(customerId);
     const customerAge = commonFunc.getAge(customerData.dateOfBirth);
 
-    let hours = dateClass.getHours();
-    if (hours < 10) {
-      hours = "0" + hours;
-    }
-    let minutes = dateClass.getMinutes();
-    if (minutes < 10) {
-      minutes = "0" + minutes;
-    }
-    const time = hours + "." + minutes;
+    // let hours = dateClass.getHours();
+    // if (hours < 10) {
+    //   hours = "0" + hours;
+    // }
+    // let minutes = dateClass.getMinutes();
+    // if (minutes < 10) {
+    //   minutes = "0" + minutes;
+    // }
+    // const time = hours + "." + minutes;
 
     const visitData = {
       customerId: customerId,
       customerAge: customerAge,
       serviceId: appointmentData.data.serviceId,
       date: appointmentData.data.date,
-      time: time,
+      time: appointmentData.data.time,
       timeFinish: "",
       status: "Sedang Jalan",
       staffId: req.user.uid,
