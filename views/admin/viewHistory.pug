@@ -50,38 +50,28 @@ html
                 td= data.data.status
                 td= data.data.staffId
                 td
-                  label.btn(for=data.id class="btn btn-info btn-xs mx-2") detail
+                  label.btn(for=data.data.customerId class="btn btn-info btn-xs mx-2") detail
                   // Put this part before </body> tag                  
-                  input.modal-toggle(type='checkbox' id=data.id)
+                  input.modal-toggle(type='checkbox' id=data.data.customerId)
                   .modal
                     .modal-box
-                      label.btn.btn-sm.btn-circle.absolute.right-2.top-2(for=data.id) &#x2715;
+                      label.btn.btn-sm.btn-circle.absolute.right-2.top-2(for=data.data.customerId) &#x2715;
                       h3.text-lg.font-bold Detail Harga
                       .overflow-x-auto.py-4
                         table.table.table-zebra.w-full.border.rounded-t-lg
                           // head
                           thead
                             tr
-                              th
-                              th Deskripsi
-                              th Harga
+                              th(scope="col") No
+                              th(scope="col") Deskripsi
+                              th(scope="col") Harga
                           tbody
-                            // row 1
-                            tr
-                              th 1
-                              td Cy Ganderton
-                              td Quality Control Specialist
-                            // row 2
-                            tr
-                              th 2
-                              td Hart Hagerty
-                              td Desktop Support Technician
-
-                            // row 3
-                            tr
-                              th 3
-                              td Brice Swyre
-                              td Tax Accountant
+                            - let j = 1
+                            each dataDetail in visitData
+                              tr
+                                th= j++
+                                td= dataDetail.data.total
+                                td Quality Control Specialist
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js") 
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
