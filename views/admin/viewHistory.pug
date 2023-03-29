@@ -50,30 +50,33 @@ html
                 td= data.data.status
                 td= data.data.total === undefined ? "-" : `${data.data.total}`
                 td
-                  label.btn(for=data.data.customerId class="btn btn-info btn-xs mx-2") detail
+                  label.btn(for=data.id class="btn btn-info btn-xs mx-2") detail
                   // Put this part before </body> tag                  
-                  input.modal-toggle(type='checkbox' id=data.data.customerId)
+                  input.modal-toggle(type='checkbox' id=data.id)
                   .modal
                     .modal-box
-                      label.btn.btn-sm.btn-circle.absolute.right-2.top-2(for=data.data.customerId) &#x2715;
+                      label.btn.btn-sm.btn-circle.absolute.right-2.top-2(for=data.id) &#x2715;
                       h3.text-lg.font-bold Detail Harga
-                      .overflow-x-auto.py-4
-                        table.table.table-zebra.w-full.border.rounded-t-lg
-                          // head
-                          thead
-                            tr
-                              th(scope="col") No
-                              th(scope="col") Deskripsi
-                              th(scope="col") Harga
-                          tbody
-                            - let j = 1
-                            each dataDetail in visitData
-                              if(dataDetail.data.customerId === data.data.customerId && dataDetail.data.serviceId === data.data.serviceId) 
-                                p= dataDetail.data.total
-                                //- tr
-                                //-   th= j++
-                                //-   td= dataDetail.data.chargeDesc1
-                                //-   td= dataDetail.data.addCharge1
+                      if(data.data.charge)
+                        .overflow-x-auto.py-4
+                          table.table.table-zebra.w-full.border.rounded-t-lg
+                            // head
+                            thead
+                              tr
+                                th(scope="col") No
+                                th(scope="col") Deskripsi
+                                th(scope="col") Harga
+                            tbody
+                              - let j = 1
+                              each dataCharge in visitData
+                                if(data.data.customerId === dataCharge.data.customerId && data.id === dataCharge.id && dataCharge.data.charge)
+                                  each data in dataCharge.data.charge
+                                    tr
+                                      th= j++
+                                      td= data.chargeDesc
+                                      td= data.addCharge
+                      else 
+                        p.my-8.font-bold.text-lg.text-center Tidak ada detail harga
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js") 
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
