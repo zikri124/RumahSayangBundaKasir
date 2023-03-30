@@ -77,7 +77,7 @@ html
                  button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") Submit
                  .modal-action
                    label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for='add-reservasi') Batal
-      .overflow-x-auto.mx-8.mt-8.overflow-y-auto.h-56(class="lg:mx-24")
+      .overflow-x-auto.mx-8.mt-8.overflow-y-auto.h-56.mb-10(class="lg:mx-24")
         table.table.table-compact.w-full.sortable
           thead
             tr
@@ -95,7 +95,7 @@ html
             each dataAppointment in appointmentData
               tr
                 th(scope="row")=i++
-                td= dataAppointment.data.name
+                td(id="customer-appointment" value=dataAppointment.data.name)= dataAppointment.data.name
                 each dataServices in servicesData
                   if dataAppointment.data.serviceId===dataServices.id
                     td= dataServices.data.name
@@ -132,10 +132,15 @@ html
                               label.label
                                 span.label-text.text-start Customer
                                   .br.text-xs.font-normal pilih customer jika customer sudah terdaftar
-                            select.select.select-bordered.w-full.max-w-md(name="customerId" required="")
-                              option(disabled='' selected='') Pilih Customer
+                            select.select.select-bordered.w-full.max-w-md.overflow-y-auto(name="customerId" required="" id="customerId" onChange=`getval(${this}, ${customersData})`)
+                              option(selected disabled) Pilih Customer
                               each dataCustomer in customersData
-                                option(value=dataCustomer.id)= dataCustomer.data.name  
+                                if(dataCustomer.data.name === dataAppointment.data.name && dataCustomer.data.numWa === dataAppointment.data.numWa)
+                                  option(value=dataCustomer.id selected)= `${dataCustomer.data.name} - ${dataAppointment.data.numWa}`
+                                else if (dataCustomer.data.numWa === dataAppointment.data.numWa)
+                                  option(value=dataCustomer.id)= `${dataCustomer.data.name} - ${dataAppointment.data.numWa}`
+                                else 
+                                  option(value=dataCustomer.id)= `${dataCustomer.data.name}`
                             .flex.flex-row.justify-center.items-center.gap-4
                               button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                               .modal-action

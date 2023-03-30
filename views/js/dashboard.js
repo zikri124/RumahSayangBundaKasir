@@ -15,3 +15,27 @@ $("document").ready(function () {
   today = yyyy + "-" + mm + "-" + dd;
   document.getElementById("date-reservasi").setAttribute("value", today);
 });
+
+function getval(value, data) {
+  console.log(value.value);
+  console.log(data[0].id);
+  // const data1 = {
+  //   data: [
+  //     {
+  //       id: "One",
+  //       name: "ZZ",
+  //     },
+  //     {
+  //       id: "Two",
+  //       name: "ZZ2",
+  //     },
+  //   ],
+  // };
+
+  // data1.data.forEach((element) => {
+  //   if (element.id === sel.value) {
+  //     const item = document.getElementById("name");
+  //     item.value = element.name;
+  //   }
+  // });
+}
