@@ -1,10 +1,13 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const { collection, addDoc } = require("firebase/firestore");
+const {
+  collection,
+  addDoc,
+  Timestamp
+} = require("firebase/firestore");
 const axios = require("axios").default;
 
 const commonFunc = require("../middleware/commonFunctions");
-const commonFunctions = require("../middleware/commonFunctions");
 
 const apiUrl = process.env.apiURL;
 
@@ -32,7 +35,7 @@ module.exports = {
   viewEditAppointment: async (req, res) => {
     const appointmentsData = req.appointmentsData;
     const servicesData = req.servicesData;
-    const address= req.query.address;
+    const address = req.query.address;
     const serviceCare = req.query.serviceCare;
     var appointmentData;
 
@@ -89,51 +92,56 @@ module.exports = {
 
       console.log(result.data);
       return res.redirect("/appointment");
-    } catch (error) {
-      return res.send(error);
+    } catch (err) {
+      return console.log(err);
     }
   },
 
   processAppointmentToVisit: async (req, res, next) => {
-    const dateClass = new Date();
+    const timestamp = Timestamp.now()
+    // const dateClass = timestamp.toDate();
     const appointmentData = req.appointmentData;
-    const customerId = req.body.customerId;
+    let customerId
 
+    if (appointmentData.type != null && appointmentData.type == "new customer") {
+      customerId = req.customerId
+    } else {
+      customerId = req.body.customerId;
+    }
     const customerData = await commonFunc.getACustomerData(customerId);
     const customerAge = commonFunc.getAge(customerData.dateOfBirth);
 
-    let hours = dateClass.getHours();
-    if (hours < 10) {
-      hours = "0" + hours;
-    }
-    let minutes = dateClass.getMinutes();
-    if (minutes < 10) {
-      minutes = "0" + minutes;
-    }
-    const time = hours + "." + minutes;
+    // let hours = dateClass.getHours();
+    // if (hours < 10) {
+    //   hours = "0" + hours;
+    // }
+    // let minutes = dateClass.getMinutes();
+    // if (minutes < 10) {
+    //   minutes = "0" + minutes;
+    // }
+    // const time = hours + "." + minutes;
 
     const visitData = {
       customerId: customerId,
       customerAge: customerAge,
       serviceId: appointmentData.data.serviceId,
       date: appointmentData.data.date,
-      time: time,
+      time: appointmentData.data.time,
       timeFinish: "",
       status: "Sedang Jalan",
       staffId: req.user.uid,
-      numWa: appointmentData.data.numWa,
       serviceCare: appointmentData.data.serviceCare,
       address: appointmentData.data.address,
+      createdAt: timestamp
     };
 
     await addDoc(collection(db, "visits"), visitData)
-      .then(async () => {
+      .then(() => {
         next();
       })
-      .catch((error) => {
-        const err = new Error(error);
-        console.log(error);
-        return err;
+      .catch((err) => {
+        console.log(err);
+        next(err)
       });
   },
 
@@ -143,19 +151,19 @@ module.exports = {
       status: true,
     });
 
-    try {
-      const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
+    await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "bearer " + req.token,
         },
-      });
-
-      console.log(result.data);
-      return res.redirect("/");
-    } catch (error) {
-      return res.send(error);
-    }
+      })
+      .then((response) => {
+        console.log(response.data);
+        return res.render("admin/successProcessApp")
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {
@@ -174,8 +182,8 @@ module.exports = {
 
       console.log(result.data);
       return res.redirect("/");
-    } catch (error) {
-      return res.send(error);
+    } catch (err) {
+      return console.log(err);
     }
   },
 };

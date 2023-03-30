@@ -32,8 +32,8 @@ module.exports = {
       .then(async () => {
         return res.status(200).redirect("/user");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
