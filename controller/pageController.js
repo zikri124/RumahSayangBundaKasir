@@ -32,8 +32,8 @@ module.exports = {
           onGoingVisitData.push(visit);
         });
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
 
     return res.render("admin/dashboard", {
@@ -121,8 +121,8 @@ module.exports = {
         }
         queryData.push(visitDateData)
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
 
     return res.render("admin/viewReport", {

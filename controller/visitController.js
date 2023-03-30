@@ -3,7 +3,13 @@ const fetch = require("node-fetch");
 const db = firebase.firestore;
 const {
   doc,
-  updateDoc
+  updateDoc,
+  Timestamp,
+  collection,
+  getDoc,
+  getDocs,
+  query,
+  where
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions");
@@ -62,10 +68,90 @@ module.exports = {
       });
   },
 
+  createVisitForm1: async (req, res) => {
+    const date = req.query.date
+    const serviceId = req.query.serviceId
+    const serviceCare = req.query.serviceCare
+    const customersData = req.customersData
+    const sessionsData = req.sessionsData
+
+    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId));
+    await getDocs(visitQuery)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const visit = {
+            id: doc.id,
+            data: doc.data(),
+          };
+          sessionsData.push(visit);
+        });
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
+
+    console.log(sessionsData)
+
+    res.render("admin/viewAdminNewVisit", {
+      date: date,
+      serviceId: serviceId,
+      serviceCare: serviceCare,
+      customersData: customersData,
+      sessionsData: sessionsData
+    })
+  },
+
+  createVisitFromExistCustomer: async (req, res, next) => {
+    const appointmentData = {
+      customerType: "exist"
+    }
+
+    const data = {
+      serviceId: req.body.serviceId,
+      date: req.body.date,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address
+    }
+
+    appointmentData["data"] = data
+
+    req.appointmentData = appointmentData
+    next()
+  },
+
+  createVisitFromNewCustomer: async (req, res, next) => {
+    const appointmentData = {
+      type: "new customer"
+    }
+
+    const data = {
+      serviceId: req.body.serviceId,
+      date: req.body.date,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address
+    }
+
+    appointmentData["data"] = data
+
+    req.appointmentData = appointmentData
+    next()
+  },
+
   finishVisit: async (req, res) => {
     const data = req.body;
 
     const nCharge = data.nCharge;
+    const timestamp = Timestamp.now()
+    const dateClass = timestamp.toDate();
+    let hours = dateClass.getHours();
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    let minutes = dateClass.getMinutes();
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    const time = hours + "." + minutes;
 
     const visitId = req.params.visitId;
     const visitDoc = doc(db, "visits", visitId);
@@ -74,22 +160,33 @@ module.exports = {
     let chargeData = "";
     let messageTextCharge = "";
 
-    for (let i = 1; i <= nCharge; i++) {
-      let name1 = "chargeDesc" + i;
-      let name2 = "addCharge" + i;
-
-      if (data[name1] != "" || data[name1] != "") {
-        chargeData += '"' + name1 + '":"' + data[name1] + '","' + name2 + '":' + data[name2] + ",";
-
-        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
-      }
-    }
-
     charge += chargeData + '"status":"Selesai", "total":' + data.total;
 
     charge += "}";
 
     const jsonCharge = JSON.parse(charge);
+
+    const charge1 = []
+
+    for (let i = 1; i <= nCharge; i++) {
+      let name1 = "chargeDesc" + i;
+      let name2 = "addCharge" + i;
+
+      if (data[name1] != "" || data[name1] != "") {
+        const charge2 = {
+          chargeDesc: data[name1],
+          addCharge: data[name2]
+        }
+
+        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+
+        charge1.push(charge2)
+      }
+    }
+
+    jsonCharge["charge"] = charge1
+    jsonCharge["timeFinish"] = time;
+    jsonCharge["updatedAt"] = timestamp;
 
     await updateDoc(visitDoc, jsonCharge);
 

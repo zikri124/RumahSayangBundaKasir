@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const appointmentController = require("../controller/appointmentController");
+const customerController = require("../controller/customerController")
 const queryDb = require("../middleware/query");
 
 router.get(
@@ -31,6 +32,14 @@ router.get(
   router.post(
     "/process/:appId",
     queryDb.getAnAppointmentData,
+    appointmentController.processAppointmentToVisit,
+    appointmentController.updateAppointmentStatusTrue
+  );
+
+  router.post(
+    "/process/:appId/newcustomer",
+    queryDb.getAnAppointmentData,
+    customerController.addCustomer,
     appointmentController.processAppointmentToVisit,
     appointmentController.updateAppointmentStatusTrue
   );

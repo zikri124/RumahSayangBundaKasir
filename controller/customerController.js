@@ -30,7 +30,7 @@ module.exports = {
     });
   },
 
-  addCustomer: async (req, res) => {
+  addCustomer: async (req, res, next) => {
     const customerData = {
       name: req.body.name,
       numWa: req.body.wa,
@@ -39,11 +39,13 @@ module.exports = {
     };
 
     await addDoc(collection(db, "customers"), customerData)
-      .then(async () => {
-        return res.status(200).redirect("/");
+      .then(async (doc) => {
+        // return res.status(200).redirect("/");
+        req.customerId = doc.id
+        next()
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
@@ -61,8 +63,8 @@ module.exports = {
       .then(() => {
         return res.cookie("data", "").status(200).redirect("/customer");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 

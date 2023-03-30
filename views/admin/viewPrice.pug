@@ -20,7 +20,7 @@ html
             input.input.input-bordered.w-full.max-w-md(value=customerData.name type='text'  disabled)
             label.label
               span.label-text No. Hp
-            input.input.input-bordered.w-full.max-w-md(value=visitData.data.numWa type='text'  disabled)
+            input.input.input-bordered.w-full.max-w-md(value=customerData.numWa type='text'  disabled)
             label.label
               span.label-text Umur
             input.input.input-bordered.w-full.max-w-md(value=visitData.data.customerAge type='text'  disabled)
@@ -53,7 +53,7 @@ html
         form(action='/visit/finish/'+visitData.id method="post")
           input.input.hidden.input-bordered.w-full.max-w-md(name="name" value=customerData.name type='text')
           input.input.hidden.input-bordered.w-full.max-w-md(name="sex" value=customerData.sex type='text' )
-          input.input.hidden.input-bordered.w-full.max-w-md(name="numWa" value=visitData.data.numWa type='text' )
+          input.input.hidden.input-bordered.w-full.max-w-md(name="numWa" value=customerData.numWa type='text' )
           input.input.hidden.input-bordered.w-full.max-w-md(name="time" value=visitData.data.time type='text' )
           input.input.hidden.input-bordered.w-full.max-w-md(name="date" value=visitData.data.date type='text')
           input.input.hidden.input-bordered.w-full.max-w-md(name="customerAge" value=visitData.data.customerAge type='text')

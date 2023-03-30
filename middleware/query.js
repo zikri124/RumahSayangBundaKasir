@@ -6,27 +6,25 @@ const {
   query,
   where,
   getDocs,
-  addDoc,
   doc,
   limit,
   getDoc,
-  updateDoc,
   orderBy
 } = require("firebase/firestore");
 
-const commonFunctions = require("./commonFunctions")
+const commonFunctions = require("./commonFunctions");
 
-const apiUrl = process.env.apiURL
+const apiUrl = process.env.apiURL;
 
 module.exports = {
   getAnUserData: async (req, res, next) => {
-    req.userData = []
+    req.userData = [];
     next();
   },
 
   getUsersData: async (req, res, next) => {
-    req.usersData = []
-    next()
+    req.usersData = [];
+    next();
   },
 
   getCustomersData: async (req, res, next) => {
@@ -39,15 +37,15 @@ module.exports = {
         querySnapshot.forEach((doc) => {
           const customer = {
             id: doc.id,
-            data: doc.data()
-          }
+            data: doc.data(),
+          };
           customersData.push(customer);
         });
         req.customersData = customersData;
         next();
       })
-      .catch((error) => {
-        return console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
@@ -65,8 +63,8 @@ module.exports = {
 
     const customer = {
       id: customerSnap.id,
-      data: customerSnap.data()
-    }
+      data: customerSnap.data(),
+    };
 
     req.customerData = customer;
     next();
@@ -76,14 +74,14 @@ module.exports = {
     await fetch(apiUrl + "/api/alldata", {
         method: "GET",
         headers: {
-          Authorization: "bearer " + req.token
-        }
+          Authorization: "bearer " + req.token,
+        },
       })
       .then((response) => response.json())
       .then((body) => {
-        req.appointmentsData = body.appointmentsData
-        req.servicesData = body.servicesData
-        next()
+        req.appointmentsData = body.appointmentsData;
+        req.servicesData = body.servicesData;
+        next();
       })
       .catch((err) => {
         return console.log(err);
@@ -94,13 +92,13 @@ module.exports = {
     await fetch(apiUrl + "/api/appointment", {
         method: "GET",
         headers: {
-          Authorization: "bearer " + req.token
-        }
+          Authorization: "bearer " + req.token,
+        },
       })
       .then((response) => response.json())
       .then((body) => {
-        req.appointmentsData = body.appointmentsData
-        next()
+        req.appointmentsData = body.appointmentsData;
+        next();
       })
       .catch((err) => {
         return console.log(err);
@@ -108,17 +106,17 @@ module.exports = {
   },
 
   getAppointmentsDataByTime: async (req, res, next) => {
-    const timeCode = req.params.timeCode
+    const timeCode = req.params.timeCode;
     await fetch(apiUrl + "/api/appointment/filter/" + timeCode, {
         method: "GET",
         headers: {
-          Authorization: "bearer " + req.token
-        }
+          Authorization: "bearer " + req.token,
+        },
       })
       .then((response) => response.json())
       .then((body) => {
-        req.appointmentsData = body.appointmentsData
-        next()
+        req.appointmentsData = body.appointmentsData;
+        next();
       })
       .catch((err) => {
         return console.log(err);
@@ -126,41 +124,47 @@ module.exports = {
   },
 
   getAppointmentsDataToday: async (req, res, next) => {
-    const appointmentsData = req.appointmentsData
-    const todayAppointmentsData = []
+    const appointmentsData = req.appointmentsData;
+    const todayAppointmentsData = [];
 
-    const dateNow = commonFunctions.getCurrentDate().string
+    const dateNow = commonFunctions.getCurrentDate().string;
 
-    appointmentsData.forEach(appointmentData => {
+    appointmentsData.forEach((appointmentData) => {
       if (appointmentData.data.date == dateNow && appointmentData.data.status == false) {
-        todayAppointmentsData.push(appointmentData)
+        todayAppointmentsData.push(appointmentData);
       }
     });
 
-    req.appointmentsData = todayAppointmentsData
+    req.appointmentsData = todayAppointmentsData;
     next();
   },
 
   getSessions: async (req, res, next) => {
-    const appointmentId = req.params.appId
-    const date = req.query.date
-    const serviceId = req.query.serviceId
+    const date = req.query.date;
+    const serviceId = req.query.serviceId;
 
     if (date == undefined || serviceId == undefined) {
-      req.sessionsData = null
-      next()
+      req.sessionsData = null;
+      next();
     } else {
-      await fetch(apiUrl + "/api/appointment/session/" + appointmentId + "?date=" + date + "&serviceId=" + serviceId, {
+      await fetch(apiUrl + "/api/appointment/session?date=" + date + "&serviceId=" + serviceId, {
           method: "GET",
           headers: {
-            Authorization: "bearer " + req.token
-          }
+            Authorization: "bearer " + req.token,
+          },
         })
         .then((response) => response.json())
         .then((body) => {
-          req.sessionsData = body.sessionsData
-          req.serviceData = body.serviceData
-          next()
+          const bodyData = body.sessionsData;
+          const sessionsData = []
+          bodyData.forEach(session => {
+            if (session.data.status != "cancelled") {
+              sessionsData.push(session)
+            }
+          });
+
+          req.sessionsData = sessionsData
+          next();
         })
         .catch((err) => {
           return console.log(err);
@@ -169,17 +173,17 @@ module.exports = {
   },
 
   getAnAppointmentData: async (req, res, next) => {
-    const appId = req.params.appId
+    const appId = req.params.appId;
     await fetch(apiUrl + "/api/appointment/" + appId, {
         method: "GET",
         headers: {
-          Authorization: "bearer " + req.token
-        }
+          Authorization: "bearer " + req.token,
+        },
       })
       .then((response) => response.json())
       .then((body) => {
-        req.appointmentData = body.appointmentData
-        next()
+        req.appointmentData = body.appointmentData;
+        next();
       })
       .catch((err) => {
         return console.log(err);
@@ -196,42 +200,39 @@ module.exports = {
         querySnapshot.forEach((doc) => {
           const visit = {
             id: doc.id,
-            data: doc.data()
-          }
+            data: doc.data(),
+          };
 
           visitsData.push(visit);
         });
         req.visitsData = visitsData;
         next();
       })
-      .catch((error) => {
-        return console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
-  getVisitsDataByCustomer: async(req, res, next) => {
-    const customerId = req.params.customerId
-    const visitsData = []
-    
-    const visitQuery = query(
-      collection(db, "visits"),
-      where("customerId", "==", customerId)
-    );
+  getVisitsDataByCustomer: async (req, res, next) => {
+    const customerId = req.params.customerId;
+    const visitsData = [];
+
+    const visitQuery = query(collection(db, "visits"), where("customerId", "==", customerId));
 
     await getDocs(visitQuery)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           const visitData = {
             id: doc.id,
-            data: doc.data()
-          }
+            data: doc.data(),
+          };
           visitsData.push(visitData);
         });
-        req.visitsData = visitsData
-        next()
+        req.visitsData = visitsData;
+        next();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        return console.log(err);
       });
   },
 
@@ -249,8 +250,8 @@ module.exports = {
 
     const visit = {
       id: visitSnap.id,
-      data: visitSnap.data()
-    }
+      data: visitSnap.data(),
+    };
 
     req.visitData = visit;
     next();
@@ -260,13 +261,13 @@ module.exports = {
     await fetch(apiUrl + "/api/service", {
         method: "GET",
         headers: {
-          Authorization: "bearer " + req.token
-        }
+          Authorization: "bearer " + req.token,
+        },
       })
       .then((response) => response.json())
       .then((body) => {
-        req.servicesData = body.servicesData
-        next()
+        req.servicesData = body.servicesData;
+        next();
       })
       .catch((err) => {
         return console.log(err);
@@ -287,5 +288,5 @@ module.exports = {
 
     req.serviceData = serviceSnap;
     next();
-  }
+  },
 };

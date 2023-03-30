@@ -28,7 +28,7 @@ html
               th(scope="col") Tipe Layanan
               th(scope="col") Waktu
               th(scope="col") Status
-              th(scope="col") Staff Id
+              th(scope="col") Total Harga
               th(scope="col") Action
           tbody(id="myTable") 
             - let i = 1
@@ -48,7 +48,7 @@ html
                 td= data.data.serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare (${data.data.address})`
                 td= data.data.time
                 td= data.data.status
-                td= data.data.staffId
+                td= data.data.total === undefined ? "-" : `${data.data.total}`
                 td
                   label.btn(for=data.id class="btn btn-info btn-xs mx-2") detail
                   // Put this part before </body> tag                  
@@ -57,31 +57,26 @@ html
                     .modal-box
                       label.btn.btn-sm.btn-circle.absolute.right-2.top-2(for=data.id) &#x2715;
                       h3.text-lg.font-bold Detail Harga
-                      .overflow-x-auto.py-4
-                        table.table.table-zebra.w-full.border.rounded-t-lg
-                          // head
-                          thead
-                            tr
-                              th
-                              th Deskripsi
-                              th Harga
-                          tbody
-                            // row 1
-                            tr
-                              th 1
-                              td Cy Ganderton
-                              td Quality Control Specialist
-                            // row 2
-                            tr
-                              th 2
-                              td Hart Hagerty
-                              td Desktop Support Technician
-
-                            // row 3
-                            tr
-                              th 3
-                              td Brice Swyre
-                              td Tax Accountant
+                      if(data.data.charge)
+                        .overflow-x-auto.py-4
+                          table.table.table-zebra.w-full.border.rounded-t-lg
+                            // head
+                            thead
+                              tr
+                                th(scope="col") No
+                                th(scope="col") Deskripsi
+                                th(scope="col") Harga
+                            tbody
+                              - let j = 1
+                              each dataCharge in visitData
+                                if(data.data.customerId === dataCharge.data.customerId && data.id === dataCharge.id && dataCharge.data.charge)
+                                  each data in dataCharge.data.charge
+                                    tr
+                                      th= j++
+                                      td= data.chargeDesc
+                                      td= data.addCharge
+                      else 
+                        p.my-8.font-bold.text-lg.text-center Tidak ada detail harga
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js") 
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
