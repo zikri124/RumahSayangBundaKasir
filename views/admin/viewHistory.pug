@@ -38,11 +38,11 @@ html
                 each customerData in customersData
                   if data.data.customerId===customerData.id
                     td 
-                      a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name
+                      a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name === "" ? data.data.customerId : customerData.data.name
                     - break
                 each dataServices in servicesData
                   if (data.data.serviceId===dataServices.id)
-                    td= dataServices.data.name
+                    td= dataServices.data.name === "" ? dataServices.id : dataServices.data.name 
                     - break
                 td= data.data.date
                 td= data.data.serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare (${data.data.address})`
