@@ -110,7 +110,8 @@ module.exports = {
       serviceId: req.body.serviceId,
       date: req.body.date,
       serviceCare: req.body.serviceCare,
-      address: req.body.address
+      address: req.body.address,
+      time: req.body.input_time
     }
 
     appointmentData["data"] = data
@@ -128,7 +129,8 @@ module.exports = {
       serviceId: req.body.serviceId,
       date: req.body.date,
       serviceCare: req.body.serviceCare,
-      address: req.body.address
+      address: req.body.address,
+      time: req.body.input_time
     }
 
     appointmentData["data"] = data
