@@ -124,18 +124,6 @@ html
                             button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                             .modal-action
                               label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=data.id) Batal
-                  label.btn.btn-xs.btn-error(for=data.id+"delete") delete
-                  // Isi dari modal
-                  input.modal-toggle(type='checkbox' id=data.id+"delete")
-                  .modal.modal-bottom(class='sm:modal-middle')
-                    .modal-box
-                      h3.font-bold.text-lg Apakah anda yakin ingin menghapus data ini?
-                      - let id = data.id
-                      form(action="/customer/delete/"+id  method="post") 
-                        .flex.flex-row.justify-center.items-center.gap-4
-                          button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") Iya
-                          .modal-action
-                            label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=data.id+"delete") Tidak
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js")       
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
