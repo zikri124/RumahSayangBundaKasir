@@ -4,7 +4,8 @@ const {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  orderBy
 } = require("firebase/firestore");
 
 const commonFunction = require("../middleware/commonFunctions")
@@ -19,7 +20,8 @@ module.exports = {
 
     const onGoingVisitQuery = query(
       collection(db, "visits"),
-      where("status", "==", "Sedang Jalan")
+      where("status", "==", "Sedang Jalan"),
+      orderBy("createdAt")
     );
 
     await getDocs(onGoingVisitQuery)
