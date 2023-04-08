@@ -26,7 +26,7 @@ $(add_button).click(function (e) {
              <label class="label w-24"> Deskripsi </label>
              <input name=${"chargeDesc" + i} id=${"chargeDesc" + i} type="text" placeholder="Ketik Disini" class="input input-bordered w-full max-w-xs"/>
              <label class="label"> Biaya </label>
-             <input name=${"addCharge" + i} id=${"addCharge" + i} type="text" placeholder="Ketik Disini" class="input input-bordered w-full max-w-xs amount"/>
+             <input name=${"addCharge" + i} id=${"addCharge" + i} type="number" placeholder="Ketik Disini" class="input input-bordered w-full max-w-xs amount"/>
              </div>
       </div>`
     );
@@ -40,11 +40,12 @@ $(done_button).click(function (e) {
   let arrTemp = [];
   let totalAddCharge = 0;
   let tempIndex = [];
+
   if (total_fields_done < 1) {
     $(doneWrapper).append(
       `<input value=${i} name="nCharge" type="text" placeholder="Ketik Disini" class="input hidden input-bordered w-full max-w-xs"/>`,
-      `<label for='selesai' class="btn btn-md max-w-md  btn-wide mt-4 mr-4 bg-pink-500 border-none hover:bg-pink-900"  type="button">Submit</label>`,
-      `<button class="btn btn-md max-w-md btn-wide mt-4 bg-pink-500 border-none hover:bg-pink-900" onClick="window.location.reload();"  type="button">Reset</button>`
+      `<button class="btn btn-md max-w-md btn-wide mt-4 mr-4 bg-pink-500 border-none hover:bg-pink-900" type="submit">Submit</button>`,
+      `<button class="btn btn-md max-w-md btn-wide mt-4 bg-pink-500 border-none hover:bg-pink-900" onClick="window.location.reload();" type="button">Reset</button>`
     );
     for (let j = 1; j <= i; j++) {
       let check = document.getElementById("addCharge" + j);
@@ -56,6 +57,7 @@ $(done_button).click(function (e) {
         }
       }
     }
+
     for (let k = 0; k < arrTemp.length; k++) {
       totalAddCharge += arrTemp[k];
       $("#chargeDesc" + tempIndex[k]).prop("readonly", true);
@@ -84,8 +86,6 @@ function remove(index) {
     rowToRemove.remove();
   }
 }
-
-function reset() {}
 
 // function saveValue(index) {
 //   let temp = Number(document.getElementById("addCharge" + index).value);
