@@ -118,6 +118,7 @@ html
                       - session1 = appointment.data.time
                     p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
                     p=session1 + " WIB"
+                    input(hidden name="time" type="text" value=session1)
                     input(hidden name="serviceId" type="text" value=serviceId)
                     input(hidden name="date" type="date" value=date)
                     input(hidden name="serviceCare" type="text" value=serviceCare)
