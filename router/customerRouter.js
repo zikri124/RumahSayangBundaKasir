@@ -21,7 +21,7 @@ router.post("/new", customerController.addCustomer, function () {
     return res.status(200).redirect("/");
 });
 
-router.post("/update/:customerId", customerController.updateCustomer);
+router.post("/update/:customerId", queryDb.getACustomerData, customerController.updateCustomer);
 
 router.post("/delete/:customerId", customerController.deleteCustomer);
 
