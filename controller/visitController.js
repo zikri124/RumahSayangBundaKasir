@@ -186,9 +186,10 @@ module.exports = {
       }
     }
 
-    jsonCharge["charge"] = charge1
+    jsonCharge["charge"] = charge1;
     jsonCharge["timeFinish"] = time;
     jsonCharge["updatedAt"] = timestamp;
+    jsonCharge["serviceCharge"] = data.charge;
 
     await updateDoc(visitDoc, jsonCharge);
 

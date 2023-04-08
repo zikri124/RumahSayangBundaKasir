@@ -6,7 +6,8 @@ const {
   addDoc,
   updateDoc,
   QuerySnapshot,
-  deleteDoc
+  deleteDoc,
+  Timestamp
 } = require("firebase/firestore");
 
 module.exports = {
@@ -31,11 +32,14 @@ module.exports = {
   },
 
   addCustomer: async (req, res, next) => {
+    const timestamp = Timestamp.now()
+
     const customerData = {
       name: req.body.name,
       numWa: req.body.wa,
       sex: req.body.sex,
-      dateOfBirth: req.body.dateOfBirth
+      dateOfBirth: req.body.dateOfBirth,
+      createdAt: timestamp
     };
 
     await addDoc(collection(db, "customers"), customerData)
@@ -51,17 +55,36 @@ module.exports = {
 
   updateCustomer: async (req, res) => {
     const customerId = req.params.customerId;
+    const timestamp = Timestamp.now();
+    const customerOldData = req.customerData
 
     const customerData = doc(db, "customers", customerId);
 
     await updateDoc(customerData, {
-      name: req.body.name,
-      numWa: req.body.wa,
-      dateOfBirth: req.body.dateOfBirth,
-      sex: req.body.sex
-    })
-      .then(() => {
-        return res.cookie("data", "").status(200).redirect("/customer");
+        name: req.body.name,
+        numWa: req.body.wa,
+        dateOfBirth: req.body.dateOfBirth,
+        sex: req.body.sex,
+        updatedAt: timestamp
+      })
+      .then(async () => {
+        const data = {
+          time: timestamp,
+          oldname: customerOldData.data.name,
+          newname: req.body.name,
+          olddob: customerOldData.data.dateOfBirth,
+          newdob: req.body.dateOfBirth,
+          oldnumwa: customerOldData.data.numWa,
+          newnumwa: req.body.wa,
+          type: "customer"
+        }
+        await addDoc(collection(db, "logs"), data)
+          .then(() => {
+            return res.cookie("data", "").status(200).redirect("/customer");
+          })
+          .catch((err) => {
+            return console.log(err)
+          })
       })
       .catch((err) => {
         return console.log(err);

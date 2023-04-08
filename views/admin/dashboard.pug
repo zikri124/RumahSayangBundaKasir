@@ -14,6 +14,11 @@ html
       include navbar.pug
       h1.font-bold.text-2xl.text-center.my-10(class="underline underline-offset-4") Selamat Datang di Dashboard Admin Rumah Sayang Bunda
       p.text-center.mt-12.font-bold.text-xl.mx-10(class="lg:mx-0") Daftar Pasien yang Sedang Melakukan Pemeriksaan
+      .flex.justify-start.items-start.mx-10(class="lg:mx-24")
+        label.btn.btn-sm.mt-4.normal-case.gap-2(for='add-reservasi' class="bg-pink-500 border-none hover:bg-pink-900") 
+          svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24' stroke-width='1.5' stroke='currentColor')
+            path(stroke-linecap='round' stroke-linejoin='round' d='M12 4.5v15m7.5-7.5h-15')
+          |   Tambah Kunjungan
       .overflow-x-auto.mx-8.mt-8.overflow-y-auto.h-56(class="lg:mx-24")
         table.table.tableDashboard.table-compact.w-full.sortable
           thead
@@ -24,7 +29,7 @@ html
               th(scope="col") Tipe Layanan
               th(scope="col") Umur
               th(scope="col") Waktu
-              th(scope="col") Tanggal Reservasi
+              th(scope="col") Tanggal
               th Aksi
           tbody
             - let a = 1;
@@ -49,16 +54,11 @@ html
                     button(class="btn btn-secondary btn-xs mx-2") selesai
       //Tabel Pasien yang Akan Melakukan Pemeriksaan
       p.text-center.mt-8.font-bold.text-xl.mx-10(class="lg:mx-0") Daftar Pasien yang Akan Melakukan Pemeriksaan
-      .flex.justify-start.items-start.mx-10(class="lg:mx-24")
-        label.btn.btn-sm.mt-4.normal-case.gap-2(for='add-reservasi' class="bg-pink-500 border-none hover:bg-pink-900") 
-          svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24' stroke-width='1.5' stroke='currentColor')
-            path(stroke-linecap='round' stroke-linejoin='round' d='M12 4.5v15m7.5-7.5h-15')
-          |   Tambah Reservasi
       // isi dari modal  
       input#add-reservasi.modal-toggle(type='checkbox')
       .modal.modal-bottom(class='sm:modal-middle')
         .modal-box
-          h3.font-bold.text-lg.text-center Tambah Data Reservasi
+          h3.font-bold.text-lg.text-center Tambah Data Kunjungan
           form(action="/visit/new/form1" method="get")
             .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
               .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
