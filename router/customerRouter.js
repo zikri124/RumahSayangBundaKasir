@@ -17,9 +17,12 @@ router.get(
     customerController.viewAnCustomer
 );
 
-router.post("/new", customerController.addCustomer, function () {
-    return res.status(200).redirect("/");
-});
+router.post("/new",
+    customerController.addCustomer,
+    function (req, res) {
+        return res.status(200).redirect("/");
+    }
+);
 
 router.post("/update/:customerId", queryDb.getACustomerData, customerController.updateCustomer);
 
