@@ -66,9 +66,18 @@ html
             |   Biaya Tambahan   
           div(class="input_fields_wrap")
           button.btn.btn-sm.normal-case.mt-6(class="done_button bg-pink-500 border-none hover:bg-pink-900" type="button") Selesai 
+          //- label.btn.btn-sm.normal-case.mt-6(for='selesai' class="bg-pink-500 border-none hover:bg-pink-900") Selesai
           label(class="label font-bold") Total Pembayaran
           input(name="total" type="text" placeholder="Ketik Disini" value=serviceData.data.price readonly class="input total input-bordered w-full max-w-xs mt-2 font-bold")
           div(class="done_fields mb-8")
+          //- input#selesai.modal-toggle(type='checkbox')
+          //- .modal.modal-bottom(class='sm:modal-middle')
+          //-   .modal-box
+          //-     h3.font-bold.text-lg.text-center Apakah anda yakin ingin selesai?     
+          //-     .flex.flex-row.justify-center.items-center.gap-4
+          //-       button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") Iya
+          //-       .modal-action
+          //-         label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for='selesai') Tidak
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/addInputOnPrice.js")
               
