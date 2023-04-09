@@ -149,25 +149,25 @@ html
                         h3.font-bold.text-md.text-center Input Data Pasien
                         form(action="/customer/new" method="post")
                           .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
-                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                            .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Nama
-                            input.input.input-bordered.w-full.max-w-xs(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name)
-                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                              input.input.input-bordered.w-full.max-w-md(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name)
+                            .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text No. Hp
-                            input.input.input-bordered.w-full.max-w-xs(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa)
-                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                              input.input.input-bordered.w-full.max-w-md(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa)
+                            .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Jenis Kelamin
-                            select.select.select-bordered.w-full.max-w-xs(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
-                              option(disabled="" selected="") Pilih jenis kelamin
-                              option(value="Laki-Laki") Laki-Laki 
-                              option(value="Perempuan") Perempuan
-                            .flex.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+                              select.select.select-bordered.w-full.max-w-md(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
+                                option(disabled="" selected="") Pilih jenis kelamin
+                                option(value="Laki-Laki") Laki-Laki 
+                                option(value="Perempuan") Perempuan
+                            .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Tanggal Lahir
-                            input.input.input-bordered.w-full.max-w-xs(name="dateOfBirth" type='date', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.dateOfBirth)
+                              input.input.input-bordered.w-full.max-w-md(name="dateOfBirth" type='date', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.dateOfBirth)
                             .flex.flex-row.justify-center.items-center.gap-4
                                button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                                .modal-action

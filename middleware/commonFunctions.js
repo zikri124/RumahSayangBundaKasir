@@ -85,5 +85,16 @@ module.exports = {
     }
 
     return age;
+  },
+
+  checkFormatNumWa: (numberWa) => {
+    let numWa
+
+    if (numberWa.startsWith("08")) {
+      numWa = "62" + numberWa.slice(1, numberWa.length)
+      return numWa
+    } else {
+      return numberWa
+    }
   }
 };

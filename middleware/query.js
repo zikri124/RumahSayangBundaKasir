@@ -30,7 +30,7 @@ module.exports = {
   getCustomersData: async (req, res, next) => {
     const customersData = [];
 
-    const customerQuery = query(collection(db, "customers"));
+    const customerQuery = query(collection(db, "customers"), orderBy("name", "asc"));
 
     await getDocs(customerQuery)
       .then((querySnapshot) => {

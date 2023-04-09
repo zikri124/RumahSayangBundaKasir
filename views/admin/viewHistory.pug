@@ -68,6 +68,10 @@ html
                                 th(scope="col") Harga
                             tbody
                               - let j = 1
+                              tr
+                                th= j++
+                                td Layanan
+                                td= data.data.serviceCharge
                               each dataCharge in visitData
                                 if(data.data.customerId === dataCharge.data.customerId && data.id === dataCharge.id && dataCharge.data.charge)
                                   each data in dataCharge.data.charge
