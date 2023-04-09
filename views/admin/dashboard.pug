@@ -5,6 +5,7 @@ html
     title Rumah Sayang Bunda - Dashboard
     link(href="https://i.ibb.co/FbgNc2d/icon-RSB.jpg" rel="shortcut icon" type="image/png")
     link(href="/css/App.css" rel="stylesheet")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
     script(src="https://kit.fontawesome.com/8e8eb5d7ee.js" crossorigin="anonymous")
     link(rel='preconnect' href='https://fonts.googleapis.com')
     link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
@@ -135,12 +136,7 @@ html
                             select.select.select-bordered.w-full.max-w-md.overflow-y-auto(name="customerId" required="" id="customerId" onChange=`getval(${this}, ${customersData})`)
                               option(selected disabled) Pilih Customer
                               each dataCustomer in customersData
-                                if(dataCustomer.data.name === dataAppointment.data.name && dataCustomer.data.numWa === dataAppointment.data.numWa)
-                                  option(value=dataCustomer.id selected)= `${dataCustomer.data.name} - ${dataAppointment.data.numWa}`
-                                else if (dataCustomer.data.numWa === dataAppointment.data.numWa)
-                                  option(value=dataCustomer.id)= `${dataCustomer.data.name} - ${dataAppointment.data.numWa}`
-                                else 
-                                  option(value=dataCustomer.id)= `${dataCustomer.data.name}`
+                                option(value=dataCustomer.id)= `${dataCustomer.data.name}`
                             .flex.flex-row.justify-center.items-center.gap-4
                               button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                               .modal-action
@@ -152,22 +148,22 @@ html
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Nama
-                              input.input.input-bordered.w-full.max-w-md(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name)
+                              input.input.input-bordered.w-full.max-w-md(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name  required="")
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text No. Hp
-                              input.input.input-bordered.w-full.max-w-md(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa)
+                              input.input.input-bordered.w-full.max-w-md(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa  required="" )
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Jenis Kelamin
-                              select.select.select-bordered.w-full.max-w-md(name="sex" type='text', placeholder='Ketik Disini' class="lg:max-w-lg")
+                              select.select.select-bordered.w-full.max-w-md(name="sex" type='text'  class="lg:max-w-lg" required="")
                                 option(disabled="" selected="") Pilih jenis kelamin
                                 option(value="Laki-Laki") Laki-Laki 
                                 option(value="Perempuan") Perempuan
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Tanggal Lahir
-                              input.input.input-bordered.w-full.max-w-md(name="dateOfBirth" type='date', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.dateOfBirth)
+                              input.input.input-bordered.w-full.max-w-md(name="dateOfBirth" type='date', placeholder='Ketik Disini' required class="lg:max-w-lg" value=dataAppointment.data.dateOfBirth)
                             .flex.flex-row.justify-center.items-center.gap-4
                                button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                                .modal-action
