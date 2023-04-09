@@ -9,6 +9,7 @@ const {
   deleteDoc,
   Timestamp
 } = require("firebase/firestore");
+const commonFunctions = require("../middleware/commonFunctions");
 
 module.exports = {
   viewCustomers: async (req, res) => {
@@ -34,9 +35,11 @@ module.exports = {
   addCustomer: async (req, res, next) => {
     const timestamp = Timestamp.now()
 
+    const numWa = commonFunctions.checkFormatNumWa(req.body.wa)
+
     const customerData = {
-      name: req.body.name,
-      numWa: req.body.wa,
+      name: req.body.name.toUpperCase(),
+      numWa: numWa,
       sex: req.body.sex,
       dateOfBirth: req.body.dateOfBirth,
       createdAt: timestamp
@@ -56,13 +59,14 @@ module.exports = {
   updateCustomer: async (req, res) => {
     const customerId = req.params.customerId;
     const timestamp = Timestamp.now();
-    const customerOldData = req.customerData
+    const customerOldData = req.customerData;
+    const numWa = commonFunctions.checkFormatNumWa(req.body.wa)
 
     const customerData = doc(db, "customers", customerId);
 
     await updateDoc(customerData, {
-        name: req.body.name,
-        numWa: req.body.wa,
+        name: req.body.name.toUpperCase(),
+        numWa: numWa,
         dateOfBirth: req.body.dateOfBirth,
         sex: req.body.sex,
         updatedAt: timestamp

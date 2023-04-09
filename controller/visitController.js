@@ -183,7 +183,7 @@ module.exports = {
             addCharge: data[name2]
           }
   
-          messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+          messageTextCharge += `\n${data[name1]}: Rp ${data[name2]}`;
   
           charge1.push(charge2)
         }
@@ -212,12 +212,14 @@ module.exports = {
     messageText += `\n\n*Biaya*`;
     messageText += `\nLayanan: Rp ${data.charge}`;
     messageText += messageTextCharge;
-    messageText += `\n*Total: ${data.total}*`;
+    messageText += `\n*Total: Rp ${data.total}*`;
     messageText += `\n\nTerima Kasih atas kepercayaan kepada kami`;
     messageText += `\nSemoga puas dengan pelayanan kami`;
     messageText += `\n\nSalam Cinta, Rumah Sayang Bunda`;
 
-    const uri = "https://wa.me/" + data.numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
+    const numWa = commonFunctions.checkFormatNumWa(data.numWa)
+
+    const uri = "https://wa.me/" + numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
 
     const uriEncoded = encodeURI(uri);
 

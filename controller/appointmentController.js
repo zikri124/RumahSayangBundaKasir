@@ -140,8 +140,7 @@ module.exports = {
         next();
       })
       .catch((err) => {
-        console.log(err);
-        next(err)
+        return console.log(err);
       });
   },
 
@@ -159,10 +158,10 @@ module.exports = {
       })
       .then((response) => {
         console.log(response.data);
-        return res.render("admin/successProcessApp")
+        return res.render("admin/successProcessApp");
       })
       .catch((err) => {
-        console.log(err);
+        return console.log(err);
       })
   },
 
