@@ -217,7 +217,7 @@ module.exports = {
     messageText += `\nSemoga puas dengan pelayanan kami`;
     messageText += `\n\nSalam Cinta, Rumah Sayang Bunda`;
 
-    const numWa = commonFunctions.checkFormatNumWa(data.numWa)
+    const numWa = commonFunction.checkFormatNumWa(data.numWa)
 
     const uri = "https://wa.me/" + numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
 
