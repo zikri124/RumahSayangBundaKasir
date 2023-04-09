@@ -174,16 +174,21 @@ module.exports = {
       let name1 = "chargeDesc" + i;
       let name2 = "addCharge" + i;
 
-      if (data[name1] != "" || data[name1] != "") {
-        const charge2 = {
-          chargeDesc: data[name1],
-          addCharge: data[name2]
+      if (data[name1] === undefined) {
+
+      } else {
+        if (data[name1] != "" || data[name1] != null) {
+          const charge2 = {
+            chargeDesc: data[name1],
+            addCharge: data[name2]
+          }
+  
+          messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
+  
+          charge1.push(charge2)
         }
-
-        messageTextCharge += `\n${data[name1]}: ${data[name2]}`;
-
-        charge1.push(charge2)
       }
+
     }
 
     jsonCharge["charge"] = charge1;
