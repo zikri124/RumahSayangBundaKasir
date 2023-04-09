@@ -83,6 +83,9 @@ module.exports = {
     if (d > 0) {
       age += d + "hari";
     }
+    if (age == "") {
+      age = "0hari"
+    }
 
     return age;
   },
