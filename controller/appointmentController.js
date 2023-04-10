@@ -125,8 +125,6 @@ module.exports = {
       createdAt: timestamp
     };
 
-    console.log(visitData)
-
     await addDoc(collection(db, "visits"), visitData)
       .then(() => {
         next();
