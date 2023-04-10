@@ -16,7 +16,8 @@ module.exports = {
     const customersdata = req.customersData;
 
     return res.render("admin/viewCustomer", {
-      customersdata: customersdata
+      customersdata: customersdata,
+      isError: false
     });
   },
 

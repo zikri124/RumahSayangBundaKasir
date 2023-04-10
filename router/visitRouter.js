@@ -7,7 +7,7 @@ const queryDb = require("../middleware/query");
 
 router.get("/", queryDb.getVisitsData, queryDb.getCustomersData, queryDb.getServicesData, visitController.viewVisits);
 
-router.get("/cancel/:visitId", visitController.cancelVisit);
+router.post("/cancel/:visitId", visitController.cancelVisit);
 
 router.get("/finish/:visitId", queryDb.getAVisitData, visitController.viewFinishVisit);
 
@@ -24,6 +24,7 @@ router.post(
 
 router.post(
     "/new/newcustomer",
+    queryDb.isCustomerExist,
     customerController.addCustomer,
     visitController.createVisitFromNewCustomer,
     appointmentController.processAppointmentToVisit,

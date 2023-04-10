@@ -18,13 +18,14 @@ router.get(
 );
 
 router.post("/new",
+    queryDb.isCustomerExist,
     customerController.addCustomer,
     function (req, res) {
         return res.status(200).redirect("/");
     }
 );
 
-router.post("/update/:customerId", queryDb.getACustomerData, customerController.updateCustomer);
+router.post("/update/:customerId", queryDb.isCustomerExist, queryDb.getACustomerData, customerController.updateCustomer);
 
 router.post("/delete/:customerId", customerController.deleteCustomer);
 

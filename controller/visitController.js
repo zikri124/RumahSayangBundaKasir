@@ -29,12 +29,14 @@ module.exports = {
   },
 
   cancelVisit: async (req, res) => {
-    const visitId = req.params.visitid;
+    const visitId = req.params.visitId;
+    const timestamp = Timestamp.now();
 
     const visitData = doc(db, "visits", visitId);
 
     await updateDoc(visitData, {
       status: "Dibatalkan",
+      canceledAt: timestamp
     });
 
     return res.status(200).redirect("/");
