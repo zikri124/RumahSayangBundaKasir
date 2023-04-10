@@ -94,7 +94,7 @@ module.exports = {
         });
         req.customersData = customersData;
         if (isFound) {
-          res.render("admin/errorView", {
+          return res.render("admin/errorView", {
             tittle: "Pelanggan sudah terdaftar!",
             message: "Silahkan pilih dari daftar pelanggan, atau pastikan bahwa mendaftarkan pelanggan yang berbeda"
           })

@@ -15,7 +15,6 @@ router.get("/new/form1", queryDb.getCustomersData, queryDb.getSessions, visitCon
 
 router.post(
     "/new",
-    visitController.createVisitFromExistCustomer,
     appointmentController.processAppointmentToVisit,
     function (req, res) {
         return res.render("admin/successProcessApp")
@@ -26,7 +25,6 @@ router.post(
     "/new/newcustomer",
     queryDb.isCustomerExist,
     customerController.addCustomer,
-    visitController.createVisitFromNewCustomer,
     appointmentController.processAppointmentToVisit,
     function (req, res) {
         return res.render("admin/successProcessApp")

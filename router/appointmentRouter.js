@@ -31,14 +31,12 @@ router.get(
   
   router.post(
     "/process/:appId",
-    queryDb.getAnAppointmentData,
     appointmentController.processAppointmentToVisit,
     appointmentController.updateAppointmentStatusTrue
   );
 
   router.post(
     "/process/:appId/newcustomer",
-    queryDb.getAnAppointmentData,
     queryDb.isCustomerExist,
     customerController.addCustomer,
     appointmentController.processAppointmentToVisit,

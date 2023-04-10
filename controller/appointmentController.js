@@ -97,15 +97,13 @@ module.exports = {
     }
   },
 
+
+
   processAppointmentToVisit: async (req, res, next) => {
     const timestamp = Timestamp.now()
-    // const dateClass = timestamp.toDate();
-    const appointmentData = req.appointmentData;
     let customerId
 
-    if (appointmentData.type != null && appointmentData.type == "new customer") {
-      customerId = req.customerId
-    } else if (req.customerType == "new") {
+    if (req.customerType == "new") {
       customerId = req.customerId
     } else {
       customerId = req.body.customerId;
@@ -113,29 +111,21 @@ module.exports = {
     const customerData = await commonFunc.getACustomerData(customerId);
     const customerAge = commonFunc.getAge(customerData.dateOfBirth);
 
-    // let hours = dateClass.getHours();
-    // if (hours < 10) {
-    //   hours = "0" + hours;
-    // }
-    // let minutes = dateClass.getMinutes();
-    // if (minutes < 10) {
-    //   minutes = "0" + minutes;
-    // }
-    // const time = hours + "." + minutes;
-
     const visitData = {
       customerId: customerId,
       customerAge: customerAge,
-      serviceId: appointmentData.data.serviceId,
-      date: appointmentData.data.date,
-      time: appointmentData.data.time,
+      serviceId: req.body.serviceId,
+      date: req.body.date,
+      time: req.body.time || req.body.input_time,
       timeFinish: "",
       status: "Sedang Jalan",
       staffId: req.user.uid,
-      serviceCare: appointmentData.data.serviceCare,
-      address: appointmentData.data.address,
+      serviceCare: req.body.serviceCare,
+      address: req.body.address,
       createdAt: timestamp
     };
+
+    console.log(visitData)
 
     await addDoc(collection(db, "visits"), visitData)
       .then(() => {

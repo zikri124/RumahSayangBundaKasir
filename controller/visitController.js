@@ -103,44 +103,6 @@ module.exports = {
     })
   },
 
-  createVisitFromExistCustomer: async (req, res, next) => {
-    const appointmentData = {
-      customerType: "exist"
-    }
-
-    const data = {
-      serviceId: req.body.serviceId,
-      date: req.body.date,
-      serviceCare: req.body.serviceCare,
-      address: req.body.address,
-      time: req.body.input_time
-    }
-
-    appointmentData["data"] = data
-
-    req.appointmentData = appointmentData
-    next()
-  },
-
-  createVisitFromNewCustomer: async (req, res, next) => {
-    const appointmentData = {
-      type: "new customer"
-    }
-
-    const data = {
-      serviceId: req.body.serviceId,
-      date: req.body.date,
-      serviceCare: req.body.serviceCare,
-      address: req.body.address,
-      time: req.body.input_time
-    }
-
-    appointmentData["data"] = data
-
-    req.appointmentData = appointmentData
-    next()
-  },
-
   finishVisit: async (req, res) => {
     const data = req.body;
 

@@ -57,7 +57,7 @@ html
                   input.modal-toggle(type='checkbox' id=data.id+"cancel")
                   .modal.modal-bottom(class='sm:modal-middle')
                     .modal-box
-                      h3.font-bold.text-md.text-center= `Apakah anda ingin membatalkan kunjungan ${data.data.name}?`
+                      h3.font-bold.text-md.text-center= `Apakah anda ingin membatalkan kunjungan baris ke-${a}?`
                       - let id = data.id
                       form(action="/visit/cancel/"+id  method="post") 
                         .flex.flex-row.justify-center.items-center.gap-4
