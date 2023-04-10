@@ -33,10 +33,10 @@ html
               th(scope="col") Tanggal
               th Aksi
           tbody
-            - let a = 1;
+            - let a = 0;
             each data in onGoingVisitData
               tr
-                th(scope="row")=a++
+                th(scope="row")=++a
                 each customerData in customersData
                   if data.data.customerId===customerData.id
                     td 
@@ -103,10 +103,10 @@ html
               th(scope="col") Tanggal Lahir
               th Aksi
           tbody
-            - let i = 1;
+            - let i = 0;
             each dataAppointment in appointmentData
               tr
-                th(scope="row")=i++
+                th(scope="row")=++i
                 td(id="customer-appointment" value=dataAppointment.data.name)= dataAppointment.data.name
                 each dataServices in servicesData
                   if dataAppointment.data.serviceId===dataServices.id
