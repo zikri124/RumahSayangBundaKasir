@@ -53,6 +53,17 @@ html
                 td
                   a(href="/visit/finish/" + data.id)
                     button(class="btn btn-secondary btn-xs mx-2") selesai
+                  label.btn.btn-xs.btn-error.text-white(for=data.id+"cancel") cancel
+                  input.modal-toggle(type='checkbox' id=data.id+"cancel")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      h3.font-bold.text-md.text-center= `Apakah anda ingin membatalkan kunjungan ${data.data.name}?`
+                      - let id = data.id
+                      form(action="/visit/cancel/"+id  method="post") 
+                        .flex.flex-row.justify-center.items-center.gap-4
+                          button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
+                          .modal-action
+                            label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=data.id+"cancel") Tidak
       //Tabel Pasien yang Akan Melakukan Pemeriksaan
       p.text-center.mt-8.font-bold.text-xl.mx-10(class="lg:mx-0") Daftar Pasien yang Akan Melakukan Pemeriksaan
       // isi dari modal  
