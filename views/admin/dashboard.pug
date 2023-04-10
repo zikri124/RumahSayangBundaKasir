@@ -148,18 +148,28 @@ html
                               option(selected disabled) Pilih Customer
                               each dataCustomer in customersData
                                 option(value=dataCustomer.id)= `${dataCustomer.data.name}`
+                            input(type="text" name="serviceId" hidden value=dataAppointment.data.serviceId)
+                            input(type="text" name="serviceCare" hidden value=dataAppointment.data.serviceCare)
+                            input(type="text" name="date" hidden value=dataAppointment.data.date)
+                            input(type="text" name="time" hidden value=dataAppointment.data.time)
+                            input(type="text" name="address" hidden value=dataAppointment.data.address)
                             .flex.flex-row.justify-center.items-center.gap-4
                               button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
                               .modal-action
                                 label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
                         hr.my-8.mx-8
                         h3.font-bold.text-md.text-center Input Data Pasien
-                        form(action=`/process/${dataAppointment.id}/newcustomer` method="post")
+                        form(action=`/appointment/process/${dataAppointment.id}/newcustomer` method="post")
                           .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Nama
                               input.input.input-bordered.w-full.max-w-md(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name  required="")
+                            input(type="text" name="serviceId" hidden value=dataAppointment.data.serviceId)
+                            input(type="text" name="serviceCare" hidden value=dataAppointment.data.serviceCare)
+                            input(type="text" name="date" hidden value=dataAppointment.data.date)
+                            input(type="text" name="time" hidden value=dataAppointment.data.time)
+                            input(type="text" name="address" hidden value=dataAppointment.data.address)
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text No. Hp

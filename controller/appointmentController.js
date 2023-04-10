@@ -105,6 +105,8 @@ module.exports = {
 
     if (appointmentData.type != null && appointmentData.type == "new customer") {
       customerId = req.customerId
+    } else if (req.customerType == "new") {
+      customerId = req.customerId
     } else {
       customerId = req.body.customerId;
     }
