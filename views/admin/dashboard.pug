@@ -143,7 +143,7 @@ html
                                 label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
                         hr.my-8.mx-8
                         h3.font-bold.text-md.text-center Input Data Pasien
-                        form(action="/customer/new" method="post")
+                        form(action=`/process/${dataAppointment.id}/newcustomer` method="post")
                           .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
