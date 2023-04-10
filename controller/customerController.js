@@ -16,7 +16,8 @@ module.exports = {
     const customersdata = req.customersData;
 
     return res.render("admin/viewCustomer", {
-      customersdata: customersdata
+      customersdata: customersdata,
+      isError: false
     });
   },
 
@@ -49,6 +50,7 @@ module.exports = {
       .then(async (doc) => {
         // return res.status(200).redirect("/");
         req.customerId = doc.id
+        req.customerType = "new"
         next()
       })
       .catch((err) => {

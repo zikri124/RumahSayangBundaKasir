@@ -75,16 +75,24 @@ module.exports = {
     let age = "";
 
     if (y > 0) {
-      age += y + "tahun";
+      age += y + " tahun";
     }
     if (m > 0) {
-      age += m + "bulan";
+      if (age == ""){
+        age += m + " bulan";
+      } else {
+        age += ", "+ m + " bulan";
+      }
     }
     if (d > 0) {
-      age += d + "hari";
+      if (age == ""){
+        age += d + " hari";
+      } else {
+        age += ", " + d + " bulan";
+      }
     }
     if (age == "") {
-      age = "0hari"
+      age = "0 hari"
     }
 
     return age;

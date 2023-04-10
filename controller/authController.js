@@ -29,7 +29,10 @@ module.exports = {
           const token = body.token
           return res.cookie("access_token", token).redirect("/");
         } else {
-          res.redirect("/auth/signin")
+          res.render("admin/errorView", {
+            tittle: body.message,
+            message: "Silahkan masukkan email dan password dengan benar"
+          })
         }
       })
       .catch((err) => {

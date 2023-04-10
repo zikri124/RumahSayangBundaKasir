@@ -29,12 +29,14 @@ module.exports = {
   },
 
   cancelVisit: async (req, res) => {
-    const visitId = req.params.visitid;
+    const visitId = req.params.visitId;
+    const timestamp = Timestamp.now();
 
     const visitData = doc(db, "visits", visitId);
 
     await updateDoc(visitData, {
       status: "Dibatalkan",
+      canceledAt: timestamp
     });
 
     return res.status(200).redirect("/");
@@ -99,44 +101,6 @@ module.exports = {
       customersData: customersData,
       sessionsData: sessionsData
     })
-  },
-
-  createVisitFromExistCustomer: async (req, res, next) => {
-    const appointmentData = {
-      customerType: "exist"
-    }
-
-    const data = {
-      serviceId: req.body.serviceId,
-      date: req.body.date,
-      serviceCare: req.body.serviceCare,
-      address: req.body.address,
-      time: req.body.input_time
-    }
-
-    appointmentData["data"] = data
-
-    req.appointmentData = appointmentData
-    next()
-  },
-
-  createVisitFromNewCustomer: async (req, res, next) => {
-    const appointmentData = {
-      type: "new customer"
-    }
-
-    const data = {
-      serviceId: req.body.serviceId,
-      date: req.body.date,
-      serviceCare: req.body.serviceCare,
-      address: req.body.address,
-      time: req.body.input_time
-    }
-
-    appointmentData["data"] = data
-
-    req.appointmentData = appointmentData
-    next()
   },
 
   finishVisit: async (req, res) => {

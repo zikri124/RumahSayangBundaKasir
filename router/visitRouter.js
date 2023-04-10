@@ -7,7 +7,7 @@ const queryDb = require("../middleware/query");
 
 router.get("/", queryDb.getVisitsData, queryDb.getCustomersData, queryDb.getServicesData, visitController.viewVisits);
 
-router.get("/cancel/:visitId", visitController.cancelVisit);
+router.post("/cancel/:visitId", visitController.cancelVisit);
 
 router.get("/finish/:visitId", queryDb.getAVisitData, visitController.viewFinishVisit);
 
@@ -15,7 +15,6 @@ router.get("/new/form1", queryDb.getCustomersData, queryDb.getSessions, visitCon
 
 router.post(
     "/new",
-    visitController.createVisitFromExistCustomer,
     appointmentController.processAppointmentToVisit,
     function (req, res) {
         return res.render("admin/successProcessApp")
@@ -24,8 +23,8 @@ router.post(
 
 router.post(
     "/new/newcustomer",
+    queryDb.isCustomerExist,
     customerController.addCustomer,
-    visitController.createVisitFromNewCustomer,
     appointmentController.processAppointmentToVisit,
     function (req, res) {
         return res.render("admin/successProcessApp")

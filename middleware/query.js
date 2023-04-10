@@ -70,6 +70,43 @@ module.exports = {
     next();
   },
 
+  isCustomerExist: async (req, res,next) => {
+    const customersData = [];
+
+    const customerQuery = query(collection(db, "customers"), orderBy("name", "asc"));
+    const name = req.body.name.toUpperCase();
+    const dateOfBirth = req.body.dateOfBirth;
+
+    let isFound = false
+
+    await getDocs(customerQuery)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const customer = {
+            id: doc.id,
+            data: doc.data(),
+          };
+          customersData.push(customer);
+
+          if (name == customer.data.name && dateOfBirth == customer.data.dateOfBirth) {
+            isFound = true
+          }
+        });
+        req.customersData = customersData;
+        if (isFound) {
+          return res.render("admin/errorView", {
+            tittle: "Pelanggan sudah terdaftar!",
+            message: "Silahkan pilih dari daftar pelanggan, atau pastikan bahwa mendaftarkan pelanggan yang berbeda"
+          })
+        } else {
+          next();
+        }
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
+  },
+
   getServicesAndAppointmentsData: async (req, res, next) => {
     await fetch(apiUrl + "/api/alldata", {
         method: "GET",
