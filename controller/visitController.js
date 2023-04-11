@@ -79,7 +79,7 @@ module.exports = {
     const sessions = req.sessions
     const servicesData = req.servicesData
 
-    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId));
+    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId), where("status", "==", "Sedang Jalan"));
     await getDocs(visitQuery)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -89,12 +89,11 @@ module.exports = {
           };
           sessionsData.push(visit);
         });
+        console.log(sessionsData)
       })
       .catch((err) => {
         return console.log(err);
       });
-
-    console.log(sessionsData)
 
     res.render("admin/viewAdminNewVisit", {
       date: date,
@@ -150,9 +149,9 @@ module.exports = {
             chargeDesc: data[name1],
             addCharge: data[name2]
           }
-  
+
           messageTextCharge += `\n${data[name1]}: Rp ${data[name2]}`;
-  
+
           charge1.push(charge2)
         }
       }

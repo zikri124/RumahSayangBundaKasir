@@ -3,6 +3,9 @@ const db = firebase.firestore;
 const {
   collection,
   addDoc,
+  query,
+  where,
+  getDocs,
   Timestamp
 } = require("firebase/firestore");
 const axios = require("axios").default;
@@ -38,6 +41,7 @@ module.exports = {
     const address = req.query.address;
     const serviceCare = req.query.serviceCare;
     var appointmentData;
+    const sessions = req.sessions;
 
     appointmentsData.forEach((appointment) => {
       if (appointment.id == req.params.appId) {
@@ -45,18 +49,36 @@ module.exports = {
       }
     });
 
-    if (req.sessionsData == null) {
+    if (req.sessionsData == null || req.sessionsData.length == 0) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
         servicesData: servicesData,
+        sessions: sessions
       });
     } else {
       const date = req.query.date;
       const serviceId = req.query.serviceId;
       const serviceData = req.serviceData;
+      const onGoingVisits = []
+
+      const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId), where("status", "==", "Sedang Jalan"));
+      await getDocs(visitQuery)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const visit = {
+              id: doc.id,
+              data: doc.data(),
+            };
+            onGoingVisits.push(visit);
+          });
+        })
+        .catch((err) => {
+          return console.log(err);
+        });
 
       const sessionsData = req.sessionsData;
-      const sessions = req.sessions;
+      const sessionsNVisitsData = sessionsData.concat(onGoingVisits)
+      console.log(sessionsNVisitsData)
 
       return res.render("admin/viewEditReservasi", {
         sessionsData: sessionsData,

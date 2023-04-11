@@ -98,7 +98,7 @@ html
                     p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
                     p=session.data.time + " WIB"
                     each dataServices in servicesData
-                      if dataAppointment.data.serviceId===dataServices.id
+                      if appointmentData.data.serviceId===dataServices.id
                           input(hidden value=dataServices.data.name name="serviceName") 
                           - break
                     input(hidden name="time" type="text" value=session.data.time)
@@ -122,7 +122,7 @@ html
                     p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
                     p=session.data.time + " WIB"
                     each dataServices in servicesData
-                      if dataAppointment.data.serviceId===dataServices.id
+                      if appointmentData.data.serviceId===dataServices.id
                           input(hidden value=dataServices.data.name name="serviceName") 
                           - break
                     input(hidden name="time" type="text" value=session.data.time)

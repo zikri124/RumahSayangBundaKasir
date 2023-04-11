@@ -9,7 +9,8 @@ const {
   addDoc,
   doc,
   limit,
-  getDoc
+  getDoc,
+  Timestamp
 } = require("firebase/firestore");
 
 // const apiUrl = process.env.apiURL
@@ -27,7 +28,7 @@ module.exports = {
   },
 
   getCurrentDate: () => {
-    const dateClass = new Date();
+    const dateClass = Timestamp.now().toDate()
     let month = dateClass.getMonth() + 1;
     if (month < 10) {
       month = "0" + month;
@@ -78,14 +79,14 @@ module.exports = {
       age += y + " tahun";
     }
     if (m > 0) {
-      if (age == ""){
+      if (age == "") {
         age += m + " bulan";
       } else {
-        age += ", "+ m + " bulan";
+        age += ", " + m + " bulan";
       }
     }
     if (d > 0) {
-      if (age == ""){
+      if (age == "") {
         age += d + " hari";
       } else {
         age += ", " + d + " bulan";
