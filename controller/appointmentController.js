@@ -56,6 +56,7 @@ module.exports = {
       const serviceData = req.serviceData;
 
       const sessionsData = req.sessionsData;
+      const sessions = req.sessions;
 
       return res.render("admin/viewEditReservasi", {
         sessionsData: sessionsData,
@@ -66,6 +67,7 @@ module.exports = {
         serviceId: serviceId,
         address: address,
         serviceCare: serviceCare,
+        sessions: sessions
       });
     }
   },
@@ -79,6 +81,7 @@ module.exports = {
       date: req.body.date,
       serviceCare: req.body.serviceCare,
       address: req.body.address,
+      serviceName: req.body.serviceName
     };
     console.log(data);
 
@@ -96,8 +99,6 @@ module.exports = {
       return console.log(err);
     }
   },
-
-
 
   processAppointmentToVisit: async (req, res, next) => {
     const timestamp = Timestamp.now()
@@ -122,7 +123,8 @@ module.exports = {
       staffId: req.user.uid,
       serviceCare: req.body.serviceCare,
       address: req.body.address,
-      createdAt: timestamp
+      createdAt: timestamp,
+      serviceName: req.body.serviceName
     };
 
     await addDoc(collection(db, "visits"), visitData)

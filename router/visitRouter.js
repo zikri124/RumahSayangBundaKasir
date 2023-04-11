@@ -11,7 +11,12 @@ router.post("/cancel/:visitId", visitController.cancelVisit);
 
 router.get("/finish/:visitId", queryDb.getAVisitData, visitController.viewFinishVisit);
 
-router.get("/new/form1", queryDb.getCustomersData, queryDb.getSessions, visitController.createVisitForm1);
+router.get("/new/form1",
+    queryDb.getCustomersData,
+    queryDb.getSessions,
+    queryDb.getServicesData,
+    visitController.createVisitForm1
+);
 
 router.post(
     "/new",

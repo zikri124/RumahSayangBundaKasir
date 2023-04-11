@@ -76,6 +76,8 @@ module.exports = {
     const serviceCare = req.query.serviceCare
     const customersData = req.customersData
     const sessionsData = req.sessionsData
+    const sessions = req.sessions
+    const servicesData = req.servicesData
 
     const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId));
     await getDocs(visitQuery)
@@ -99,7 +101,9 @@ module.exports = {
       serviceId: serviceId,
       serviceCare: serviceCare,
       customersData: customersData,
-      sessionsData: sessionsData
+      sessionsData: sessionsData,
+      sessions: sessions,
+      servicesData: servicesData
     })
   },
 

@@ -209,6 +209,23 @@ module.exports = {
     }
   },
 
+  getSessionsTime: async (req, res, next) => {
+    await fetch(apiUrl + "/session", {
+      method: "GET",
+      headers: {
+        Authorization: "bearer " + req.token,
+      },
+    })
+    .then((response) => response.json())
+    .then((body) => {
+      req.sessions = body.sessions;
+      next();
+    })
+    .catch((err) => {
+      return console.log(err);
+    });
+  },
+
   getAnAppointmentData: async (req, res, next) => {
     const appId = req.params.appId;
     await fetch(apiUrl + "/api/appointment/" + appId, {
