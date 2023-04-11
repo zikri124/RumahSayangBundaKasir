@@ -22,6 +22,10 @@ html
             option(disabled='' selected='') Pilih Customer
             each dataCustomer in customersData
               option(value=dataCustomer.id)= dataCustomer.data.name 
+        each dataServices in servicesData
+          if serviceId===dataServices.id
+            input(hidden value=dataServices.data.name name="serviceName") 
+            - break
         input.hidden(name="serviceId" value=serviceId)
         input.hidden(name="date" value=date)
         input.hidden(name="serviceCare" value=serviceCare)
@@ -29,20 +33,19 @@ html
         .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
           label.label
             span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
-          - let sessions = ["08:00", "09:30", "11:00", "13:00", "14:30", "16:00"]
           - let telahReservasi = " - Telah Direservasi"
           select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
             option(disabled='' selected='' value="") Pilih jam reservasi
-            each session1 in sessions
+            each session in sessions
               - let pilih = false 
               each datasessionss in sessionsData
-                if (datasessionss.data.time===session1)
+                if (datasessionss.data.time===session.data.time && session.data.amount === 2 )
                   - pilih = true
                   - break
               if(!pilih)
-                option=session1
+                option=session.data.time
               else 
-                option(disabled)=session1 + telahReservasi
+                option(disabled)=session.data.time + telahReservasi
         .flex.flex-row.justify-center.items-center.gap-4
           button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
           .modal-action
@@ -56,6 +59,10 @@ html
           label.label
             span.label-text Nama
           input.input.input-bordered.w-full.max-w-xs(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" )
+        each dataServices in servicesData
+          if serviceId===dataServices.id
+            input(hidden value=dataServices.data.name name="serviceName") 
+            - break
         input.hidden(name="serviceId" value=serviceId)
         input.hidden(name="date" value=date)
         input.hidden(name="serviceCare" value=serviceCare)
@@ -67,20 +74,19 @@ html
         .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
           label.label
             span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
-          - let sessionsDataInNewCustomer = ["08:00", "09:30", "11:00", "13:00", "14:30", "16:00"]
           - let telahDipilih = " - Telah Direservasi"
           select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
             option(disabled='' selected='' value="") Pilih jam reservasi
-            each session1 in sessionsDataInNewCustomer
+            each session in sessions
               - let pilih = false 
               each datasessionss in sessionsData
-                if (datasessionss.data.time===session1)
+                if (datasessionss.data.time===session.data.time && session.data.amount === 2)
                   - pilih = true
                   - break
               if(!pilih)
-                option=session1
+                option=session.data.time
               else 
-                option(disabled)=session1 + telahDipilih
+                option(disabled)=session.data.time + telahDipilih
         .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
           label.label
             span.label-text Jenis Kelamin
