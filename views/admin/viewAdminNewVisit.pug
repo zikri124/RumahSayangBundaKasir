@@ -36,16 +36,34 @@ html
           - let telahReservasi = " - Telah Direservasi"
           select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
             option(disabled='' selected='' value="") Pilih jam reservasi
-            each session in sessions
-              - let pilih = false 
-              each datasessionss in sessionsData
-                if (datasessionss.data.time===session.data.time && session.data.amount === 2 )
-                  - pilih = true
-                  - break
-              if(!pilih)
-                option=session.data.time
-              else 
-                option(disabled)=session.data.time + telahReservasi
+              - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ")
+                each session in sessions
+                  - let pilih = false
+                  - let tempAmount = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount++;
+                      if(tempAmount == 2)
+                        - pilih = true
+                        - break
+                  - if(!pilih)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
+              - else 
+                each session in sessions
+                  - let pilih = false
+                  - let tempAmount = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount++;
+                      if(tempAmount == 1)
+                        - pilih = true
+                        - break
+                  - if(!pilih)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
         .flex.flex-row.justify-center.items-center.gap-4
           button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
           .modal-action
@@ -74,19 +92,37 @@ html
         .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
           label.label
             span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
-          - let telahDipilih = " - Telah Direservasi"
+          - let telahReservasi2 = " - Telah Direservasi"
           select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
             option(disabled='' selected='' value="") Pilih jam reservasi
-            each session in sessions
-              - let pilih = false 
-              each datasessionss in sessionsData
-                if (datasessionss.data.time===session.data.time && session.data.amount === 2)
-                  - pilih = true
-                  - break
-              if(!pilih)
-                option=session.data.time
-              else 
-                option(disabled)=session.data.time + telahDipilih
+              - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ")
+                each session in sessions
+                  - let pilih2 = false
+                  - let tempAmount2 = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount2++;
+                      if(tempAmount2 == 2)
+                        - pilih2 = true
+                        - break
+                  - if(!pilih2)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
+              - else 
+                each session in sessions
+                  - let pilih2 = false
+                  - let tempAmount2 = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount2++;
+                      if(tempAmount2 == 1)
+                        - pilih2 = true
+                        - break
+                  - if(!pilih2)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
         .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
           label.label
             span.label-text Jenis Kelamin
