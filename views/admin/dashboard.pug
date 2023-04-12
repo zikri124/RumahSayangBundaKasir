@@ -148,6 +148,10 @@ html
                               option(selected disabled) Pilih Customer
                               each dataCustomer in customersData
                                 option(value=dataCustomer.id)= `${dataCustomer.data.name}`
+                            each dataServices in servicesData
+                              if dataAppointment.data.serviceId===dataServices.id
+                                input(hidden value=dataServices.data.name name="serviceName") 
+                                - break
                             input(type="text" name="serviceId" hidden value=dataAppointment.data.serviceId)
                             input(type="text" name="serviceCare" hidden value=dataAppointment.data.serviceCare)
                             input(type="text" name="date" hidden value=dataAppointment.data.date)
@@ -165,6 +169,10 @@ html
                               label.label
                                 span.label-text Nama
                               input.input.input-bordered.w-full.max-w-md(name="name" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.name  required="")
+                            each dataServices in servicesData
+                              if dataAppointment.data.serviceId===dataServices.id
+                                input(hidden type="text" value=dataServices.data.name name="serviceName") 
+                                - break
                             input(type="text" name="serviceId" hidden value=dataAppointment.data.serviceId)
                             input(type="text" name="serviceCare" hidden value=dataAppointment.data.serviceCare)
                             input(type="text" name="date" hidden value=dataAppointment.data.date)

@@ -2,17 +2,10 @@ const firebase = require("../firebase");
 const fetch = require("node-fetch")
 const db = firebase.firestore;
 const {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
   doc,
-  limit,
-  getDoc
+  getDoc,
+  Timestamp
 } = require("firebase/firestore");
-
-// const apiUrl = process.env.apiURL
 
 module.exports = {
   getACustomerData: async (customerId) => {
@@ -27,7 +20,7 @@ module.exports = {
   },
 
   getCurrentDate: () => {
-    const dateClass = new Date();
+    const dateClass = Timestamp.now().toDate()
     let month = dateClass.getMonth() + 1;
     if (month < 10) {
       month = "0" + month;
@@ -48,7 +41,7 @@ module.exports = {
   },
 
   getAge: (customerDOB) => {
-    const date = new Date();
+    const date = Timestamp.now().toDate()
     const dateToCalculate = new Date(customerDOB);
 
     var month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -78,14 +71,14 @@ module.exports = {
       age += y + " tahun";
     }
     if (m > 0) {
-      if (age == ""){
+      if (age == "") {
         age += m + " bulan";
       } else {
-        age += ", "+ m + " bulan";
+        age += ", " + m + " bulan";
       }
     }
     if (d > 0) {
-      if (age == ""){
+      if (age == "") {
         age += d + " hari";
       } else {
         age += ", " + d + " bulan";

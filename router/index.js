@@ -1,15 +1,16 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express")
+const router = express.Router()
 
 const {
   checkAuth
-} = require("../middleware");
+} = require("../middleware")
 
-const authRouter = require("./authRouter");
+const authRouter = require("./authRouter")
 const appointmentRouter = require("./appointmentRouter")
 const customerRouter = require("./customerRouter")
 const serviceRouter = require("./serviceRouter")
 const visitRouter = require("./visitRouter")
+const apiRouter = require("./apiRouter")
 
 const pageController = require("../controller/pageController")
 const queryDb = require("../middleware/query");
@@ -29,7 +30,9 @@ router.get(
 
 router.get("/report", checkAuth, pageController.viewStatisticPage)
 
-router.use("/auth", authRouter);
+router.use("/auth", authRouter)
+
+router.use("/api", apiRouter)
 
 router.use("/appointment", checkAuth, appointmentRouter)
 
@@ -37,6 +40,6 @@ router.use("/customer", checkAuth, customerRouter)
 
 router.use("/service", checkAuth, serviceRouter)
 
-router.use("/visit", checkAuth, visitRouter);
+router.use("/visit", checkAuth, visitRouter)
 
 module.exports = router;

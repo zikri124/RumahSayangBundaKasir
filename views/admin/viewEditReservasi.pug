@@ -70,22 +70,24 @@ html
           input.input.input-bordered.w-full.max-w-xs.text-black(name='address' id="address" required="" type='text' placeholder="Ketik Disini" class="lg:max-w-lg md:max-w-md" value=addressEdit)
           .flex.flex-col.justify-start.w-full.items-center(class="md:justify-center lg:max-w-lg md:max-w-md")
             button.btn(class="bg-pink-500 border-none hover:bg-pink-900 w-full max-w-xs mt-4", id="submit-edit" type="submit") Pilih sesi
-      - let sessions = ["08:00", "09:30", "11:00", "13:00", "14:30", "16:00"]
       - let telahReservasi = " - Telah Direservasi"
       - let i = 1  
       .card.w-0
         input(hidden name="address" type="text" id="address-edit" value=address)
       .flex.flex-col.my-4.px-10.gap-8.justify-center.items-center(class="md:flex-row md:justify-center md:px-40 md:flex-wrap")
-        each session1 in sessions
+        each session in sessions
           - let pilih = false
+          - let tempAmount = 0
           - if(!sessionsData)
             div
           - else
             each datasessionss in sessionsData
-              -if (datasessionss.data.time===session1)
-                - pilih = true
-                - break
-            - if (appointmentData.data.time === session1 && appointmentData.data.serviceId === serviceId)
+              -if (datasessionss.data.time===session.data.time)
+                - tempAmount++;
+                - if(tempAmount === 2)
+                  - pilih = true
+                  - break
+            - if (appointmentData.data.time === session.data.time && appointmentData.data.serviceId === serviceId)
               .card.w-80.max-w-lg.bg-pink-500.shadow-2xl.text-white
                 form(action="/appointment/update/"+ appointmentData.id method="post")
                   .card-body.items-center.text-center
@@ -94,11 +96,15 @@ html
                         h2.card-title= `Sesi ${i++} ${data.data.name}`
                         - break     
                     p=date
-                    - if (session1 === NULL)
-                      - session1 = appointment.data.time
+                    - if (session.data.time === NULL)
+                      - session.data.time = appointment.data.time
                     p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
-                    p=session1 + " WIB"
-                    input(hidden name="time" type="text" value=session1)
+                    p=session.data.time + " WIB"
+                    each dataServices in servicesData
+                      if appointmentData.data.serviceId===dataServices.id
+                          input(hidden value=dataServices.data.name name="serviceName") 
+                          - break
+                    input(hidden name="time" type="text" value=session.data.time)
                     input(hidden name="serviceId" type="text" value=serviceId)
                     input(hidden name="date" type="date" value=date)
                     input(hidden name="serviceCare" type="text" value=serviceCare)
@@ -114,11 +120,15 @@ html
                         h2.card-title= `Sesi ${i++} ${data.data.name}`
                         - break     
                     p=date
-                    - if (session1 === NULL)
-                      - session1 = appointment.data.time
+                    - if (session.data.time === NULL)
+                      - session.data.time = appointment.data.time
                     p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
-                    p=session1 + " WIB"
-                    input(hidden name="time" type="text" value=session1)
+                    p=session.data.time + " WIB"
+                    each dataServices in servicesData
+                      if appointmentData.data.serviceId===dataServices.id
+                          input(hidden value=dataServices.data.name name="serviceName") 
+                          - break
+                    input(hidden name="time" type="text" value=session.data.time)
                     input(hidden name="serviceId" type="text" value=serviceId)
                     input(hidden name="date" type="date" value=date)
                     input(hidden name="serviceCare" type="text" value=serviceCare)
@@ -133,7 +143,7 @@ html
                       h2.card-title= `Sesi ${i++} ${data.data.name}`
                       - break 
                   p=date
-                  p=session1 + " WIB " + telahReservasi
+                  p=session.data.time + " WIB " + telahReservasi
                   .card-actions.justify-end
                     button.btn.btn-primary(disabled class="bg-pink-500 border-none hover:bg-pink-900 w-full mt-10") Pilih Sesi
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js")

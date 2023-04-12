@@ -76,8 +76,10 @@ module.exports = {
     const serviceCare = req.query.serviceCare
     const customersData = req.customersData
     const sessionsData = req.sessionsData
+    const sessions = req.sessions
+    const servicesData = req.servicesData
 
-    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId));
+    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId), where("status", "==", "Sedang Jalan"));
     await getDocs(visitQuery)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -87,19 +89,20 @@ module.exports = {
           };
           sessionsData.push(visit);
         });
+        console.log(sessionsData)
       })
       .catch((err) => {
         return console.log(err);
       });
-
-    console.log(sessionsData)
 
     res.render("admin/viewAdminNewVisit", {
       date: date,
       serviceId: serviceId,
       serviceCare: serviceCare,
       customersData: customersData,
-      sessionsData: sessionsData
+      sessionsData: sessionsData,
+      sessions: sessions,
+      servicesData: servicesData
     })
   },
 
@@ -146,9 +149,9 @@ module.exports = {
             chargeDesc: data[name1],
             addCharge: data[name2]
           }
-  
+
           messageTextCharge += `\n${data[name1]}: Rp ${data[name2]}`;
-  
+
           charge1.push(charge2)
         }
       }

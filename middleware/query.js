@@ -70,7 +70,7 @@ module.exports = {
     next();
   },
 
-  isCustomerExist: async (req, res,next) => {
+  isCustomerExist: async (req, res, next) => {
     const customersData = [];
 
     const customerQuery = query(collection(db, "customers"), orderBy("name", "asc"));
@@ -209,6 +209,45 @@ module.exports = {
     }
   },
 
+  getSessionsTime: async (req, res, next) => {
+    await fetch(apiUrl + "/api/session", {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        req.sessions = body.sessions;
+        next();
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
+  },
+
+  getSessionAndTime: async (req, res, next) => {
+    const date = req.query.date;
+    const serviceId = req.query.serviceId;
+
+    await fetch(apiUrl + "/api/sessionsntime?date=" + date + "&serviceId=" + serviceId, {
+        method: "GET",
+        headers: {
+          Authorization: "bearer " + req.token,
+        },
+      })
+      .then((response) => response.json())
+      .then((body) => {
+        req.sessions = body.sessions;
+        req.sessionsData = body.sessionsData;
+        console.log(body.sessions)
+        next();
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
+  },
+
   getAnAppointmentData: async (req, res, next) => {
     const appId = req.params.appId;
     await fetch(apiUrl + "/api/appointment/" + appId, {
@@ -267,6 +306,29 @@ module.exports = {
         });
         req.visitsData = visitsData;
         next();
+      })
+      .catch((err) => {
+        return console.log(err);
+      });
+  },
+
+  getOnGoingVisitsData: async (req, res, next) => {
+    const date = req.query.date;
+    const serviceId = req.query.serviceId;
+    const onGoingVisits = []
+
+    const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId), where("status", "==", "Sedang Jalan"));
+    await getDocs(visitQuery)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const visit = {
+            id: doc.id,
+            data: doc.data(),
+          };
+          onGoingVisits.push(visit);
+        });
+        req.onGoingVisits = onGoingVisits
+        next()
       })
       .catch((err) => {
         return console.log(err);
