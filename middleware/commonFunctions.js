@@ -2,18 +2,10 @@ const firebase = require("../firebase");
 const fetch = require("node-fetch")
 const db = firebase.firestore;
 const {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
   doc,
-  limit,
   getDoc,
   Timestamp
 } = require("firebase/firestore");
-
-// const apiUrl = process.env.apiURL
 
 module.exports = {
   getACustomerData: async (customerId) => {
@@ -49,7 +41,7 @@ module.exports = {
   },
 
   getAge: (customerDOB) => {
-    const date = new Date();
+    const date = Timestamp.now().toDate()
     const dateToCalculate = new Date(customerDOB);
 
     var month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
