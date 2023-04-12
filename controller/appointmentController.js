@@ -49,7 +49,7 @@ module.exports = {
       }
     });
 
-    if (req.sessionsData == null || req.sessionsData.length == 0) {
+    if (req.sessionsData == null || req.query.serviceId == undefined || req.query.date == undefined) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
         servicesData: servicesData,
