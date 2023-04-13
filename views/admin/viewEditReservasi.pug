@@ -75,77 +75,153 @@ html
       .card.w-0
         input(hidden name="address" type="text" id="address-edit" value=address)
       .flex.flex-col.my-4.px-10.gap-8.justify-center.items-center(class="md:flex-row md:justify-center md:px-40 md:flex-wrap")
-        each session in sessions
-          - let pilih = false
-          - let tempAmount = 0
-          - if(!sessionsData)
-            div
-          - else
-            each datasessionss in sessionsData
-              -if (datasessionss.data.time===session.data.time)
-                - tempAmount++;
-                - if(tempAmount === 2)
-                  - pilih = true
-                  - break
-            - if (appointmentData.data.time === session.data.time && appointmentData.data.serviceId === serviceId)
-              .card.w-80.max-w-lg.bg-pink-500.shadow-2xl.text-white
-                form(action="/appointment/update/"+ appointmentData.id method="post")
-                  .card-body.items-center.text-center
-                    each data in servicesData 
-                      if(data.id === appointmentData.data.serviceId ) 
-                        h2.card-title= `Sesi ${i++} ${data.data.name}`
-                        - break     
-                    p=date
-                    - if (session.data.time === NULL)
-                      - session.data.time = appointment.data.time
-                    p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
-                    p=session.data.time + " WIB"
-                    each dataServices in servicesData
-                      if appointmentData.data.serviceId===dataServices.id
-                          input(hidden value=dataServices.data.name name="serviceName") 
-                          - break
-                    input(hidden name="time" type="text" value=session.data.time)
-                    input(hidden name="serviceId" type="text" value=serviceId)
-                    input(hidden name="date" type="date" value=date)
-                    input(hidden name="serviceCare" type="text" value=serviceCare)
-                    input(hidden name="address" type="text" value=address)
-                    .card-actions.justify-end
-                      button.btn.btn-primary(type="submit" class="bg-pink-200 text-black border-none hover:bg-pink-400") Pilih Sesi
-            - else if(!pilih)
-              .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
-                form(action="/appointment/update/"+ appointmentData.id method="post")
-                  .card-body.items-center.text-center
-                    each data in servicesData 
-                      if(data.id === serviceId ) 
-                        h2.card-title= `Sesi ${i++} ${data.data.name}`
-                        - break     
-                    p=date
-                    - if (session.data.time === NULL)
-                      - session.data.time = appointment.data.time
-                    p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
-                    p=session.data.time + " WIB"
-                    each dataServices in servicesData
-                      if appointmentData.data.serviceId===dataServices.id
-                          input(hidden value=dataServices.data.name name="serviceName") 
-                          - break
-                    input(hidden name="time" type="text" value=session.data.time)
-                    input(hidden name="serviceId" type="text" value=serviceId)
-                    input(hidden name="date" type="date" value=date)
-                    input(hidden name="serviceCare" type="text" value=serviceCare)
-                    input(hidden name="address" type="text" value=address)
-                    .card-actions.justify-end
-                      button.btn.btn-primary(type="submit" class="bg-pink-500 border-none hover:bg-pink-900") Pilih Sesi
-            - else 
-              .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
-                .card-body.items-center.text-center
-                  each data in servicesData 
-                    if(data.id === serviceId ) 
-                      h2.card-title= `Sesi ${i++} ${data.data.name}`
-                      - break 
-                  p=date
-                  p=session.data.time + " WIB " + telahReservasi
-                  .card-actions.justify-end
-                    button.btn.btn-primary(disabled class="bg-pink-500 border-none hover:bg-pink-900 w-full mt-10") Pilih Sesi
+        - if(serviceId === "fVRk8S4YUjpohVYVIWq1" && serviceCare === "homecare")
+          p.my-10.font-bold.text-xl.text-center Layanan Baby spa hanya bisa dilakukan di klinik saja
+        - else 
+          - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "rdz21LiCNxTwhpcKxXyq")
+            each session in sessions
+              - let pilih = false
+              - let tempAmount = 0
+              if(!sessionsData)
+                div 
+              else 
+                each datasessionss in sessionsData
+                  -if (datasessionss.data.time===session.data.time)
+                    - tempAmount++;
+                    - if(tempAmount === 2)
+                      - pilih = true
+                      - break
+                - if (appointmentData.data.time === session.data.time && appointmentData.data.serviceId === serviceId)
+                  .card.w-80.max-w-lg.bg-pink-500.shadow-2xl.text-white
+                    form(action="/appointment/update/"+ appointmentData.id method="post")
+                      .card-body.items-center.text-center
+                        each data in servicesData 
+                          if(data.id === appointmentData.data.serviceId ) 
+                            h2.card-title= `Sesi ${i++} ${data.data.name}`
+                            - break     
+                        p=date
+                        - if (session.data.time === NULL)
+                          - session.data.time = appointment.data.time
+                        p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
+                        p=session.data.time + " WIB"
+                        each dataServices in servicesData
+                          if appointmentData.data.serviceId===dataServices.id
+                            input(hidden value=dataServices.data.name name="serviceName") 
+                            - break
+                        input(hidden name="time" type="text" value=session.data.time)
+                        input(hidden name="serviceId" type="text" value=serviceId)
+                        input(hidden name="date" type="date" value=date)
+                        input(hidden name="serviceCare" type="text" value=serviceCare)
+                        input(hidden name="address" type="text" value=address)
+                        .card-actions.justify-end
+                          button.btn.btn-primary(type="submit" class="bg-pink-200 text-black border-none hover:bg-pink-400") Pilih Sesi
+                - else if(!pilih)
+                  .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
+                    form(action="/appointment/update/"+ appointmentData.id method="post")
+                      .card-body.items-center.text-center
+                        each data in servicesData 
+                          if(data.id === serviceId ) 
+                            h2.card-title= `Sesi ${i++} ${data.data.name}`
+                            - break     
+                        p=date
+                        - if (session.data.time === NULL)
+                          - session.data.time = appointment.data.time
+                        p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
+                        p=session.data.time + " WIB"
+                        each dataServices in servicesData
+                          - if(appointmentData.data.serviceId===dataServices.id)
+                            input(hidden value=dataServices.data.name name="serviceName") 
+                            - break
+                        input(hidden name="time" type="text" value=session.data.time)
+                        input(hidden name="serviceId" type="text" value=serviceId)
+                        input(hidden name="date" type="date" value=date)
+                        input(hidden name="serviceCare" type="text" value=serviceCare)
+                        input(hidden name="address" type="text" value=address)
+                        .card-actions.justify-end
+                          button.btn.btn-primary(type="submit" class="bg-pink-500 border-none hover:bg-pink-900") Pilih Sesi
+                - else 
+                  .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
+                    .card-body.items-center.text-center
+                      each data in servicesData 
+                        if(data.id === serviceId ) 
+                          h2.card-title= `Sesi ${i++} ${data.data.name}`
+                          - break 
+                      p=date
+                      p=session.data.time + " WIB " + telahReservasi
+                      .card-actions.justify-end
+                        button.btn.btn-primary(disabled class="bg-pink-500 border-none hover:bg-pink-900 w-full mt-10") Pilih Sesi
+          - else 
+            each session in sessions
+              - let pilih = false
+              - let tempAmount = 0
+              if(!sessionsData)
+                div 
+              else 
+                each datasessionss in sessionsData
+                  -if (datasessionss.data.time===session.data.time)
+                    - tempAmount++;
+                    - if(tempAmount === 1)
+                      - pilih = true
+                      - break
+                - if (appointmentData.data.time === session.data.time && appointmentData.data.serviceId === serviceId)
+                  .card.w-80.max-w-lg.bg-pink-500.shadow-2xl.text-white
+                    form(action="/appointment/update/"+ appointmentData.id method="post")
+                      .card-body.items-center.text-center
+                        each data in servicesData 
+                          if(data.id === appointmentData.data.serviceId ) 
+                            h2.card-title= `Sesi ${i++} ${data.data.name}`
+                            - break     
+                        p=date
+                        - if (session.data.time === NULL)
+                          - session.data.time = appointment.data.time
+                        p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
+                        p=session.data.time + " WIB"
+                        each dataServices in servicesData
+                          if appointmentData.data.serviceId===dataServices.id
+                            input(hidden value=dataServices.data.name name="serviceName") 
+                            - break
+                        input(hidden name="time" type="text" value=session.data.time)
+                        input(hidden name="serviceId" type="text" value=serviceId)
+                        input(hidden name="date" type="date" value=date)
+                        input(hidden name="serviceCare" type="text" value=serviceCare)
+                        input(hidden name="address" type="text" value=address)
+                        .card-actions.justify-end
+                          button.btn.btn-primary(type="submit" class="bg-pink-200 text-black border-none hover:bg-pink-400") Pilih Sesi
+                - else if(!pilih)
+                  .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
+                    form(action="/appointment/update/"+ appointmentData.id method="post")
+                      .card-body.items-center.text-center
+                        each data in servicesData 
+                          if(data.id === serviceId ) 
+                            h2.card-title= `Sesi ${i++} ${data.data.name}`
+                            - break     
+                        p=date
+                        - if (session.data.time === NULL)
+                          - session.data.time = appointment.data.time
+                        p=serviceCare === "klinik" ? "Datang ke Klinik" : `Homecare`
+                        p=session.data.time + " WIB"
+                        each dataServices in servicesData
+                          - if(appointmentData.data.serviceId===dataServices.id)
+                            input(hidden value=dataServices.data.name name="serviceName") 
+                            - break
+                        input(hidden name="time" type="text" value=session.data.time)
+                        input(hidden name="serviceId" type="text" value=serviceId)
+                        input(hidden name="date" type="date" value=date)
+                        input(hidden name="serviceCare" type="text" value=serviceCare)
+                        input(hidden name="address" type="text" value=address)
+                        .card-actions.justify-end
+                          button.btn.btn-primary(type="submit" class="bg-pink-500 border-none hover:bg-pink-900") Pilih Sesi
+                - else 
+                  .card.w-80.max-w-lg.bg-pink-100.shadow-2xl.text-black
+                    .card-body.items-center.text-center
+                      each data in servicesData 
+                        if(data.id === serviceId ) 
+                          h2.card-title= `Sesi ${i++} ${data.data.name}`
+                          - break 
+                      p=date
+                      p=session.data.time + " WIB " + telahReservasi
+                      .card-actions.justify-end
+                        button.btn.btn-primary(disabled class="bg-pink-500 border-none hover:bg-pink-900 w-full mt-10") Pilih Sesi
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js")
     script(src="/js/home.js")

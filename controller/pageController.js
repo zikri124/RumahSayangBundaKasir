@@ -52,7 +52,7 @@ module.exports = {
     const servicesData = req.servicesData
     const queryData = []
     const currentDate = commonFunction.getCurrentDate()
-    const date2 = new Date()
+    const date2 = Timestamp.now().toDate()
     date2.setDate(date2.getDate() - 14)
 
     let month = date2.getMonth() + 1;
