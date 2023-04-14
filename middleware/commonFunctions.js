@@ -21,7 +21,7 @@ module.exports = {
 
   getCurrentDate: () => {
     const dateClass = Timestamp.now().toDate()
-    dateClass.setTime(dateClass.getTime() + (07 * 60 * 60 * 1000))
+    dateClass.setTime(dateClass.getTime() + (0 * 60 * 60 * 1000))
     let month = dateClass.getMonth() + 1;
     if (month < 10) {
       month = "0" + month;
