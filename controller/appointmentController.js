@@ -49,6 +49,13 @@ module.exports = {
       }
     });
 
+    if (appointmentData.data.status != false) {
+      return res.render("admin/errorView", {
+        tittle: "Tidak Bisa Mengubah Reservasi",
+        message: "Reservasi yang telah di proses atau dibatalkan tidak bisa di ubah"
+      })
+    }
+
     if (req.sessionsData == null || req.query.serviceId == undefined || req.query.date == undefined) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
@@ -115,8 +122,15 @@ module.exports = {
         },
       });
 
-      console.log(result.data);
-      return res.redirect("/appointment");
+      if (result.success) {
+        console.log(result.data);
+        return res.redirect("/appointment");
+      } else {
+        return res.render("admin/errorView", {
+          tittle: "Tidak Bisa Mengubah Reservasi",
+          message: result.message
+        })
+      }
     } catch (err) {
       return console.log(err);
     }
