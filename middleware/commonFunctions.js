@@ -33,7 +33,7 @@ module.exports = {
     const dateNow = dateClass.getFullYear() + "-" + month + "-" + date;
 
     console.log(dateNow)
-    console.log(dateClass.getHours() + ":" + dateClass.getMinutes() + ":" + dateClass.getSeconds())
+    console.log((dateClass.getHours() + 7) + ":" + dateClass.getMinutes() + ":" + dateClass.getSeconds())
 
     return {
       string: dateNow,
