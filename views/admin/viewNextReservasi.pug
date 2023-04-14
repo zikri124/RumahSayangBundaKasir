@@ -56,19 +56,14 @@ html
               th(scope="col") Tanggal Reservasi
               th(scope="col") Waktu
               th(scope="col") Tanggal Lahir
+              th(scope="col") Aksi
           tbody(id="myTable")
             - let i = 1 
             each data in appointmentsData
               tr
                 th= i++
                 td= data.data.name
-                each dataServices in servicesData
-                  if data.data.serviceId===dataServices.id
-                    td= dataServices.data.name
-                    - break
-                  else if dataServices.id === null
-                    td= "-"
-                    - break
+                td= data.data.serviceName
                 if data.data.status===""
                   td - 
                 else if data.data.status===true
@@ -81,6 +76,22 @@ html
                 td= data.data.date
                 td= data.data.time
                 td= data.data.dateOfBirth
+                td
+                  - if(data.data.status===false)
+                    // The button to open modal
+                    label.btn.btn-warning.mr-2.btn-xs.btn-danger.text-white(for=data.id+"update") edit
+                    // Isi dari modal
+                    input.modal-toggle(type='checkbox' id=data.id+"update")
+                    .modal.modal-bottom(class='sm:modal-middle')
+                      .modal-box
+                        h3(class="text-md text-center font-bold")=`Apakah anda ingin mengedit data ${data.data.name}?`
+                        .flex.flex-row.justify-center.items-center.gap-4
+                          a(href="/appointment/update/"+data.id)
+                            button.btn.bg-pink-500.mt-6.px-6(class="border-none hover:bg-pink-900", type="submit") Iya
+                          .modal-action
+                            label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=data.id+"update") Tidak  
+                  - else 
+                    p -
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/filter.js")  
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")

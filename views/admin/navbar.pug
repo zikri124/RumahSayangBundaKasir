@@ -10,9 +10,10 @@ html
     .navbar.bg-pink-500.text-white.px-6.font-pp(class="lg:px-12")
       .navbar-start
         .dropdown
-          label.btn.btn-ghost.btn-circle(tabindex='0')
+          label.btn.btn-ghost.flex.gap-4.items-center(tabindex='0')
             svg.h-5.w-5(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24' stroke='currentColor')
               path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 6h16M4 12h16M4 18h7')
+            | Menu
           ul.menu.menu-compact.dropdown-content.mt-3.p-2.shadow.bg-base-100.rounded-box.w-52.text-black(tabindex='0')
             li
               a(href="/") Dashboard

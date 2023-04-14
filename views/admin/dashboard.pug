@@ -108,10 +108,7 @@ html
               tr
                 th(scope="row")=++i
                 td(id="customer-appointment" value=dataAppointment.data.name)= dataAppointment.data.name
-                each dataServices in servicesData
-                  if dataAppointment.data.serviceId===dataServices.id
-                    td= dataServices.data.name
-                    - break
+                td= dataAppointment.data.serviceName
                 td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
                 td= dataAppointment.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${dataAppointment.data.address})`
                 td= dataAppointment.data.numWa
