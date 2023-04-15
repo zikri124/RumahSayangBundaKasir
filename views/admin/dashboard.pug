@@ -160,7 +160,7 @@ html
                                 label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
                         hr.my-8.mx-8
                         h3.font-bold.text-md.text-center Input Data Pasien
-                        form(action=`/appointment/process/${dataAppointment.id}/newcustomer` method="post")
+                        form(action=`/appointment/process/${dataAppointment.id}/newcustomer` id="form" method="post")
                           .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
@@ -178,13 +178,13 @@ html
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text No. Hp
-                              input.input.input-bordered.w-full.max-w-md(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa  required="" )
+                              input.input.input-bordered.w-full.max-w-md(name="wa" type='number', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa  required="" )
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Jenis Kelamin
                               select.select.select-bordered.w-full.max-w-md(name="sex" type='text'  class="lg:max-w-lg" required="")
                                 option(disabled="" selected="") Pilih jenis kelamin
-                                option(value="Laki-Laki") Laki-Laki 
+                                option(value="Laki-Laki") Laki - Laki
                                 option(value="Perempuan") Perempuan
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
@@ -208,6 +208,8 @@ html
                           .modal-action
                             label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"cancel") Tidak    
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js")
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
     script(src="/js/dashboard.js")
+    script(src="/js/validationReservation.js")
       
