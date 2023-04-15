@@ -27,6 +27,7 @@ html
               th(scope="col") No
               th(scope="col") Nama
               th(scope="col") Layanan
+              th(scope="col") Keluhan
               th(scope="col") Tipe Layanan
               th(scope="col") Umur
               th(scope="col") Waktu
@@ -42,10 +43,18 @@ html
                     td 
                       a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name === "" ? data.data.customerId : customerData.data.name
                     - break
-                each dataServices in servicesData
-                  if data.data.serviceId===dataServices.id
-                    td= dataServices.data.name
-                    - break
+                td=data.data.serviceName
+                td
+                  label.mr-2.text-black.btn.btn-outline.btn-xs(for=data.id+"keluhan-true") keluhan
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=data.id+"keluhan-true")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      .flex.flex-col.justify-start.max-w-lg.px-4.w-full.items-center
+                        h1.font-bold.text-xl.text-center.mb-8 Keluhan Pasien
+                        textarea(class="textarea textarea-secondary disabled:bg-white disabled:border-2 disabled:border-[#FFC9D7]" placeholder="Keluhan" disabled)=data.data.keluhan === "" ? "-" : data.data.keluhan
+                      .modal-action.flex.justify-center
+                        label.btn(class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab]" for=data.id+"keluhan-true") Tutup
                 td= data.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${data.data.address})`
                 td= data.data.customerAge
                 td= data.data.time
@@ -96,7 +105,7 @@ html
               th(scope="col") No
               th(scope="col") Nama
               th(scope="col") Layanan
-              th(scope="col") Status
+              th(scope="col") Keluhan
               th(scope="col") Tipe Layanan
               th(scope="col") Nomor Telephone
               th(scope="col") Waktu
@@ -109,7 +118,17 @@ html
                 th(scope="row")=++i
                 td(id="customer-appointment" value=dataAppointment.data.name)= dataAppointment.data.name
                 td= dataAppointment.data.serviceName
-                td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
+                td
+                  label.mr-2.text-black.btn.btn-outline.btn-xs(for=dataAppointment.id+"keluhan") keluhan
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=dataAppointment.id+"keluhan")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      .flex.flex-col.justify-start.max-w-lg.px-4.w-full.items-center
+                        h1.font-bold.text-xl.text-center.mb-8 Keluhan Pasien
+                        textarea(class="textarea textarea-secondary disabled:bg-white disabled:border-2 disabled:border-[#FFC9D7]" placeholder="Keluhan" disabled)=dataAppointment.data.keluhan === "" ? "-" : dataAppointment.data.keluhan
+                      .modal-action.flex.justify-center
+                        label.btn(class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab]" for=dataAppointment.id+"keluhan") Tutup
                 td= dataAppointment.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${dataAppointment.data.address})`
                 td= dataAppointment.data.numWa
                   a(href=`https://api.whatsapp.com/send?phone=${dataAppointment.data.numWa}`  target="_blank")
@@ -118,7 +137,7 @@ html
                 td= dataAppointment.data.dateOfBirth
                 td
                   // The button to open modal
-                  label.btn.btn-warning.mr-2.btn-xs.btn-danger.text-white(for=dataAppointment.id+"update") edit
+                  label.btn.btn-warning.mr-2.btn-xs.text-white(for=dataAppointment.id+"update") edit
                   // Isi dari modal
                   input.modal-toggle(type='checkbox' id=dataAppointment.id+"update")
                   .modal.modal-bottom(class='sm:modal-middle')
