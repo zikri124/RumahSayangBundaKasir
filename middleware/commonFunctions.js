@@ -21,6 +21,7 @@ module.exports = {
 
   getCurrentDate: () => {
     const dateClass = Timestamp.now().toDate()
+    dateClass.setTime(dateClass.getTime() + (07 * 60 * 60 * 1000))
     let month = dateClass.getMonth() + 1;
     if (month < 10) {
       month = "0" + month;
@@ -31,6 +32,9 @@ module.exports = {
     }
 
     const dateNow = dateClass.getFullYear() + "-" + month + "-" + date;
+
+    console.log(dateNow)
+    console.log((dateClass.getHours()) + ":" + dateClass.getMinutes() + ":" + dateClass.getSeconds())
 
     return {
       string: dateNow,
