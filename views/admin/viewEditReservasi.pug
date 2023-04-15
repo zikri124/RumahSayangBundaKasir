@@ -75,10 +75,10 @@ html
       .card.w-0
         input(hidden name="address" type="text" id="address-edit" value=address)
       .flex.flex-col.my-4.px-10.gap-8.justify-center.items-center(class="md:flex-row md:justify-center md:px-40 md:flex-wrap")
-        - if(serviceId === "fVRk8S4YUjpohVYVIWq1" && serviceCare === "homecare")
+        - if(serviceId === "fVRk8S4YUjpohVYVIWq1" || serviceId == "Nvyd13i7snjgvdZBdvkA" && serviceCare === "homecare")
           p.my-10.font-bold.text-xl.text-center Layanan Baby spa hanya bisa dilakukan di klinik saja
         - else 
-          - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "rdz21LiCNxTwhpcKxXyq")
+          - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "rdz21LiCNxTwhpcKxXyq" && serviceId !== "Nvyd13i7snjgvdZBdvkA")
             each session in sessions
               - let pilih = false
               - let tempAmount = 0

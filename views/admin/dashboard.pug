@@ -27,6 +27,7 @@ html
               th(scope="col") No
               th(scope="col") Nama
               th(scope="col") Layanan
+              th(scope="col") Keluhan
               th(scope="col") Tipe Layanan
               th(scope="col") Umur
               th(scope="col") Waktu
@@ -42,10 +43,18 @@ html
                     td 
                       a(href="/customer/" + data.data.customerId class="link link-hover")=customerData.data.name === "" ? data.data.customerId : customerData.data.name
                     - break
-                each dataServices in servicesData
-                  if data.data.serviceId===dataServices.id
-                    td= dataServices.data.name
-                    - break
+                td=data.data.serviceName
+                td
+                  label.mr-2.text-black.btn.btn-outline.btn-xs(for=data.id+"keluhan-true") keluhan
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=data.id+"keluhan-true")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      .flex.flex-col.justify-start.max-w-lg.px-4.w-full.items-center
+                        h1.font-bold.text-xl.text-center.mb-8 Keluhan Pasien
+                        textarea(class="textarea textarea-secondary disabled:bg-white disabled:border-2 disabled:border-[#FFC9D7]" placeholder="Keluhan" disabled)=data.data.keluhan === "" ? "-" : data.data.keluhan
+                      .modal-action.flex.justify-center
+                        label.btn(class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab]" for=data.id+"keluhan-true") Tutup
                 td= data.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${data.data.address})`
                 td= data.data.customerAge
                 td= data.data.time
@@ -96,7 +105,7 @@ html
               th(scope="col") No
               th(scope="col") Nama
               th(scope="col") Layanan
-              th(scope="col") Status
+              th(scope="col") Keluhan
               th(scope="col") Tipe Layanan
               th(scope="col") Nomor Telephone
               th(scope="col") Waktu
@@ -109,7 +118,17 @@ html
                 th(scope="row")=++i
                 td(id="customer-appointment" value=dataAppointment.data.name)= dataAppointment.data.name
                 td= dataAppointment.data.serviceName
-                td= dataAppointment.data.status===true? "selesai" : "belum berjalan"
+                td
+                  label.mr-2.text-black.btn.btn-outline.btn-xs(for=dataAppointment.id+"keluhan") keluhan
+                  // Isi dari modal
+                  input.modal-toggle(type='checkbox' id=dataAppointment.id+"keluhan")
+                  .modal.modal-bottom(class='sm:modal-middle')
+                    .modal-box
+                      .flex.flex-col.justify-start.max-w-lg.px-4.w-full.items-center
+                        h1.font-bold.text-xl.text-center.mb-8 Keluhan Pasien
+                        textarea(class="textarea textarea-secondary disabled:bg-white disabled:border-2 disabled:border-[#FFC9D7]" placeholder="Keluhan" disabled)=dataAppointment.data.keluhan === "" ? "-" : dataAppointment.data.keluhan
+                      .modal-action.flex.justify-center
+                        label.btn(class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab]" for=dataAppointment.id+"keluhan") Tutup
                 td= dataAppointment.data.serviceCare==="klinik"? "Datang ke Klinik" : `Homecare (${dataAppointment.data.address})`
                 td= dataAppointment.data.numWa
                   a(href=`https://api.whatsapp.com/send?phone=${dataAppointment.data.numWa}`  target="_blank")
@@ -118,7 +137,7 @@ html
                 td= dataAppointment.data.dateOfBirth
                 td
                   // The button to open modal
-                  label.btn.btn-warning.mr-2.btn-xs.btn-danger.text-white(for=dataAppointment.id+"update") edit
+                  label.btn.btn-warning.mr-2.btn-xs.text-white(for=dataAppointment.id+"update") edit
                   // Isi dari modal
                   input.modal-toggle(type='checkbox' id=dataAppointment.id+"update")
                   .modal.modal-bottom(class='sm:modal-middle')
@@ -160,7 +179,7 @@ html
                                 label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id) Batal
                         hr.my-8.mx-8
                         h3.font-bold.text-md.text-center Input Data Pasien
-                        form(action=`/appointment/process/${dataAppointment.id}/newcustomer` method="post")
+                        form(action=`/appointment/process/${dataAppointment.id}/newcustomer` id="form" method="post")
                           .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
@@ -178,13 +197,13 @@ html
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text No. Hp
-                              input.input.input-bordered.w-full.max-w-md(name="wa" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa  required="" )
+                              input.input.input-bordered.w-full.max-w-md(name="wa" type='number', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.numWa  required="" )
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Jenis Kelamin
                               select.select.select-bordered.w-full.max-w-md(name="sex" type='text'  class="lg:max-w-lg" required="")
                                 option(disabled="" selected="") Pilih jenis kelamin
-                                option(value="Laki-Laki") Laki-Laki 
+                                option(value="Laki-Laki") Laki - Laki
                                 option(value="Perempuan") Perempuan
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
@@ -208,6 +227,8 @@ html
                           .modal-action
                             label.btn.btn-error.text-white(class="hover:bg-[#9e4949]" for=dataAppointment.id+"cancel") Tidak    
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js")
     script(src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
     script(src="/js/dashboard.js")
+    script(src="/js/validationReservation.js")
       
