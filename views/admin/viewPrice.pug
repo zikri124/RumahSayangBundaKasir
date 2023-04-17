@@ -23,7 +23,7 @@ html
             input.input.input-bordered.w-full.max-w-md(value=customerData.numWa type='text'  disabled)
             label.label
               span.label-text Umur
-            input.input.input-bordered.w-full.max-w-md(value=visitData.data.customerAge type='text'  disabled)
+            input.input.input-bordered.w-full.max-w-md(value=visitData.data.customerAge id="age" type='text'  disabled)
             label.label
               span.label-text Waktu
             input.input.input-bordered.w-full.max-w-md(value=visitData.data.time type='text'  disabled)
@@ -34,6 +34,17 @@ html
             label.label
               span.label-text Tanggal Kunjungan
             input.input.input-bordered.w-full.max-w-md(value=visitData.data.date type='text'  disabled)
+      - let harga = "0";
+      - if(serviceData.data.name == "Massage Bapil")
+        - let tempUmur = visitData.data.customerAge.split(" "); 
+        - if(tempUmur[1] !== "tahun,")
+          - harga = "80000";
+        - else
+          - let umur = Number(tempUmur[0])
+          - if(umur <= 3)
+            - harga = "90000";
+          - else 
+            - harga = "100000"
       div.flex.flex-col.w-full.pt-12.px-10(class="justify-start items-center lg:justify-start lg:items-start")
         label.font-bold.text-2xl.font-pp.text-center(class="lg:text-start") Total harga pemeriksaan
         .overflow-x-auto.font-pp.mt-8.border.rounded-t-lg.mx-10(class="lg:mx-0")
@@ -42,14 +53,17 @@ html
               tr
                 th No
                 th Layanan
-                th Ruangan
+                th Deskripsi
                 th Harga
             tbody
               tr
                 td 1
                 td= serviceData.data.name
-                td= serviceData.data.room
-                td= serviceData.data.price
+                td= visitData.data.customerAge
+                - if(serviceData.data.name == "Massage Bapil")
+                  td= harga
+                - else 
+                  td= serviceData.data.price
         form(action='/visit/finish/'+visitData.id method="post")
           input.input.hidden.input-bordered.w-full.max-w-md(name="name" value=customerData.name type='text')
           input.input.hidden.input-bordered.w-full.max-w-md(name="sex" value=customerData.sex type='text' )
@@ -59,7 +73,10 @@ html
           input.input.hidden.input-bordered.w-full.max-w-md(name="customerAge" value=visitData.data.customerAge type='text')
           input.input.hidden.input-bordered.w-full.max-w-xs(name='serviceName' class="" value=serviceData.data.name type='text')
           input.input.hidden.input-bordered.w-full.max-w-xs(name='room' class="" value=serviceData.data.room type='text')
-          input.input.hidden.input-bordered.w-full.max-w-xs(name='charge' class="hargaService" value=serviceData.data.price type='text')
+          - if(serviceData.data.name == "Massage Bapil")
+            input.input.hidden.input-bordered.w-full.max-w-xs(name='charge' class="hargaService" value=harga type='text')
+          - else 
+            input.input.hidden.input-bordered.w-full.max-w-xs(name='charge' class="hargaService" value=serviceData.data.price type='text')
           button.btn.btn-sm.normal-case.gap-2.mr-2.my-4(class="add_field_button bg-pink-500 border-none hover:bg-pink-900" type="button")
             svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24' stroke-width='1.5' stroke='currentColor')
               path(stroke-linecap='round' stroke-linejoin='round' d='M12 4.5v15m7.5-7.5h-15')
@@ -67,7 +84,10 @@ html
           div(class="input_fields_wrap")
           button.btn.btn-sm.normal-case.mt-6(class="done_button bg-pink-500 border-none hover:bg-pink-900" type="button") Selesai 
           label(class="label font-bold") Total Pembayaran
-          input(name="total" type="text" placeholder="Ketik Disini" value=serviceData.data.price readonly class="input total input-bordered w-full max-w-xs mt-2 font-bold")
+          - if(serviceData.data.name == "Massage Bapil")
+            input(name="total" type="text" placeholder="Ketik Disini" value=harga readonly class="input total input-bordered w-full max-w-xs mt-2 font-bold")
+          - else 
+            input(name="total" type="text" placeholder="Ketik Disini" value=serviceData.data.price readonly class="input total input-bordered w-full max-w-xs mt-2 font-bold")
           div(class="done_fields mb-8")
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js")
     script(src="/js/addInputOnPrice.js")

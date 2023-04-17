@@ -122,7 +122,7 @@ module.exports = {
       if (age == "") {
         age += d + " hari";
       } else {
-        age += ", " + d + " bulan";
+        age += ", " + d + " hari";
       }
     }
     if (age == "") {

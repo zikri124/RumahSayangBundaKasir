@@ -163,16 +163,9 @@ module.exports = {
     jsonCharge["updatedAt"] = timestamp;
     jsonCharge["serviceCharge"] = data.charge;
 
-    let checkEmpty = commonFunctions.checkEmpty(jsonCharge)
-
-    if (checkEmpty.contains) {
-      return res.render("admin/errorView", {
-        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
-        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
-      })
-    }
-
     await updateDoc(visitDoc, jsonCharge);
+
+    const visitData = req.visitData
 
     // INVOICE-----------------
     let messageText = `ID Kunjungan: ${visitId}`;
@@ -181,9 +174,9 @@ module.exports = {
     messageText += `\nUmur: ${data.customerAge}`;
     messageText += `\nJenis Kelamin: ${data.sex}`;
     messageText += `\nLayanan: ${data.serviceName}`;
-    messageText += `\nJenis Layanan: ${data.serviceCare}`;
-    if (data.serviceCare != "Klinik") {
-      messageText += `Alamat: ${data.address}`
+    messageText += `\nJenis Layanan: ${visitData.data.serviceCare}`;
+    if (visitData.data.serviceCare == "homecare") {
+      messageText += `Alamat: ${visitData.data.address}`
     }
     messageText += `\n\n*Biaya*`;
     messageText += `\nLayanan: Rp ${data.charge}`;

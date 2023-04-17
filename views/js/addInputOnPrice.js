@@ -97,14 +97,9 @@ function remove(index) {
 //   addCharge += temp;
 // }
 
-// $(document).on("change", ".amount", function () {
-//   var sum = Number($(".hargaService").val());
-//   var amount = Number($(".amount").val());
-//   $(".amount").each(function () {
-//     sum += Number($(this).val());
-//   });
-//   $(".total").val(sum);
-//   if (amount === 0) {
-//     $(".amount").val(0);
-//   }
+// $(document).ready(function () {
+//   let umur = $("#age").val();
+//   console.log(umur);
+//   let splitUmur = text.split(umur);
+//   console.log(splitUmur);
 // });
