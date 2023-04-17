@@ -38,17 +38,31 @@ module.exports = {
 
     const numWa = commonFunctions.checkFormatNumWa(req.body.wa)
 
+    let igAcc = "-"
+    if (req.body.igAcc != undefined || req.body.igAcc != "") {
+      igAcc = req.body.igAcc
+    }
+
     const customerData = {
       name: req.body.name.toUpperCase(),
       numWa: numWa,
       sex: req.body.sex,
       dateOfBirth: req.body.dateOfBirth,
-      createdAt: timestamp
+      createdAt: timestamp,
+      igAcc: igAcc
     };
+
+    let checkEmpty = commonFunctions.checkEmpty(customerData)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
+      })
+    }
 
     await addDoc(collection(db, "customers"), customerData)
       .then(async (doc) => {
-        // return res.status(200).redirect("/");
         req.customerId = doc.id
         req.customerType = "new"
         next()
@@ -66,13 +80,30 @@ module.exports = {
 
     const customerData = doc(db, "customers", customerId);
 
-    await updateDoc(customerData, {
-        name: req.body.name.toUpperCase(),
-        numWa: numWa,
-        dateOfBirth: req.body.dateOfBirth,
-        sex: req.body.sex,
-        updatedAt: timestamp
+    let igAcc = "-"
+    if (req.body.igAcc != undefined || req.body.igAcc != "") {
+      igAcc = req.body.igAcc
+    }
+
+    const newCustomerData = {
+      name: req.body.name.toUpperCase(),
+      numWa: numWa,
+      dateOfBirth: req.body.dateOfBirth,
+      sex: req.body.sex,
+      updatedAt: timestamp,
+      igAcc: igAcc
+    }
+
+    let checkEmpty = commonFunctions.checkEmpty(customerData)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
       })
+    }
+
+    await updateDoc(customerData, newCustomerData)
       .then(async () => {
         const data = {
           time: timestamp,

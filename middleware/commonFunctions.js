@@ -1,11 +1,43 @@
 const firebase = require("../firebase");
-const fetch = require("node-fetch")
 const db = firebase.firestore;
 const {
   doc,
   getDoc,
   Timestamp
 } = require("firebase/firestore");
+
+function checkEmpty(json) {
+  let contains = false;
+  let keyValue = ""
+  Object.keys(json).some(key => {
+    if (typeof json[key] === 'object') {
+      let returnData = checkEmpty(json[key])
+      contains = returnData.contains
+      if (contains) {
+        keyValue = returnData.value
+      }
+    } else {
+      contains = json[key] === undefined || json[key] === ""
+      if (contains) {
+        keyValue = key
+      }
+    }
+
+    if (contains) {
+      const returnValue = {
+        contains: contains,
+        value: keyValue
+      }
+      return returnValue;
+    }
+  });
+  
+  const returnValue = {
+    contains: contains,
+    value: keyValue
+  }
+  return returnValue;
+}
 
 module.exports = {
   getACustomerData: async (customerId) => {
@@ -40,12 +72,17 @@ module.exports = {
       string: dateNow,
       year: dateClass.getFullYear(),
       month: month,
-      date: date
+      date: date,
+      hour: dateClass.getHours(),
+      minute: dateClass.getMinutes(),
+      second: dateClass.getSeconds(),
+      class: dateClass
     }
   },
 
   getAge: (customerDOB) => {
     const date = Timestamp.now().toDate()
+    date.setTime(date.getTime() + (07 * 60 * 60 * 1000))
     const dateToCalculate = new Date(customerDOB);
 
     var month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -104,5 +141,7 @@ module.exports = {
     } else {
       return numberWa
     }
-  }
+  },
+
+  checkEmpty
 };

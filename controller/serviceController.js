@@ -2,6 +2,8 @@ const fetch = require("node-fetch");
 
 const apiUrl = process.env.apiURL
 
+const commonFunctions = require("../middleware/commonFunctions")
+
 module.exports = {
   viewServices: (req, res) => {
     const servicesData = req.servicesData;
@@ -18,6 +20,15 @@ module.exports = {
       room: req.body.room,
       description: req.body.description
     };
+
+    let checkEmpty = commonFunctions.checkEmpty(serviceData)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
+      })
+    }
 
     await fetch(apiUrl + "/api/service/new", {
         method: "POST",
@@ -48,6 +59,15 @@ module.exports = {
       price: req.body.price,
       room: req.body.room,
       description: req.body.description
+    }
+
+    let checkEmpty = commonFunctions.checkEmpty(serviceData)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
+      })
     }
 
     await fetch(apiUrl + "/api/service/edit/" + serviceId, {

@@ -31,7 +31,7 @@ router.get(
   
   router.post(
     "/process/:appId",
-    appointmentController.processAppointmentToVisit,
+    appointmentController.createVisit,
     appointmentController.updateAppointmentStatusTrue
   );
 
@@ -39,7 +39,7 @@ router.get(
     "/process/:appId/newcustomer",
     queryDb.isCustomerExist,
     customerController.addCustomer,
-    appointmentController.processAppointmentToVisit,
+    appointmentController.createVisit,
     appointmentController.updateAppointmentStatusTrue
   );
   

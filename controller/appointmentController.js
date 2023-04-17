@@ -10,7 +10,7 @@ const {
 } = require("firebase/firestore");
 const axios = require("axios").default;
 
-const commonFunc = require("../middleware/commonFunctions");
+const commonFunctions = require("../middleware/commonFunctions");
 
 const apiUrl = process.env.apiURL;
 
@@ -112,7 +112,15 @@ module.exports = {
       address: req.body.address,
       serviceName: req.body.serviceName
     };
-    console.log(data);
+
+    let checkEmpty = commonFunctions.checkEmpty(data)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
+      })
+    }
 
     try {
       const result = await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
@@ -136,7 +144,7 @@ module.exports = {
     }
   },
 
-  processAppointmentToVisit: async (req, res, next) => {
+  createVisit: async (req, res, next) => {
     const timestamp = Timestamp.now()
     let customerId
 
@@ -145,8 +153,8 @@ module.exports = {
     } else {
       customerId = req.body.customerId;
     }
-    const customerData = await commonFunc.getACustomerData(customerId);
-    const customerAge = commonFunc.getAge(customerData.dateOfBirth);
+    const customerData = await commonFunctions.getACustomerData(customerId);
+    const customerAge = commonFunctions.getAge(customerData.dateOfBirth);
 
     const visitData = {
       customerId: customerId,
@@ -163,6 +171,15 @@ module.exports = {
       serviceName: req.body.serviceName
     };
 
+    let checkEmpty = commonFunctions.checkEmpty(visitData)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
+      })
+    }
+
     await addDoc(collection(db, "visits"), visitData)
       .then(() => {
         next();
@@ -170,6 +187,7 @@ module.exports = {
       .catch((err) => {
         return console.log(err);
       });
+
   },
 
   updateAppointmentStatusTrue: async (req, res) => {
