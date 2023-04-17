@@ -1,13 +1,6 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const {
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-  Timestamp
-} = require("firebase/firestore");
+const { collection, addDoc, query, where, getDocs, Timestamp } = require("firebase/firestore");
 const axios = require("axios").default;
 
 const commonFunctions = require("../middleware/commonFunctions");
@@ -52,21 +45,21 @@ module.exports = {
     if (appointmentData.data.status != false) {
       return res.render("admin/errorView", {
         tittle: "Tidak Bisa Mengubah Reservasi",
-        message: "Reservasi yang telah di proses atau dibatalkan tidak bisa di ubah"
-      })
+        message: "Reservasi yang telah di proses atau dibatalkan tidak bisa di ubah",
+      });
     }
 
     if (req.sessionsData == null || req.query.serviceId == undefined || req.query.date == undefined) {
       return res.render("admin/viewEditReservasi", {
         appointmentData: appointmentData,
         servicesData: servicesData,
-        sessions: sessions
+        sessions: sessions,
       });
     } else {
       const date = req.query.date;
       const serviceId = req.query.serviceId;
       const serviceData = req.serviceData;
-      const onGoingVisits = []
+      const onGoingVisits = [];
 
       const visitQuery = query(collection(db, "visits"), where("date", "==", date), where("serviceId", "==", serviceId), where("status", "==", "Sedang Jalan"));
       await getDocs(visitQuery)
@@ -84,8 +77,8 @@ module.exports = {
         });
 
       const sessionsData = req.sessionsData;
-      const sessionsNVisitsData = sessionsData.concat(onGoingVisits)
-      console.log(sessionsNVisitsData)
+      const sessionsNVisitsData = sessionsData.concat(onGoingVisits);
+      console.log(sessionsNVisitsData);
 
       return res.render("admin/viewEditReservasi", {
         sessionsData: sessionsData,
@@ -96,7 +89,7 @@ module.exports = {
         serviceId: serviceId,
         address: address,
         serviceCare: serviceCare,
-        sessions: sessions
+        sessions: sessions,
       });
     }
   },
@@ -110,16 +103,16 @@ module.exports = {
       date: req.body.date,
       serviceCare: req.body.serviceCare,
       address: req.body.address,
-      serviceName: req.body.serviceName
+      serviceName: req.body.serviceName,
     };
 
-    let checkEmpty = commonFunctions.checkEmpty(data)
+    let checkEmpty = commonFunctions.checkEmpty(data);
 
     if (checkEmpty.contains) {
       return res.render("admin/errorView", {
         tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
-        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
-      })
+        message: 'Form pada bagian "' + checkEmpty.value + '" belum kamu isi nih',
+      });
     }
 
     try {
@@ -136,8 +129,8 @@ module.exports = {
       } else {
         return res.render("admin/errorView", {
           tittle: "Tidak Bisa Mengubah Reservasi",
-          message: result.message
-        })
+          message: result.message,
+        });
       }
     } catch (err) {
       return console.log(err);
@@ -145,11 +138,11 @@ module.exports = {
   },
 
   createVisit: async (req, res, next) => {
-    const timestamp = Timestamp.now()
-    let customerId
+    const timestamp = Timestamp.now();
+    let customerId;
 
     if (req.customerType == "new") {
-      customerId = req.customerId
+      customerId = req.customerId;
     } else {
       customerId = req.body.customerId;
     }
@@ -162,22 +155,22 @@ module.exports = {
       serviceId: req.body.serviceId,
       date: req.body.date,
       time: req.body.time || req.body.input_time,
-      timeFinish: "",
+      timeFinish: "-",
       status: "Sedang Jalan",
       staffId: req.user.uid,
       serviceCare: req.body.serviceCare,
       address: req.body.address,
       createdAt: timestamp,
-      serviceName: req.body.serviceName
+      serviceName: req.body.serviceName,
     };
 
-    let checkEmpty = commonFunctions.checkEmpty(visitData)
+    let checkEmpty = commonFunctions.checkEmpty(visitData);
 
     if (checkEmpty.contains) {
       return res.render("admin/errorView", {
         tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
-        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
-      })
+        message: 'Form pada bagian "' + checkEmpty.value + '" belum kamu isi nih',
+      });
     }
 
     await addDoc(collection(db, "visits"), visitData)
@@ -187,7 +180,6 @@ module.exports = {
       .catch((err) => {
         return console.log(err);
       });
-
   },
 
   updateAppointmentStatusTrue: async (req, res) => {
@@ -196,7 +188,8 @@ module.exports = {
       status: true,
     });
 
-    await axios.put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
+    await axios
+      .put(apiUrl + "/api/appointment/update/" + appointmentId, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "bearer " + req.token,
@@ -208,7 +201,7 @@ module.exports = {
       })
       .catch((err) => {
         return console.log(err);
-      })
+      });
   },
 
   cancelAppointmentAsAdmin: async (req, res) => {

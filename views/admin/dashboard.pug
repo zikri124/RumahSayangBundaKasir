@@ -189,7 +189,7 @@ html
                             .flex.flex-col.justify-start.w-full.max-w-md(class="lg:justify-start lg:max-w-lg")
                               label.label
                                 span.label-text Instagram
-                              input.input.input-bordered.w-full.max-w-md(name="igAcc" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.igAcc required="" )
+                              input.input.input-bordered.w-full.max-w-md(name="igAcc" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" value=dataAppointment.data.igAccount required="" )
                             each dataServices in servicesData
                               if dataAppointment.data.serviceId===dataServices.id
                                 input(hidden type="text" value=dataServices.data.name name="serviceName") 
