@@ -12,7 +12,7 @@ const {
   where
 } = require("firebase/firestore");
 
-const commonFunction = require("../middleware/commonFunctions");
+const commonFunctions = require("../middleware/commonFunctions");
 const apiUrl = process.env.apiURL;
 
 module.exports = {
@@ -47,7 +47,7 @@ module.exports = {
     const serviceId = visitData.data.serviceId;
     const customerId = visitData.data.customerId;
 
-    const customerData = await commonFunction.getACustomerData(customerId);
+    const customerData = await commonFunctions.getACustomerData(customerId);
 
     await fetch(apiUrl + "/api/service/" + serviceId, {
         method: "GET",
@@ -163,6 +163,15 @@ module.exports = {
     jsonCharge["updatedAt"] = timestamp;
     jsonCharge["serviceCharge"] = data.charge;
 
+    let checkEmpty = commonFunctions.checkEmpty(jsonCharge)
+
+    if (checkEmpty.contains) {
+      return res.render("admin/errorView", {
+        tittle: "Oppps!! Data yang kamu masukkan belum lengkap nih",
+        message: "Form pada bagian \"" + checkEmpty.value + "\" belum kamu isi nih"
+      })
+    }
+
     await updateDoc(visitDoc, jsonCharge);
 
     // INVOICE-----------------
@@ -184,7 +193,7 @@ module.exports = {
     messageText += `\nSemoga puas dengan pelayanan kami`;
     messageText += `\n\nSalam Cinta, Rumah Sayang Bunda`;
 
-    const numWa = commonFunction.checkFormatNumWa(data.numWa)
+    const numWa = commonFunctions.checkFormatNumWa(data.numWa)
 
     const uri = "https://wa.me/" + numWa + "?text=*INVOICE KUNJUNGAN RUMAH SAYANG BUNDA*\n\n" + messageText;
 

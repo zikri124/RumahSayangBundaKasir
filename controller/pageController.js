@@ -2,7 +2,7 @@ const firebase = require("../firebase");
 const db = firebase.firestore;
 const { collection, query, where, getDocs, orderBy, Timestamp } = require("firebase/firestore");
 
-const commonFunction = require("../middleware/commonFunctions");
+const commonFunctions = require("../middleware/commonFunctions");
 
 module.exports = {
   viewAdminDashboard: async (req, res) => {
@@ -41,7 +41,7 @@ module.exports = {
     const customersData = req.customersData;
     const servicesData = req.servicesData;
     const queryData = [];
-    const currentDate = commonFunction.getCurrentDate();
+    const currentDate = commonFunctions.getCurrentDate();
     const date2 = Timestamp.now().toDate();
     date2.setDate(date2.getDate() - 14);
 

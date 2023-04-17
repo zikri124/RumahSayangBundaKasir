@@ -25,7 +25,7 @@ router.get("/new/form1",
 
 router.post(
     "/new",
-    appointmentController.processAppointmentToVisit,
+    appointmentController.createVisit,
     function (req, res) {
         return res.render("admin/successProcessApp")
     }
@@ -35,7 +35,7 @@ router.post(
     "/new/newcustomer",
     queryDb.isCustomerExist,
     customerController.addCustomer,
-    appointmentController.processAppointmentToVisit,
+    appointmentController.createVisit,
     function (req, res) {
         return res.render("admin/successProcessApp")
     }
