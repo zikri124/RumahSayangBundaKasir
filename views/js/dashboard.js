@@ -13,7 +13,7 @@ $("document").ready(function () {
   }
 
   today = yyyy + "-" + mm + "-" + dd;
-  document.getElementById("date-reservasi").setAttribute("value", today);
+  document.getElementById("date-reservasi").setAttribute("min", today);
 });
 
 function getval(value, data) {
