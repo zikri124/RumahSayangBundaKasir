@@ -41,17 +41,26 @@ module.exports = {
     const serviceCare = req.query.serviceCare;
     
     const sessions = req.sessions;
-    const appointmentsData = req.appointmentsData;
+    var sessionsData = req.sessionsData;
     const servicesData = req.servicesData
     const onGoingVisits = req.onGoingVisits
-    
-    // const sessionsData = appointmentsData.concat(onGoingVisits)
+
+    sessionsData = sessionsData.concat(onGoingVisits)
+
+    // return res.json({
+    //   sessionsData: sessionsData,
+    //   date: date,
+    //   serviceId: serviceId,
+    //   servicesData: servicesData,
+    //   serviceCare: serviceCare,
+    //   sessions: sessions
+    // })
     
     return res.render("admin/viewFormNewAppointment", {
       sessionsData : appointmentsData,
       date: date,
       serviceId: serviceId,
-      serviceData: servicesData,
+      servicesData: servicesData,
       serviceCare: serviceCare,
       sessions: sessions
     })

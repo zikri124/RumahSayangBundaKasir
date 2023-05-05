@@ -20,6 +20,7 @@ router.get(
   router.get(
     "/new",
     queryDb.getSessionAndTime,
+    queryDb.getServicesData,
     queryDb.getOnGoingVisitsData,
     appointmentController.viewAddAppointment
   )

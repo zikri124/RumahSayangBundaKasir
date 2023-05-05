@@ -229,8 +229,9 @@ module.exports = {
   getSessionAndTime: async (req, res, next) => {
     const date = req.query.date;
     const serviceId = req.query.serviceId;
+    const serviceCare = req.query.serviceCare
 
-    await fetch(apiUrl + "/api/sessionsntime?date=" + date + "&serviceId=" + serviceId, {
+    await fetch(apiUrl + "/api/sessionsntime?date=" + date + "&serviceId=" + serviceId + "&serviceCare=" + serviceCare, {
         method: "GET",
         headers: {
           Authorization: "bearer " + req.token,
@@ -240,7 +241,6 @@ module.exports = {
       .then((body) => {
         req.sessions = body.sessions;
         req.sessionsData = body.sessionsData;
-        console.log(body.sessions)
         next();
       })
       .catch((err) => {
