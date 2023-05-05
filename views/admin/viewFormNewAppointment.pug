@@ -11,24 +11,143 @@ html
     link(href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins&display=swap' rel='stylesheet')
   body
     include navbar.pug
-    form(action="/appointment/new/form2" method="get" onClick="return test()")
-        .form-control.w-full.flex.flex-col.justify-center.items-center.px-8
-          .flex.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
+    form(action="/appointment/new/form2" id="form" method='post')
+      .form-control.w-full.flex.flex-col.justify-center.items-center.px-8
+        .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+          label.label
+            span.label-text Tanggal Reservasi
+        input.input.input-bordered.w-full.max-w-xs( disabled=''  value=date, class="lg:max-w-lg md:max-w-md")
+        .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+          label.label
+            span.label-text Layanan
+        //- //- input.input.input-bordered.w-full.max-w-xs( disabled=''  value=serviceData.data.name, class="lg:max-w-lg md:max-w-md")
+        //- input.hidden(type="text" hidden value=serviceData.data.name name="serviceName")
+        input.input.hidden.input-bordered.w-full.max-w-xs(name='input_date' value=date, class="lg:max-w-lg md:max-w-md")
+        input.input.hidden.input-bordered.w-full.max-w-xs(name='input_serviceId' value=serviceId, class="lg:max-w-lg md:max-w-md")
+        - if(serviceCare=="klinik")
+          input.hidden(name='serviceCare' value=serviceCare type='text')
+          input.hidden.input.input-bordered.w-full.max-w-xs.text-black(name='input_address' value="-" type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
             label.label
-              span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih tanggal untuk reservasi
-          input.input.input-bordered.w-full.max-w-xs(id="datefield" name="date" type='date' min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md" required="")
-          .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Nama
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='input_name' required='' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
             label.label
-              span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih layanan untuk reservasi
-          select.select.select-bordered.w-full.max-w-xs(name="serviceId" class="lg:max-w-lg md:max-w-md" required)
-            option(value="" selected="" disabled="") Pilih layanan
-            each data in servicesData
-              option(value=data.id)= data.data.name
-          .flex.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") No. Hp (Nomer WhatsApp Gunakan Format : 6282333999xxx)
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='no_hp' id="phoneNumber" required='' maxlength="13" minlength="10" type='tel'  placeholder='Contoh : 6282333999xxx' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
             label.label
-              span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih layanan Homecare / Datang ke klinik
-          select.select.select-bordered.w-full.max-w-xs(name="serviceCare" class="lg:max-w-lg md:max-w-md" required)
-            option(value="" selected="" disabled="") Pilih layanan
-            option(value="homecare")= `Homecare`
-            option(value="klinik")= `Datang ke Klinik`
-          button.btn(class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab] mt-4", type="submit") Klik disini untuk reservasi
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Tanggal Lahir
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='input_dob' type='date', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md" required='')
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+            label.label
+              span.label-text Nama Instagram
+            input.input.input-bordered.w-full.max-w-xs(name='igAcc' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Keluhan
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='keluhan' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md" required='')
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
+            - let telahReservasi= " - Telah Direservasi"
+            select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
+              option(disabled='' selected='' value="") Pilih jam reservasi
+              - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "rdz21LiCNxTwhpcKxXyq" && serviceId !== "Nvyd13i7snjgvdZBdvkA")
+                each session in sessions
+                  - let pilih = false
+                  - let tempAmount = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount++;
+                      if(tempAmount == 2)
+                        - pilih = true
+                        - break
+                  - if(!pilih)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
+              - else 
+                each session in sessions
+                  - let pilih = false
+                  - let tempAmount = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount++;
+                      if(tempAmount == 1)
+                        - pilih = true
+                        - break
+                  - if(!pilih)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
+        - else if(serviceCare == "homecare" && serviceId == "fVRk8S4YUjpohVYVIWq1" || serviceId == "Nvyd13i7snjgvdZBdvkA") 
+          p.my-12.font-bold.text-2xl.text-center(class="max-w-md") Mohon maaf layanan baby spa hanya dapat dilakukan di klinik saja
+        - else 
+          input.hidden(name='serviceCare' value=serviceCare type='text')
+          .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Nama
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='input_name' required='' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Alamat Rumah
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='input_address' required='' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") No. Hp (Nomer WhatsApp Gunakan Format : 6282333999xxx)
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='no_hp' id="phoneNumber" required='' maxlength="13" minlength="10" type='tel'  placeholder='Contoh : 6282333999xxx' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Tanggal Lahir
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='input_dob' type='date', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md" required='')
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+            label.label
+              span.label-text Nama Instagram
+            input.input.input-bordered.w-full.max-w-xs(name='igAcc' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md")
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Keluhan
+            input.input.input-bordered.w-full.max-w-xs.text-black(name='keluhan' type='text', placeholder='Ketik Disini' class="lg:max-w-lg md:max-w-md" required='')
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
+            - let telahReservasi2 = " - Telah Direservasi"
+            select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
+              option(disabled='' selected='' value="") Pilih jam reservasi
+              - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "rdz21LiCNxTwhpcKxXyq" && serviceId !== "Nvyd13i7snjgvdZBdvkA")
+                each session in sessions
+                  - let pilih = false
+                  - let tempAmount = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount++;
+                      if(tempAmount == 2)
+                        - pilih = true
+                        - break
+                  - if(!pilih)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi
+              - else 
+                each session in sessions
+                  - let pilih = false
+                  - let tempAmount = 0;
+                  each datasessionss in sessionsData
+                    - if (datasessionss.data.time == session.data.time)
+                      - tempAmount++;
+                      - if(tempAmount == 1)
+                        - pilih = true
+                        - break
+                  - if(!pilih)
+                    option= session.data.time
+                  - else 
+                    option(disabled)=session.data.time + telahReservasi2
+        div.flex.flex-row.gap-2.mb-2
+          a(href="/appointment/new/form1")     
+            label.btn.mt-4(class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab] lg:px-20") kembali  
+          - if(serviceCare == "homecare" && serviceId == "fVRk8S4YUjpohVYVIWq1" || serviceId == "Nvyd13i7snjgvdZBdvkA")
+            div.mb-44
+          - else 
+            button.btn.mt-4(type='submit' class="bg-[#FFC9D7] border-none text-black hover:text-white hover:bg-[#f391ab] lg:px-20") submit
+        

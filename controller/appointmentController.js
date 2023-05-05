@@ -45,10 +45,10 @@ module.exports = {
     const servicesData = req.servicesData
     const onGoingVisits = req.onGoingVisits
     
-    const sessionsData = appointmentsData.concat(onGoingVisits)
+    // const sessionsData = appointmentsData.concat(onGoingVisits)
     
     return res.render("admin/viewFormNewAppointment", {
-      sessionsData: sessionsData,
+      sessionsData : appointmentsData,
       date: date,
       serviceId: serviceId,
       serviceData: servicesData,
