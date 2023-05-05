@@ -16,6 +16,18 @@ router.get(
     queryDb.getServicesData,
     appointmentController.viewAppointmentsByTime
   );
+
+  router.get(
+    "/new",
+    queryDb.getSessionAndTime,
+    queryDb.getOnGoingVisitsData,
+    appointmentController.viewAddAppointment
+  )
+
+  router.post(
+    "/new",
+    appointmentController.addAppointment
+  )
   
   router.get(
     "/update/:appId",
