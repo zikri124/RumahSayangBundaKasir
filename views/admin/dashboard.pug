@@ -80,12 +80,12 @@ html
       .modal.modal-bottom(class='sm:modal-middle')
         .modal-box
           h3.font-bold.text-lg.text-center Tambah Data Kunjungan
-          form(action="/visit/new/form1" method="get")
+          form(action="/appointment/new" method="get")
             .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
               .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
                 label.label
                   span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Tanggal Reservasi
-                input.input.input-bordered.w-full.max-w-xs(id="date-reservasi" name="date" type='date' value="" min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md")
+                input.input.input-bordered.w-full.max-w-xs(id="date-reservasi" name="date" type='date' min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md")
               .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
                 label.label
                   span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih layanan untuk reservasi
@@ -100,7 +100,6 @@ html
                   option(value="" selected="" disabled="") Pilih layanan
                   option(value="klinik" ) Datang ke Klinik 
                   option(value="homecare") Homecare
-              input.hidden(name="serviceCare" class="lg:max-w-lg md:max-w-md" value="klinik")
               .flex.flex-row.justify-center.items-center.gap-4
                  button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") Submit
                  .modal-action
