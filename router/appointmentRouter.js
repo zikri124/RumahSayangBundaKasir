@@ -11,7 +11,7 @@ router.get(
   );
   
   router.get(
-    "/:timeCode",
+    "/time/:timeCode",
     queryDb.getAppointmentsDataByTime,
     queryDb.getServicesData,
     appointmentController.viewAppointmentsByTime
@@ -20,6 +20,7 @@ router.get(
   router.get(
     "/new",
     queryDb.getSessionAndTime,
+    queryDb.getServicesData,
     queryDb.getOnGoingVisitsData,
     appointmentController.viewAddAppointment
   )
