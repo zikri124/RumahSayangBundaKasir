@@ -1,6 +1,13 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const { collection, addDoc, query, where, getDocs, Timestamp } = require("firebase/firestore");
+const {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  Timestamp
+} = require("firebase/firestore");
 const axios = require("axios").default;
 
 const commonFunctions = require("../middleware/commonFunctions");
@@ -61,39 +68,57 @@ module.exports = {
 
   addAppointment: async (req, res) => {
     const appointmentData = {
-      name: req.body.input_name,
-      time: req.body.input_time,
-      dateOfBirth: req.body.input_dob,
-      date: req.body.input_date,
-      serviceId: req.body.input_serviceId,
-      numWa: req.body.no_hp,
-      igAccount: req.body.igAcc,
+      input_name: req.body.input_name,
+      input_time: req.body.input_time,
+      input_dob: req.body.input_dob,
+      input_date: req.body.input_date,
+      input_serviceId: req.body.input_serviceId,
+      no_hp: req.body.no_hp,
+      igAcc: req.body.igAcc,
       serviceCare: req.body.serviceCare,
-      address: req.body.input_address,
+      input_address: req.body.input_address,
       createdAt: Timestamp.now(),
       serviceName: req.body.serviceName,
       keluhan: req.body.keluhan,
     };
 
     try {
-      const result = await axios.post(apiUrl + "/api/appointment/new", appointmentData, {
+      // const result = await axios.post(apiUrl + "/api/appointment/new", appointmentData, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "bearer " + req.token,
+      //   },
+      // });
+
+      // if (result.success) {
+      //   console.log(result.data);
+      //   return res.redirect("/");
+      // } else {
+      //   return res.render("admin/errorView", {
+      //     tittle: "Ada Masalah Saat Menambahkan Reservasi Baru",
+      //     message: result.message,
+      //   });
+      // }
+      await axios.post(apiUrl + "/api/appointment/new", appointmentData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "bearer " + req.token,
         },
-      });
-
-      if (result.success) {
-        console.log(result.data);
+      }).then(response => {
+        console.log(response.data);
         return res.redirect("/");
-      } else {
+      }).catch(err => {
         return res.render("admin/errorView", {
           tittle: "Ada Masalah Saat Menambahkan Reservasi Baru",
-          message: result.message,
+          message: err,
         });
-      }
+      })
+
     } catch (err) {
-      return console.log(err);
+      return res.render("admin/errorView", {
+        tittle: "Ada Masalah Saat Menambahkan Reservasi Baru",
+        message: err,
+      });
     }
   },
 
