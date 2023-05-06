@@ -1,13 +1,6 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const {
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-  Timestamp
-} = require("firebase/firestore");
+const { collection, addDoc, query, where, getDocs, Timestamp } = require("firebase/firestore");
 const axios = require("axios").default;
 
 const commonFunctions = require("../middleware/commonFunctions");
@@ -39,13 +32,13 @@ module.exports = {
     const date = req.query.date;
     const serviceId = req.query.serviceId;
     const serviceCare = req.query.serviceCare;
-    
+
     const sessions = req.sessions;
     var sessionsData = req.sessionsData;
-    const servicesData = req.servicesData
-    const onGoingVisits = req.onGoingVisits
+    const servicesData = req.servicesData;
+    const onGoingVisits = req.onGoingVisits;
 
-    sessionsData = sessionsData.concat(onGoingVisits)
+    sessionsData = sessionsData.concat(onGoingVisits);
 
     // return res.json({
     //   sessionsData: sessionsData,
@@ -55,15 +48,15 @@ module.exports = {
     //   serviceCare: serviceCare,
     //   sessions: sessions
     // })
-    
+
     return res.render("admin/viewFormNewAppointment", {
-      sessionsData : appointmentsData,
+      sessionsData: sessionsData,
       date: date,
       serviceId: serviceId,
       servicesData: servicesData,
       serviceCare: serviceCare,
-      sessions: sessions
-    })
+      sessions: sessions,
+    });
   },
 
   addAppointment: async (req, res) => {
@@ -79,8 +72,8 @@ module.exports = {
       address: req.body.input_address,
       createdAt: Timestamp.now(),
       serviceName: req.body.serviceName,
-      keluhan: req.body.keluhan
-    }
+      keluhan: req.body.keluhan,
+    };
 
     try {
       const result = await axios.post(apiUrl + "/api/appointment/new", appointmentData, {
