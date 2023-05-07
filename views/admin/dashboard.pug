@@ -79,24 +79,24 @@ html
       input#add-reservasi.modal-toggle(type='checkbox')
       .modal.modal-bottom(class='sm:modal-middle')
         .modal-box
-          h3.font-bold.text-lg.text-center Tambah Data Kunjungan
-          form(action="/appointment/new" method="get")
+          h3.font-bold.text-lg.text-center Tambah Data Reservasi
+          form(action="/appointment/new" id="form-2" method="get")
             .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
-              .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
+              .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
                 label.label
                   span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Tanggal Reservasi
-                input.input.input-bordered.w-full.max-w-xs(id="date-reservasi" name="date" type='date' min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md")
-              .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md")
+                input.input.input-bordered.w-full.max-w-xs.text-black(id="date-reservasi" name="date" type='date' min='1899-01-01' max='2030-10-16'  class="lg:max-w-lg md:max-w-md" required)
+              .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
                 label.label
                   span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih layanan untuk reservasi
-                select.select.select-bordered.w-full.max-w-xs(name="serviceId" class="lg:max-w-lg md:max-w-md" required)
+                select.select.select-bordered.w-full.max-w-xs.text-black(name="serviceId" class="lg:max-w-lg md:max-w-md" required)
                   option(value="" selected="" disabled="") Pilih layanan
                   each data in servicesData
                     option(value=data.id)= data.data.name
-              .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md ")
+              .flex.flex-col.justify-start.w-full(class="lg:max-w-lg md:max-w-md text-red-500")
                 label.label
                   span.label-text(class="after:ml-0.5 after:content-['*'] after:text-red-500") Silahkan pilih layanan Homecare atau Datang ke Klinik
-                select.select.select-bordered.w-full.max-w-xs(name="serviceCare" class="lg:max-w-lg md:max-w-md" required)
+                select.select.select-bordered.w-full.max-w-xs.text-black(name="serviceCare" class="lg:max-w-lg md:max-w-md" required)
                   option(value="" selected="" disabled="") Pilih layanan
                   option(value="klinik" ) Datang ke Klinik 
                   option(value="homecare") Homecare

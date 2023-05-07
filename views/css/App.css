@@ -4210,6 +4210,11 @@ html {
   margin-bottom: 1rem;
 }
 
+.my-12 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
 .mx-24 {
   margin-left: 6rem;
   margin-right: 6rem;
@@ -4279,6 +4284,14 @@ html {
   margin-bottom: 1rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-44 {
+  margin-bottom: 11rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -4289,10 +4302,6 @@ html {
 
 .mt-28 {
   margin-top: 7rem;
-}
-
-.mb-2 {
-  margin-bottom: 0.5rem;
 }
 
 .mb-3 {
@@ -4465,6 +4474,10 @@ html {
 
 .w-56 {
   width: 14rem;
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .max-w-lg {
