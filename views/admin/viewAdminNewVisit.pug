@@ -12,63 +12,125 @@ html
   body
     include navbar.pug
     h1.font-bold.text-2xl.text-center.mt-8 Mulai reservasi
-    form(action="/visit/new"  method="post") 
-      .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
-        .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
-          label.label
-            span.label-text.text-start Customer
-              .br.text-xs.font-normal pilih customer jika customer sudah terdaftar
-          select.select.select-bordered.w-full.max-w-xs(name="customerId" required="" class="lg:max-w-lg")
-            option(disabled='' selected='') Pilih Customer
-            each dataCustomer in customersData
-              option(value=dataCustomer.id)= dataCustomer.data.name 
-        each dataServices in servicesData
-          if serviceId===dataServices.id
-            input(hidden value=dataServices.data.name name="serviceName") 
-            - break
-        input.hidden(name="serviceId" value=serviceId)
-        input.hidden(name="date" value=date)
-        input.hidden(name="serviceCare" value=serviceCare)
-        input.hidden(name="address" value="-")
-        .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
-          label.label
-            span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
-          - let telahReservasi = " - Telah Direservasi"
-          select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
-            option(disabled='' selected='' value="") Pilih jam reservasi
-              - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "Nvyd13i7snjgvdZBdvkA")
-                each session in sessions
-                  - let pilih = false
+    -if (serviceCare === "klinik")
+      form(action="/visit/new"  method="post") 
+        .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+          .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+            label.label
+              span.label-text.text-start Customer
+                .br.text-xs.font-normal pilih customer jika customer sudah terdaftar
+            select.select.select-bordered.w-full.max-w-xs(name="customerId" required="" class="lg:max-w-lg")
+              option(disabled='' selected='') Pilih Customer
+              each dataCustomer in customersData
+                option(value=dataCustomer.id)= dataCustomer.data.name 
+          each dataServices in servicesData
+            if serviceId===dataServices.id
+              input(hidden value=dataServices.data.name name="serviceName") 
+              - break
+          input.hidden(name="serviceId" value=serviceId)
+          input.hidden(name="date" value=date)
+          input.hidden(name="serviceCare" value=serviceCare)
+          input.hidden(name="address" value="-")
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
+            - let telahReservasi = " - Telah Direservasi"
+            select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
+              option(disabled='' selected='' value="") Pilih jam reservasi
+                - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "Nvyd13i7snjgvdZBdvkA")
+                  each session in sessions
+                    - let pilih = false
                   - let tempAmount = 0;
-                  each datasessionss in sessionsData
-                    - if (datasessionss.data.time == session.data.time)
-                      - tempAmount++;
-                      if(tempAmount == 2)
-                        - pilih = true
-                        - break
-                  - if(!pilih)
-                    option= session.data.time
-                  - else 
-                    option(disabled)=session.data.time + telahReservasi
-              - else 
-                each session in sessions
-                  - let pilih = false
+                    each datasessionss in sessionsData
+                      - if (datasessionss.data.time == session.data.time)
+                        - tempAmount++;
+                        if(tempAmount == 2)
+                          - pilih = true
+                          - break
+                    - if(!pilih)
+                      option= session.data.time
+                    - else 
+                      option(disabled)=session.data.time + telahReservasi
+                - else 
+                  each session in sessions
+                    - let pilih = false
+                    - let tempAmount = 0;
+                    each datasessionss in sessionsData
+                      - if (datasessionss.data.time == session.data.time)
+                        - tempAmount++;
+                        if(tempAmount == 1)
+                          - pilih = true
+                          - break
+                    - if(!pilih)
+                      option= session.data.time
+                    - else 
+                      option(disabled)=session.data.time + telahReservasi
+          .flex.flex-row.justify-center.items-center.gap-4
+            button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
+            .modal-action
+              a(href="/")
+                label.btn.btn-error.text-white(class="hover:bg-[#9e4949]") Kembali
+    - else 
+      form(action="/visit/new"  method="post") 
+        .form-control.w-full.flex.flex-col.justify-center.items-center.px-8(class="")
+          .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+            label.label
+              span.label-text.text-start Customer
+                .br.text-xs.font-normal pilih customer jika customer sudah terdaftar
+            select.select.select-bordered.w-full.max-w-xs(name="customerId" required="" class="lg:max-w-lg")
+              option(disabled='' selected='') Pilih Customer
+              each dataCustomer in customersData
+                option(value=dataCustomer.id)= dataCustomer.data.name 
+          .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+            label.label
+              span.label-text.text-start Alamat Rumah
+            input.input.input-bordered.w-full.max-w-xs(name="address" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" required="")
+          each dataServices in servicesData
+            if serviceId===dataServices.id
+              input(hidden value=dataServices.data.name name="serviceName") 
+              - break
+          input.hidden(name="serviceId" value=serviceId)
+          input.hidden(name="date" value=date)
+          input.hidden(name="serviceCare" value=serviceCare)
+          .flex.flex-col.justify-start.w-full(class="md:justify-start lg:max-w-lg md:max-w-md text-red-500")
+            label.label
+              span.label-text(class="after:content-['*'] after:ml-0.5 after:text-red-500 text-black") Pilih jam reservasi
+            - let telahReservasi = " - Telah Direservasi"
+            select.select.select-bordered.w-full.max-w-xs.text-black(name="input_time" required='' class="lg:max-w-lg md:max-w-md")
+              option(disabled='' selected='' value="") Pilih jam reservasi
+                - if(serviceId !== "fVRk8S4YUjpohVYVIWq1" && serviceId !== "FXi2eFE6HaD29RxPcilp" && serviceId !== "cuBccAgix7TClEJXvtiQ" && serviceId !== "Nvyd13i7snjgvdZBdvkA")
+                  each session in sessions
+                    - let pilih = false
                   - let tempAmount = 0;
-                  each datasessionss in sessionsData
-                    - if (datasessionss.data.time == session.data.time)
-                      - tempAmount++;
-                      if(tempAmount == 1)
-                        - pilih = true
-                        - break
-                  - if(!pilih)
-                    option= session.data.time
-                  - else 
-                    option(disabled)=session.data.time + telahReservasi
-        .flex.flex-row.justify-center.items-center.gap-4
-          button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
-          .modal-action
-            a(href="/")
-              label.btn.btn-error.text-white(class="hover:bg-[#9e4949]") Kembali
+                    each datasessionss in sessionsData
+                      - if (datasessionss.data.time == session.data.time)
+                        - tempAmount++;
+                        if(tempAmount == 2)
+                          - pilih = true
+                          - break
+                    - if(!pilih)
+                      option= session.data.time
+                    - else 
+                      option(disabled)=session.data.time + telahReservasi
+                - else 
+                  each session in sessions
+                    - let pilih = false
+                    - let tempAmount = 0;
+                    each datasessionss in sessionsData
+                      - if (datasessionss.data.time == session.data.time)
+                        - tempAmount++;
+                        if(tempAmount == 1)
+                          - pilih = true
+                          - break
+                    - if(!pilih)
+                      option= session.data.time
+                    - else 
+                      option(disabled)=session.data.time + telahReservasi
+          .flex.flex-row.justify-center.items-center.gap-4
+            button.btn.bg-pink-500.mt-6(class="border-none hover:bg-pink-900", type="submit") submit
+            .modal-action
+              a(href="/")
+                label.btn.btn-error.text-white(class="hover:bg-[#9e4949]") Kembali
     hr.my-8(class="mx-[31rem]")
     h1.font-bold.text-2xl.text-center Input Data Pasien
     form(action="/visit/new/newcustomer" method="post")
@@ -88,7 +150,13 @@ html
         input.hidden(name="serviceId" value=serviceId)
         input.hidden(name="date" value=date)
         input.hidden(name="serviceCare" value=serviceCare)
-        input.hidden(name="address" value="-")
+        -if (serviceCare === "klinik")
+          input.hidden(name="address" value="-")
+        -else 
+          .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
+            label.label
+              span.label-text Alamat Rumah
+            input.input.input-bordered.w-full.max-w-xs(name="address" type='text', placeholder='Ketik Disini' class="lg:max-w-lg" required="")
         .flex.flex-col.justify-start.w-full(class="lg:justify-start lg:max-w-lg")
           label.label
             span.label-text No. Hp

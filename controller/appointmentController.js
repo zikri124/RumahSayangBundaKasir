@@ -1,6 +1,13 @@
 const firebase = require("../firebase");
 const db = firebase.firestore;
-const { collection, addDoc, query, where, getDocs, Timestamp } = require("firebase/firestore");
+const {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  Timestamp
+} = require("firebase/firestore");
 const axios = require("axios").default;
 
 const commonFunctions = require("../middleware/commonFunctions");
@@ -26,6 +33,93 @@ module.exports = {
       appointmentsData: appointmentsData,
       servicesData: servicesData,
     });
+  },
+
+  viewAddAppointment: async (req, res) => {
+    const date = req.query.date;
+    const serviceId = req.query.serviceId;
+    const serviceCare = req.query.serviceCare;
+
+    const sessions = req.sessions;
+    var sessionsData = req.sessionsData;
+    const servicesData = req.servicesData;
+    const onGoingVisits = req.onGoingVisits;
+
+    sessionsData = sessionsData.concat(onGoingVisits);
+
+    // return res.json({
+    //   sessionsData: sessionsData,
+    //   date: date,
+    //   serviceId: serviceId,
+    //   servicesData: servicesData,
+    //   serviceCare: serviceCare,
+    //   sessions: sessions
+    // })
+
+    return res.render("admin/viewFormNewAppointment", {
+      sessionsData: sessionsData,
+      date: date,
+      serviceId: serviceId,
+      servicesData: servicesData,
+      serviceCare: serviceCare,
+      sessions: sessions,
+    });
+  },
+
+  addAppointment: async (req, res) => {
+    const appointmentData = {
+      input_name: req.body.input_name,
+      input_time: req.body.input_time,
+      input_dob: req.body.input_dob,
+      input_date: req.body.input_date,
+      input_serviceId: req.body.input_serviceId,
+      no_hp: req.body.no_hp,
+      igAcc: req.body.igAcc,
+      serviceCare: req.body.serviceCare,
+      input_address: req.body.input_address,
+      createdAt: Timestamp.now(),
+      serviceName: req.body.serviceName,
+      keluhan: req.body.keluhan,
+    };
+
+    try {
+      // const result = await axios.post(apiUrl + "/api/appointment/new", appointmentData, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "bearer " + req.token,
+      //   },
+      // });
+
+      // if (result.success) {
+      //   console.log(result.data);
+      //   return res.redirect("/");
+      // } else {
+      //   return res.render("admin/errorView", {
+      //     tittle: "Ada Masalah Saat Menambahkan Reservasi Baru",
+      //     message: result.message,
+      //   });
+      // }
+      await axios.post(apiUrl + "/api/appointment/new", appointmentData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + req.token,
+        },
+      }).then(response => {
+        console.log(response.data);
+        return res.redirect("/");
+      }).catch(err => {
+        return res.render("admin/errorView", {
+          tittle: "Ada Masalah Saat Menambahkan Reservasi Baru",
+          message: err,
+        });
+      })
+
+    } catch (err) {
+      return res.render("admin/errorView", {
+        tittle: "Ada Masalah Saat Menambahkan Reservasi Baru",
+        message: err,
+      });
+    }
   },
 
   viewEditAppointment: async (req, res) => {
